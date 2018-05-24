@@ -5,7 +5,7 @@
     	<h1>Contenido del menu 0</h1>
 	</template>
 	<template v-if="menu==1">
-    	<h1>Contenido del menu 1</h1>
+    	<periodo></periodo>
 	</template>
 	<template v-if="menu==2">
     	
