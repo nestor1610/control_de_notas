@@ -14,7 +14,7 @@ class PeriodoController extends Controller
         $criterio = $request->criterio;
 
         if ($buscar == '')
-            $periodos =  Periodo::orderBy('id', 'desc')->get();
+            $periodos =  Periodo::orderBy('periodo_inicio', 'desc')->get();
         else
             $periodos = Periodo::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->get();
 
