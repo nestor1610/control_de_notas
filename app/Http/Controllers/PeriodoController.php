@@ -21,6 +21,17 @@ class PeriodoController extends Controller
         return $periodos;
     }
 
+    public function listarPeriodos(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $periodos = Periodo::select('id','periodo_inicio', 'periodo_fin')
+            ->orderBy('periodo_inicio', 'desc')
+            ->get();
+
+        return $periodos;
+    }
+
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

@@ -8,7 +8,7 @@
     	<periodo></periodo>
 	</template>
 	<template v-if="menu==2">
-    	
+    	<seccion></seccion>
 	</template>
 	<template v-if="menu==3">
     	<h1>Contenido del menu 3</h1>

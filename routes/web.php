@@ -17,10 +17,11 @@ Route::get('/', function () {
 
 /* Periodos */
 Route::get('/periodo', 'PeriodoController@index');
+Route::get('/periodo/listar-periodos', 'PeriodoController@listarPeriodos');
 Route::post('/periodo/registrar', 'PeriodoController@store');
 Route::put('/periodo/actualizar', 'PeriodoController@update');
 
 /* Secciones */
-Route::get('/secciones', 'SeccionController@index');
-Route::post('/secciones/registrar', 'SeccionController@store');
-Route::put('/secciones/actualizar', 'SeccionController@update');
+Route::get('/seccion', 'SeccionController@index');
+Route::post('/seccion/registrar', 'SeccionController@store');
+Route::put('/seccion/actualizar', 'SeccionController@update');

@@ -1,11 +1,5 @@
 <template>
     <main class="main">
-    <!-- Breadcrumb -->
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">Home</li>
-        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
-    </ol>
     <div class="container-fluid">
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
@@ -70,13 +64,13 @@
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Inicio del periodo</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="periodo_inicio" class="form-control" placeholder="Inicio del periodo">
+                                <input type="text" v-model.trim="periodo_inicio" class="form-control" placeholder="Inicio del periodo">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Fin del periodo</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="periodo_fin" class="form-control" placeholder="Fin del periodo">
+                                <input type="text" v-model.trim="periodo_fin" class="form-control" placeholder="Fin del periodo">
                             </div>
                         </div>
                         <div v-show="error_periodo" class="form-group row div-error">
