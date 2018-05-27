@@ -25,3 +25,8 @@ Route::put('/periodo/actualizar', 'PeriodoController@update');
 Route::get('/seccion', 'SeccionController@index');
 Route::post('/seccion/registrar', 'SeccionController@store');
 Route::put('/seccion/actualizar', 'SeccionController@update');
+
+/* Asignaturas */
+Route::get('/asignatura', 'AsignaturaController@index');
+Route::post('/asignatura/registrar', 'AsignaturaController@store');
+Route::put('/asignatura/actualizar', 'AsignaturaController@update');

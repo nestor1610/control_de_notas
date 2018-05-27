@@ -11,7 +11,7 @@
     	<seccion></seccion>
 	</template>
 	<template v-if="menu==3">
-    	<h1>Contenido del menu 3</h1>
+    	<asignatura></asignatura>
 	</template>
 	<template v-if="menu==4">
     	

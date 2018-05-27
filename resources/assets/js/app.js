@@ -17,6 +17,7 @@ window.Vue = require('vue');
 
 Vue.component('periodo', require('./components/Periodo.vue'));
 Vue.component('seccion', require('./components/Seccion.vue'));
+Vue.component('asignatura', require('./components/Asignatura.vue'));
 
 const app = new Vue({
     el: '#app',

@@ -13,4 +13,9 @@ class Seccion extends Model
 	{
 		return $this->belongsTo('App\Periodo');
 	}
+
+	public function asignaturas()
+	{
+		return $this->belongsToMany('App\Asignatura', 'asignatura_seccion');
+	}
 }

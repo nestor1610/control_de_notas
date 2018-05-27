@@ -4,8 +4,8 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Secciones
-                <button v-on:click="abrirModal('seccion', 'registrar')" type="button" class="btn btn-secondary">
+                <i class="fa fa-align-justify"></i> Asignaturas
+                <button v-on:click="abrirModal('asignatura', 'registrar')" type="button" class="btn btn-secondary">
                     <i class="icon-plus"></i>&nbsp;Nuevo
                 </button>
             </div>
@@ -14,12 +14,10 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
-                              <option value="nombre_seccion">Nombre seccion</option>
-                              <option value="periodo_inicio">Periodo inicio</option>
-                              <option value="periodo_fin">Periodo fin</option>
+                              <option value="nombre_asignatura">Nombre asignatura</option>
                             </select>
-                            <input v-on:keyup.enter="listarSeccion(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
-                            <button v-on:click="listarSeccion(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                            <input v-on:keyup.enter="listarAsignatura(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
+                            <button v-on:click="listarAsignatura(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
                                 <i class="icon-trash"></i> Limpiar
                             </button>
@@ -30,19 +28,17 @@
                     <thead>
                         <tr>
                             <th>Opciones</th>
-                            <th>Nombre de la seccion</th>
-                            <th>Periodo</th>
+                            <th>Asignatura</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="seccion in array_seccion" :key="seccion.id">
+                        <tr v-for="asignatura in array_asignatura" :key="asignatura.id">
                             <td>
-                                <button v-on:click="abrirModal('seccion', 'actualizar', seccion)" type="button" class="btn btn-warning btn-sm">
+                                <button v-on:click="abrirModal('asignatura', 'actualizar', asignatura)" type="button" class="btn btn-warning btn-sm">
                                   <i class="icon-pencil"></i>
                                 </button> &nbsp;
                             </td>
-                            <td v-text="seccion.nombre_seccion"></td>
-                            <td v-text="seccion.periodo.periodo_inicio + '-' + seccion.periodo.periodo_fin"></td>
+                            <td v-text="asignatura.nombre_asignatura"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -81,33 +77,22 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Seccion</label>
+                            <label class="col-md-3 form-control-label" for="email-input">Asignatura</label>
                             <div class="col-md-9">
-                                <select v-model.trim="periodo_id">
-                                    <option v-bind:value="0"></option>
-                                    <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
-                                        {{ periodo.periodo_inicio + '-' + periodo.periodo_fin }}
-                                    </option>
-                                </select>
+                                <input type="text" v-model.trim="nombre_asignatura" class="form-control" placeholder="Nombre de la asignatura">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Seccion</label>
-                            <div class="col-md-9">
-                                <input type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la seccion">
-                            </div>
-                        </div>
-                        <div v-show="error_seccion" class="form-group row div-error">
+                        <div v-show="error_asignatura" class="form-group row div-error">
                             <div class="text-center text-error">
-                                <div v-for="error in error_msj_per" :key="error" v-text="error"></div>
+                                <div v-for="error in error_msj_asig" :key="error" v-text="error"></div>
                             </div>
                         </div> 
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" v-on:click="cerrarModal()">Cerrar</button>
-                    <button v-if="tipo_accion == 1" v-on:click="registrarSeccion()" type="button" class="btn btn-primary">Guardar</button>
-                    <button v-if="tipo_accion == 2" v-on:click="actualizarSeccion()" type="button" class="btn btn-primary">Actualizar</button>
+                    <button v-if="tipo_accion == 1" v-on:click="registrarAsignatura()" type="button" class="btn btn-primary">Guardar</button>
+                    <button v-if="tipo_accion == 2" v-on:click="actualizarAsignatura()" type="button" class="btn btn-primary">Actualizar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -122,16 +107,14 @@
     export default {
         data (){
             return {
-                periodo_id : 0,
-                seccion_id : 0,
-                nombre_seccion : '',
-                array_periodo: [],
-                array_seccion : [],
+                asignatura_id : 0,
+                nombre_asignatura : '',
+                array_asignatura : [],
                 modal : 0,
                 titulo_modal : '',
                 tipo_accion : 0,
-                error_seccion : 0,
-                error_msj_per : 0,
+                error_asignatura : 0,
+                error_msj_asig : 0,
                 pagination : {
                     'total' : 0,
                     'current_page' :0,
@@ -141,7 +124,7 @@
                     'to' : 0
                 },
                 offset : 3,
-                criterio : 'nombre_seccion',
+                criterio : 'nombre_asignatura',
                 buscar : ''
             }
         },
@@ -174,13 +157,13 @@
             }
         },
         methods : {
-            listarSeccion (page, buscar, criterio){
+            listarAsignatura (page, buscar, criterio){
                 let me = this;
-                var url = '/seccion?page=' + page + '&buscar='+buscar+'&criterio='+criterio;
+                var url = '/asignatura?page=' + page + '&buscar='+buscar+'&criterio='+criterio;
 
                 axios.get(url).then(function (response) {
                     var respuesta = response.data;
-                    me.array_seccion = respuesta.secciones.data;
+                    me.array_asignatura = respuesta.asignaturas.data;
                     me.pagination = respuesta.pagination;
                 }).catch(function (error) {
                     console.log(error);
@@ -191,99 +174,84 @@
                 //actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia la peticion para visualizar la data de esa pagina
-                me.listarSeccion(page, buscar, criterio);
+                me.listarAsignatura(page, buscar, criterio);
             },
-            listarPeriodo (){
-                let me = this;
-
-                axios.get('/periodo/listar-periodos').then(function (response) {
-                    me.array_periodo = response.data;
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            },
-            registrarSeccion (){
+            registrarAsignatura (){
                 
-                if (this.validarSeccion()) {
+                if (this.validarAsignatura()) {
                     return;
                 }
 
                 let me = this;
 
-                axios.post('/seccion/registrar', {
+                axios.post('/asignatura/registrar', {
                     'periodo_id': this.periodo_id,
-                    'nombre_seccion': this.nombre_seccion
+                    'nombre_asignatura': this.nombre_asignatura
                 }).then(function (response){
                     me.cerrarModal();
-                    me.listarSeccion(1, '', 'nombre_seccion');
+                    me.listarAsignatura(1, '', 'nombre_asignatura');
                 })
                 .catch(function (error){
                     console.log(error);
                 });
             },
-            actualizarSeccion (){
+            actualizarAsignatura (){
 
-                if (this.validarSeccion()){
+                if (this.validarAsignatura()){
                     return;
                 }
 
                 let me = this;
 
-                axios.put('/seccion/actualizar', {
-                    'periodo_id': this.periodo_id,
-                    'nombre_seccion': this.nombre_seccion,
-                    'id': this.seccion_id
-                }).then(function (response){
+                axios.put('/asignatura/actualizar', {
+                    'nombre_asignatura': this.nombre_asignatura,
+                    'id': this.asignatura_id
+                }).then(function (){
                     me.cerrarModal();
-                    me.listarSeccion(1, '', 'nombre_seccion');
+                    me.listarAsignatura(1, '', 'nombre_asignatura');
                 })
                 .catch(function (error){
                     console.log(error);
                 });
             },
-            validarSeccion (){
-                this.error_seccion = 0;
-                this.error_msj_per =[];
+            validarAsignatura (){
+                this.error_asignatura = 0;
+                this.error_msj_asig =[];
 
-                if (!this.periodo_id) this.error_msj_per.push('Seleccione un periodo');
+                if (!this.nombre_asignatura) this.error_msj_asig.push('El nombre de la asignatura no debe estar vacio');
 
-                if (!this.nombre_seccion) this.error_msj_per.push('El nombre de la seccion no debe estar vacio');
+                if ( this.nombre_asignatura.length > 30 ) this.error_msj_asig.push('El nombre de la asignatura no debe ser mayor de 30 caracteres');
 
-                if ( this.nombre_seccion.length > 45 ) this.error_msj_asig.push('El nombre de la seccion no debe ser mayor de 45 caracteres');
+                if (this.error_msj_asig.length) this.error_asignatura = 1;
 
-                if (this.error_msj_per.length) this.error_seccion = 1;
-
-                return this.error_seccion;
+                return this.error_asignatura;
             },
             cerrarModal (){
                 this.modal = 0;
                 this.titulo_modal = '';
-                this.seccion_id = 0;
-                this.periodo_id = '';
-                this.nombre_seccion = '';
+                this.asignatura_id = 0;
+                this.nombre_asignatura = '';
             },
             abrirModal (modelo, accion, data = []){
                 switch (modelo){
-                    case "seccion":
+                    case "asignatura":
                     {
                         switch (accion){
                             case "registrar":
                             {
                                 this.modal = 1;
-                                this.titulo_modal = 'Registrar seccion',
-                                this.periodo_id = 0;
-                                this.nombre_seccion = '';
+                                this.titulo_modal = 'Registrar asignatura',
+                                this.nombre_asignatura = '';
                                 this.tipo_accion = 1;
                                 break;
                             }
                             case "actualizar":
                             {
                                 this.modal = 1;
-                                this.titulo_modal = 'Actualizar seccion';
+                                this.titulo_modal = 'Actualizar asignatura';
                                 this.tipo_accion = 2;
-                                this.periodo_id = data['periodo_id'];
-                                this.seccion_id = data['id'];
-                                this.nombre_seccion = data['nombre_seccion'];
+                                this.asignatura_id = data['id'];
+                                this.nombre_asignatura = data['nombre_asignatura'];
                                 break;
                             }
                         }
@@ -292,13 +260,12 @@
             },
             limpiarBuscar (){
                 this.buscar = '';
-                this.criterio = 'nombre_seccion';
-                this.listarSeccion(1, this.buscar, this.criterio);
+                this.criterio = 'nombre_asignatura';
+                this.listarAsignatura(1, this.buscar, this.criterio);
             }
         },
         mounted() {
-            this.listarPeriodo();
-            this.listarSeccion(1, this.buscar, this.criterio);
+            this.listarAsignatura(1, this.buscar, this.criterio);
         }
  }
 </script>

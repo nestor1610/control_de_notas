@@ -27,7 +27,7 @@ class SeccionController extends Controller
             $secciones = Seccion::where($criterio, 'like', '%'.$buscar.'%')
             	->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             	->select('secciones.id', 'secciones.nombre_seccion', 'secciones.periodo_id', 'secciones.created_at', 'secciones.updated_at')
-                ->orderBy('nombre_seccion', 'asc')                
+                ->orderBy('nombre_seccion', 'asc')
                 ->paginate(10);
 
             foreach ($secciones as $key => $seccion) {

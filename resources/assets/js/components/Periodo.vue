@@ -133,11 +133,11 @@
                 axios.post('/periodo/registrar', {
                     'periodo_inicio': this.periodo_inicio,
                     'periodo_fin': this.periodo_fin
-                }).then(function (){
+                }).then(function (response){
                     me.cerrarModal();
                     me.ListarPeriodo('', 'periodo_inicio');
                 })
-                .catch(function (){
+                .catch(function (error){
                     console.log(error);
                 });
             },
@@ -153,11 +153,11 @@
                     'periodo_inicio': this.periodo_inicio,
                     'periodo_fin': this.periodo_fin,
                     'id': this.periodo_id
-                }).then(function (){
+                }).then(function (response){
                     me.cerrarModal();
                     me.ListarPeriodo('', 'periodo_inicio');
                 })
-                .catch(function (){
+                .catch(function (error){
                     console.log(error);
                 });
             },
@@ -166,7 +166,12 @@
                 this.error_msj_per =[];
 
                 if (!this.periodo_inicio) this.error_msj_per.push('El inicio del periodo no puede estar vacio');
+
+                if ( this.periodo_inicio.length > 15 ) this.error_msj_per.push('El inicio del periodo no debe ser mayor de 15 caracteres');
+
                 if (!this.periodo_fin) this.error_msj_per.push('El final del periodo no puede estar vacio');
+
+                if ( this.periodo_fin.length > 15 ) this.error_msj_per.push('El fin del periodo no debe ser mayor de 15 caracteres');
 
                 if (this.error_msj_per.length) this.error_periodo = 1;
 
