@@ -29,6 +29,7 @@
                         <tr>
                             <th>Opciones</th>
                             <th>Asignatura</th>
+                            <th>Secciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,8 +38,21 @@
                                 <button v-on:click="abrirModal('asignatura', 'actualizar', asignatura)" type="button" class="btn btn-warning btn-sm">
                                   <i class="icon-pencil"></i>
                                 </button> &nbsp;
+                                <button v-on:click="abrirModal('asignatura', 'ingresar_seccion', asignatura)" type="button" class="btn btn-success btn-sm">
+                                  <i class="icon-plus"></i>
+                                </button> &nbsp;
                             </td>
                             <td v-text="asignatura.nombre_asignatura"></td>
+                            <td>
+                                <ul>
+                                    <li v-for="seccion in asignatura.secciones" :key="seccion.id">
+                                        {{ seccion.nombre_seccion }}
+                                        <button v-on:click="eliminarSeccion(seccion)" type="button" class="btn btn-danger btn-sm">
+                                            <i class="icon-trash"></i>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -99,7 +113,48 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!--Fin del modal-->
+    <!--Inicio del modal agregar seccion-->
+    <div :class="{'mostrar' : modal == 2}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-primary modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 v-text="titulo_modal" class="modal-title"></h4>
+                    <button type="button" class="close" v-on:click="cerrarModal()" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label" for="email-input">Secciones</label>
+                            <div class="col-md-9">
+                                <select v-model.trim="seccion_id">
+                                        
+                                    <option v-bind:value="null">Ninguna seccion</option>
+                                    <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id">
+                                            {{ seccion.nombre_seccion }}
+                                    </option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div v-show="error_asignatura" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in error_msj_asig" :key="error" v-text="error"></div>
+                            </div>
+                        </div> 
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal()">Cerrar</button>
+                    <button v-on:click="ingresarSeccion()" type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!--Fin del modal seccion-->
     </main>
 </template>
 
@@ -108,8 +163,10 @@
         data (){
             return {
                 asignatura_id : 0,
+                seccion_id : 0,
                 nombre_asignatura : '',
                 array_asignatura : [],
+                array_seccion : [],
                 modal : 0,
                 titulo_modal : '',
                 tipo_accion : 0,
@@ -169,6 +226,16 @@
                     console.log(error);
                 });
             },
+            listarSeccion (){
+                let me = this;
+                var url = '/seccion/listar-seccion';
+
+                axios.get(url).then(function (response) {
+                    me.array_seccion = response.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
             cambiarPagina (page, buscar, criterio){
                 let me = this;
                 //actualiza la pagina actual
@@ -194,6 +261,37 @@
                 .catch(function (error){
                     console.log(error);
                 });
+            },
+            ingresarSeccion (){
+                let me = this;
+
+                axios.post('/asignatura/registrar/seccion', {
+                    'seccion_id': this.seccion_id,
+                    'asignatura_id': this.asignatura_id
+                }).then(function (response){
+                    me.listarAsignatura(1, '', 'nombre_asignatura');
+                })
+                .catch(function (error){
+                    console.log(error);
+                });
+            },
+            eliminarSeccion (seccion){
+                let me = this;
+
+                me.asignatura_id = seccion.pivot.asignatura_id;
+                me.seccion_id = seccion.pivot.seccion_id;
+
+                axios.delete('/asignatura/eliminar/' + me.asignatura_id + '/' + me.seccion_id)
+                .then(function (response){
+                    console.log(response.data);
+                    me.listarAsignatura(1, '', 'nombre_asignatura');
+                    me.asignatura_id = 0;
+                    me.seccion_id = 0;
+                })
+                .catch(function (error){
+                    console.log(error);
+                });
+
             },
             actualizarAsignatura (){
 
@@ -230,6 +328,8 @@
                 this.modal = 0;
                 this.titulo_modal = '';
                 this.asignatura_id = 0;
+                this.seccion_id = 0;
+                this.tipo_accion = 0;
                 this.nombre_asignatura = '';
             },
             abrirModal (modelo, accion, data = []){
@@ -254,6 +354,14 @@
                                 this.nombre_asignatura = data['nombre_asignatura'];
                                 break;
                             }
+                            case "ingresar_seccion":
+                            {
+                                this.asignatura_id = data['id'];
+                                this.modal = 2;
+                                this.titulo_modal = 'Asignar secciones a ' + data['nombre_asignatura'];
+                                this.tipo_accion = 3;
+                                break;
+                            }
                         }
                     }
                 }
@@ -265,6 +373,7 @@
             }
         },
         mounted() {
+            this.listarSeccion();
             this.listarAsignatura(1, this.buscar, this.criterio);
         }
  }

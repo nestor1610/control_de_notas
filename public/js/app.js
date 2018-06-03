@@ -35073,13 +35073,70 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             asignatura_id: 0,
+            seccion_id: 0,
             nombre_asignatura: '',
             array_asignatura: [],
+            array_seccion: [],
             modal: 0,
             titulo_modal: '',
             tipo_accion: 0,
@@ -35140,6 +35197,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
+        listarSeccion: function listarSeccion() {
+            var me = this;
+            var url = '/seccion/listar-seccion';
+
+            axios.get(url).then(function (response) {
+                me.array_seccion = response.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
         cambiarPagina: function cambiarPagina(page, buscar, criterio) {
             var me = this;
             //actualiza la pagina actual
@@ -35161,6 +35228,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 me.cerrarModal();
                 me.listarAsignatura(1, '', 'nombre_asignatura');
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        ingresarSeccion: function ingresarSeccion() {
+            var me = this;
+
+            axios.post('/asignatura/registrar/seccion', {
+                'seccion_id': this.seccion_id,
+                'asignatura_id': this.asignatura_id
+            }).then(function (response) {
+                me.listarAsignatura(1, '', 'nombre_asignatura');
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        eliminarSeccion: function eliminarSeccion(seccion) {
+            var me = this;
+
+            me.asignatura_id = seccion.pivot.asignatura_id;
+            me.seccion_id = seccion.pivot.seccion_id;
+
+            axios.delete('/asignatura/eliminar/' + me.asignatura_id + '/' + me.seccion_id).then(function (response) {
+                console.log(response.data);
+                me.listarAsignatura(1, '', 'nombre_asignatura');
+                me.asignatura_id = 0;
+                me.seccion_id = 0;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -35199,6 +35293,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.modal = 0;
             this.titulo_modal = '';
             this.asignatura_id = 0;
+            this.seccion_id = 0;
+            this.tipo_accion = 0;
             this.nombre_asignatura = '';
         },
         abrirModal: function abrirModal(modelo, accion) {
@@ -35224,6 +35320,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.nombre_asignatura = data['nombre_asignatura'];
                                     break;
                                 }
+                            case "ingresar_seccion":
+                                {
+                                    this.asignatura_id = data['id'];
+                                    this.modal = 2;
+                                    this.titulo_modal = 'Asignar secciones a ' + data['nombre_asignatura'];
+                                    this.tipo_accion = 3;
+                                    break;
+                                }
                         }
                     }
             }
@@ -35235,6 +35339,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
+        this.listarSeccion();
         this.listarAsignatura(1, this.buscar, this.criterio);
     }
 });
@@ -35403,6 +35508,24 @@ var render = function() {
                         },
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
+                      _vm._v("  \n                            "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.abrirModal(
+                                "asignatura",
+                                "ingresar_seccion",
+                                asignatura
+                              )
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "icon-plus" })]
+                      ),
                       _vm._v("  \n                        ")
                     ]),
                     _vm._v(" "),
@@ -35410,7 +35533,35 @@ var render = function() {
                       domProps: {
                         textContent: _vm._s(asignatura.nombre_asignatura)
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "ul",
+                        _vm._l(asignatura.secciones, function(seccion) {
+                          return _c("li", { key: seccion.id }, [
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(seccion.nombre_seccion) +
+                                "\n                                    "
+                            ),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.eliminarSeccion(seccion)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "icon-trash" })]
+                            )
+                          ])
+                        })
+                      )
+                    ])
                   ])
                 })
               )
@@ -35689,6 +35840,196 @@ var render = function() {
           ]
         )
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        class: { mostrar: _vm.modal == 2 },
+        staticStyle: { display: "none" },
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-primary modal-lg",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h4", {
+                  staticClass: "modal-title",
+                  domProps: { textContent: _vm._s(_vm.titulo_modal) }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button", "aria-label": "Close" },
+                    on: {
+                      click: function($event) {
+                        _vm.cerrarModal()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "form",
+                  {
+                    staticClass: "form-horizontal",
+                    attrs: {
+                      action: "",
+                      method: "post",
+                      enctype: "multipart/form-data"
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "email-input" }
+                        },
+                        [_vm._v("Secciones")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.trim",
+                                value: _vm.seccion_id,
+                                expression: "seccion_id",
+                                modifiers: { trim: true }
+                              }
+                            ],
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.seccion_id = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { domProps: { value: null } }, [
+                              _vm._v("Ninguna seccion")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.array_seccion, function(seccion) {
+                              return _c(
+                                "option",
+                                {
+                                  key: seccion.id,
+                                  domProps: { value: seccion.id }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                        " +
+                                      _vm._s(seccion.nombre_seccion) +
+                                      "\n                                "
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.error_asignatura,
+                            expression: "error_asignatura"
+                          }
+                        ],
+                        staticClass: "form-group row div-error"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "text-center text-error" },
+                          _vm._l(_vm.error_msj_asig, function(error) {
+                            return _c("div", {
+                              key: error,
+                              domProps: { textContent: _vm._s(error) }
+                            })
+                          })
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.cerrarModal()
+                      }
+                    }
+                  },
+                  [_vm._v("Cerrar")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.ingresarSeccion()
+                      }
+                    }
+                  },
+                  [_vm._v("Guardar")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
@@ -35701,7 +36042,9 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Opciones")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Asignatura")])
+        _c("th", [_vm._v("Asignatura")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Secciones")])
       ])
     ])
   }

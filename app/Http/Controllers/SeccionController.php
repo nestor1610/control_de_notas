@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Seccion;
+use Illuminate\Support\Facades\DB;
 
 class SeccionController extends Controller
 {
@@ -47,6 +48,18 @@ class SeccionController extends Controller
             ],
             'secciones' => $secciones
         ];
+    }
+
+    public function listarSecciones(Request $request)
+    {
+        //if (!$request->ajax()) return redirect('/');
+
+        $secciones = Seccion::select('secciones.id','nombre_seccion')
+            ->where('id', '!=', $request->id)
+            ->orderBy('nombre_seccion')
+            ->get();
+
+        return $secciones;
     }
 
     public function store(Request $request)

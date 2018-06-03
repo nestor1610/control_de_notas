@@ -19,9 +19,9 @@ class AsignaturaController extends Controller
 
             $asignaturas =  Asignatura::orderBy('nombre_asignatura')->paginate(10);
 
-            // foreach ($asignaturas as $key => $asignatura) {
-            // 	$asignatura->secciones;
-            // }
+            foreach ($asignaturas as $key => $asignatura) {
+            	$asignatura->secciones;
+            }
 
         } else {
 
@@ -29,9 +29,9 @@ class AsignaturaController extends Controller
                 ->orderBy('nombre_asignatura')
                 ->paginate(10);
 
-            // foreach ($asignaturas as $key => $asignatura) {
-            //     $asignatura->secciones;
-            // }
+            foreach ($asignaturas as $key => $asignatura) {
+                $asignatura->secciones;
+            }
 
         }
 
@@ -57,6 +57,14 @@ class AsignaturaController extends Controller
 		$asignatura->save();
     }
 
+    public function registrarSeccion(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $asignatura = Asignatura::findOrFail($request->asignatura_id);
+        $asignatura->secciones()->attach($request->seccion_id);
+    }
+
     public function update(Request $request)
     {
     	if (!$request->ajax()) return redirect('/');
@@ -64,5 +72,14 @@ class AsignaturaController extends Controller
     	$asignatura = Asignatura::findOrFail($request->id);
 		$asignatura->nombre_asignatura = $request->nombre_asignatura;
 		$asignatura->save();
+    }
+
+    public function deleteSeccion(Request $request, $asignatura_id, $seccion_id)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $asignatura = Asignatura::findOrFail($asignatura_id);
+        $asignatura->secciones()->detach($seccion_id);
+
     }
 }

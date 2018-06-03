@@ -23,10 +23,13 @@ Route::put('/periodo/actualizar', 'PeriodoController@update');
 
 /* Secciones */
 Route::get('/seccion', 'SeccionController@index');
+Route::get('/seccion/listar-seccion', 'SeccionController@listarSecciones');
 Route::post('/seccion/registrar', 'SeccionController@store');
 Route::put('/seccion/actualizar', 'SeccionController@update');
 
 /* Asignaturas */
 Route::get('/asignatura', 'AsignaturaController@index');
 Route::post('/asignatura/registrar', 'AsignaturaController@store');
+Route::post('/asignatura/registrar/seccion', 'AsignaturaController@registrarSeccion');
 Route::put('/asignatura/actualizar', 'AsignaturaController@update');
+Route::delete('/asignatura/eliminar/{asignatura}/{seccion}', 'AsignaturaController@deleteSeccion');
