@@ -52,12 +52,26 @@ class SeccionController extends Controller
 
     public function listarSecciones(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
-        $secciones = Seccion::select('secciones.id','nombre_seccion')
-            ->where('id', '!=', $request->id)
-            ->orderBy('nombre_seccion')
-            ->get();
+        $secciones = DB::select('select secciones.id, secciones.nombre_seccion
+            from secciones
+            where id NOT IN (select seccion_id from asignatura_seccion where asignatura_id = :asignatura_id);', [
+                'asignatura_id' => $request->asignatura_id
+            ]);
+
+        return $secciones;
+    }
+
+    public function listarSeccionesAlumno(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $secciones = Seccion::select('secciones.id', 'nombre_seccion', 'periodos.periodo_inicio',
+            'periodos.periodo_fin')
+            ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
+            ->where('periodos.id', $request->periodo_id)
+            ->orderBy('periodo_inicio', 'desc')->get();
 
         return $secciones;
     }

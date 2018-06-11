@@ -84,7 +84,7 @@
                             <label class="col-md-3 form-control-label" for="text-input">Seccion</label>
                             <div class="col-md-9">
                                 <select v-model.trim="periodo_id">
-                                    <option v-bind:value="0"></option>
+                                    <option v-bind:value="0" selected>Seleccione un periodo</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
                                         {{ periodo.periodo_inicio + '-' + periodo.periodo_fin }}
                                     </option>

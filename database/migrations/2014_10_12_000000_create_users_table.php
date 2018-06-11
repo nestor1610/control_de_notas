@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');            
-            $table->string('usuario')->unique();
+            $table->string('email')->unique();
             $table->string('password');
             $table->boolean('condicion')->default(1);
 
@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
 
         DB::table('users')->insert([
             'id' => 1,
-            'usuario' => 'admin',
+            'email' => 'admin@admin.com.ve',
             'password' => bcrypt( 'admin' ),
             'condicion' => 1,
             'rol_id' => 1

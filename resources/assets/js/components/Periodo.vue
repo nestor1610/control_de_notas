@@ -17,8 +17,8 @@
                               <option value="periodo_inicio">Inicio</option>
                               <option value="periodo_fin">Fin</option>
                             </select>
-                            <input v-on:keyup.enter="ListarPeriodo(buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
-                            <button v-on:click="ListarPeriodo(buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                            <input v-on:keyup.enter="listarPeriodo(buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
+                            <button v-on:click="listarPeriodo(buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
                                 <i class="icon-trash"></i> Limpiar
                             </button>
@@ -112,7 +112,7 @@
             }
         },
         methods : {
-            ListarPeriodo (buscar, criterio){
+            listarPeriodo (buscar, criterio){
                 let me = this;
                 var url = '/periodo?buscar='+buscar+'&criterio='+criterio;
 
@@ -135,7 +135,7 @@
                     'periodo_fin': this.periodo_fin
                 }).then(function (response){
                     me.cerrarModal();
-                    me.ListarPeriodo('', 'periodo_inicio');
+                    me.listarPeriodo('', 'periodo_inicio');
                 })
                 .catch(function (error){
                     console.log(error);
@@ -155,7 +155,7 @@
                     'id': this.periodo_id
                 }).then(function (response){
                     me.cerrarModal();
-                    me.ListarPeriodo('', 'periodo_inicio');
+                    me.listarPeriodo('', 'periodo_inicio');
                 })
                 .catch(function (error){
                     console.log(error);
@@ -215,11 +215,11 @@
             limpiarBuscar (){
                 this.buscar = '';
                 this.criterio = 'periodo_inicio';
-                this.ListarPeriodo(this.buscar, this.criterio);
+                this.listarPeriodo(this.buscar, this.criterio);
             }
         },
         mounted() {
-            this.ListarPeriodo(this.buscar, this.criterio);
+            this.listarPeriodo(this.buscar, this.criterio);
         }
  }
 </script>

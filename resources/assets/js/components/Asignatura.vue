@@ -130,7 +130,7 @@
                             <div class="col-md-9">
                                 <select v-model.trim="seccion_id">
                                         
-                                    <option v-bind:value="null">Ninguna seccion</option>
+                                    <option v-bind:value="0" selected>Ninguna seccion</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id">
                                             {{ seccion.nombre_seccion }}
                                     </option>
@@ -228,7 +228,7 @@
             },
             listarSeccion (){
                 let me = this;
-                var url = '/seccion/listar-seccion';
+                var url = '/seccion/listar-seccion?asignatura_id=' + this.asignatura_id;
 
                 axios.get(url).then(function (response) {
                     me.array_seccion = response.data;
@@ -263,6 +263,11 @@
                 });
             },
             ingresarSeccion (){
+
+                if (this.validarSeccion()) {
+                    return;
+                }
+
                 let me = this;
 
                 axios.post('/asignatura/registrar/seccion', {
@@ -270,6 +275,7 @@
                     'asignatura_id': this.asignatura_id
                 }).then(function (response){
                     me.listarAsignatura(1, '', 'nombre_asignatura');
+                    me.listarSeccion();
                 })
                 .catch(function (error){
                     console.log(error);
@@ -324,6 +330,9 @@
 
                 return this.error_asignatura;
             },
+            validarSeccion (){
+                if (!this.seccion_id) return 1;
+            },
             cerrarModal (){
                 this.modal = 0;
                 this.titulo_modal = '';
@@ -357,6 +366,7 @@
                             case "ingresar_seccion":
                             {
                                 this.asignatura_id = data['id'];
+                                this.listarSeccion();
                                 this.modal = 2;
                                 this.titulo_modal = 'Asignar secciones a ' + data['nombre_asignatura'];
                                 this.tipo_accion = 3;
@@ -373,7 +383,6 @@
             }
         },
         mounted() {
-            this.listarSeccion();
             this.listarAsignatura(1, this.buscar, this.criterio);
         }
  }
