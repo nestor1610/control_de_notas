@@ -12,7 +12,7 @@
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
                               <option value="nombre">Nombre</option>
-                              <option value="descripcion">Moreno</option>
+                              <option value="descripcion">Descripcion</option>
                             </select>
                             <input v-on:keyup.enter="listarRol(buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarRol(buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -34,7 +34,14 @@
                         <tr v-for="rol in array_rol" :key="rol.id">
                             <td v-text="rol.nombre"></td>
                             <td v-text="rol.descripcion"></td>
-                            <td v-text="rol.condicion"></td>
+                            <td>
+                                <div v-if="rol.condicion">
+                                    <span class="badge badge-success">Activo</span>
+                                </div>
+                                <div v-else>
+                                    <span class="badge badge-danger">Desactivado</span>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

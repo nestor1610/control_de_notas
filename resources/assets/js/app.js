@@ -21,6 +21,7 @@ Vue.component('asignatura', require('./components/Asignatura.vue'));
 Vue.component('rol', require('./components/Rol.vue'));
 Vue.component('user', require('./components/User.vue'));
 Vue.component('alumno', require('./components/Alumno.vue'));
+Vue.component('nota', require('./components/Nota.vue'));
 
 const app = new Vue({
     el: '#app',

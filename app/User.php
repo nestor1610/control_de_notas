@@ -29,6 +29,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /*
+        indicamos una relacion de 1 a muchos con el modelo rol
+        ya que de esta forma se usaran los metodos de laravel para acceder a 
+        los datos relacionadoes
+    */
     public function rol()
     {
         return $this->belongsTo('App\Rol');

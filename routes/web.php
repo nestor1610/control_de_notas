@@ -11,12 +11,20 @@
 |
 */
 
+/*
+	Estas rutas solo podran ser accedidas por los usuarios que no se han logeado
+*/
 Route::group( ['middleware' => ['guest'] ], function () {
 
 	Route::get('/', 'Auth\LoginController@showLoginForm');
 	Route::post('/login', 'Auth\LoginController@login')->name('login');	
 
 });
+
+/*
+	Estas rutas solo podran ser accedidas por los usuarios que se han logeado
+	y aparte tienen el rol Administrador
+*/
 
 Route::group( ['middleware' => ['auth'] ], function () {
 
@@ -43,6 +51,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 
 		/* Asignaturas */
 		Route::get('/asignatura', 'AsignaturaController@index');
+		Route::get('/asignatura/listar-asignatura', 'AsignaturaController@listarAsignatura');
 		Route::post('/asignatura/registrar', 'AsignaturaController@store');
 		Route::post('/asignatura/registrar/seccion', 'AsignaturaController@registrarSeccion');
 		Route::put('/asignatura/actualizar', 'AsignaturaController@update');
@@ -50,11 +59,16 @@ Route::group( ['middleware' => ['auth'] ], function () {
 
 		/* Alumnos */
 		Route::get('/alumno', 'AlumnoController@index');
+		Route::get('/alumno/buscar-alumno', 'AlumnoController@buscarAlumno');
 		Route::get('/alumno/listar-alumno', 'AlumnoController@listarAlumnos');
 		Route::post('/alumno/registrar', 'AlumnoController@store');
 		Route::put('/alumno/actualizar', 'AlumnoController@update');
 		Route::put('/alumno/activar', 'AlumnoController@activate');
 		Route::put('/alumno/desactivar', 'AlumnoController@desactive');
+
+		/* Notas */
+		Route::get('/nota', 'NotaController@index');
+		Route::post('/nota/registrar', 'NotaController@store');
 
 		/* Roles */
 		Route::get('/rol', 'RolController@index');

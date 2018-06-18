@@ -8,12 +8,23 @@ use Illuminate\Http\Request;
 
 class AlumnoController extends Controller
 {
+    /*
+        El metodo index listara a todos los alumnos registrados
+    */
     public function index(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
+        /*
+            estas variables indican la busqueda y por que criterio se buscara
+        */
         $buscar = $request->buscar;
         $criterio = $request->criterio;
+
+        /*
+            Si la busqueda es vacia, se listaran todos los alumnos.
+            como se indica en el metodo paginate, se listaran los alumnos de 10 en 10
+        */
 
         if ($buscar == '') {
 
@@ -24,7 +35,7 @@ class AlumnoController extends Controller
             		'alumnos.cedula','alumnos.nombre', 
             		'alumnos.apellido', 'alumnos.telefono', 'alumnos.email',
             		'alumnos.dir_ciudad', 'alumnos.dir_avenida', 'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
-                ->orderBy('periodos.periodo_inicio', 'secciones.nombre_seccion', 'alumnos.nombre')
+                ->orderBy('periodos.periodo_inicio', 'secciones.nombre_seccion', 'alumnos.apellido')
                 ->paginate(10);
 
         } else {
@@ -37,7 +48,7 @@ class AlumnoController extends Controller
             		'alumnos.apellido', 'alumnos.telefono', 'alumnos.email',
             		'alumnos.dir_ciudad', 'alumnos.dir_avenida', 'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
             	->where($criterio, 'like', '%'.$buscar.'%')
-                ->orderBy('periodos.periodo_inicio', 'secciones.nombre_seccion', 'alumnos.nombre')
+                ->orderBy('periodos.periodo_inicio', 'secciones.nombre_seccion', 'alumnos.apellido')
                 ->paginate(10);
 
         }
@@ -55,6 +66,32 @@ class AlumnoController extends Controller
         ];
     }
 
+    /*
+        este metodo busca a un alumno por medio de su cedula
+    */
+    public function buscarAlumno(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $cedula = $request->cedula;
+        $seccion_id = $request->seccion_id;
+
+        $alumno = Alumno::select('id', 'nombre', 'apellido', 'cedula')
+            ->where([
+                ['seccion_id', '=', $seccion_id],
+                ['cedula', '=', $cedula],
+                ['condicion', '=', 1]
+            ])
+            ->take(1)
+            ->get();
+
+        return $alumno;
+    }
+
+    /*
+        se inserta al alumno por medio de los metodos de laravel
+        y usando el model Alumno
+    */
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -74,6 +111,10 @@ class AlumnoController extends Controller
         $alumno->save();
     }
 
+    /*
+        se actualiza al alumno por medio de los metodos de laravel
+        y usando el model Alumno
+    */
     public function update(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -93,6 +134,10 @@ class AlumnoController extends Controller
         $alumno->save();
     }
 
+    /*
+        se desactivan y activan alumnos por medio de los metodos de laravel
+        y usando el model Alumno
+    */
     public function activate(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

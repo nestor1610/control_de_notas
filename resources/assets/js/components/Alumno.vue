@@ -38,6 +38,7 @@
                             <th>Periodo</th>
                             <th>Seccion</th>
                             <th>Cedula</th>
+                            <th>Apellido</th>
                             <th>Nombre</th>
                             <th>email</th>
                             <th>telefono</th>
@@ -65,10 +66,11 @@
                             <td v-text="alumno.periodo_inicio + '-' + alumno.periodo_fin"></td>
                             <td v-text="alumno.nombre_seccion"></td>
                             <td v-text="alumno.cedula"></td>
-                            <td v-text="alumno.nombre + ' ' + alumno.apellido"></td>
+                            <td v-text="alumno.apellido"></td>
+                            <td v-text="alumno.nombre"></td>
                             <td v-text="alumno.email"></td>
                             <td v-text="alumno.telefono"></td>
-                            <td>{{ alumno.dir_avenida +' '+ alumno.dir_ciudad +' '+ alumno.dir_calle +' '+ alumno.dir_casa }}</td>
+                            <td>{{ direccionAlumno(alumno) }}</td>
                             <td>
                                 <div v-if="alumno.condicion">
                                     <span class="badge badge-success">Activo</span>
@@ -284,6 +286,20 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            direccionAlumno (alumno){
+                var avenida = '';
+                var ciudad = '';
+                var calle = '';
+                var casa = '';
+
+                if (alumno.dir_avenida != null) avenida = alumno.dir_avenida;
+                if (alumno.dir_ciudad != null) ciudad = alumno.dir_ciudad;
+                if (alumno.dir_calle != null) calle = alumno.dir_calle;
+                if (alumno.dir_casa != null) casa = alumno.dir_casa;
+
+                return 'Ciudad: ' + ciudad + ' Avenida: ' + avenida + ' Calle: ' + calle + ' Casa: ' + casa;
+
             },
             listarPeriodo (){
                 let me = this;

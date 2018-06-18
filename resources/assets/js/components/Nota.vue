@@ -1,0 +1,480 @@
+<template>
+    <main class="main">
+    <div class="container-fluid">
+        <!-- Ejemplo de tabla Listado -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Notas
+                <button v-on:click="mostrarNota()" type="button" class="btn btn-secondary">
+                    <i class="icon-plus"></i>&nbsp;Nuevo
+                </button>
+            </div>
+            <template v-if="listado == 1">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <select class="form-control col-md-4" v-model.trim="periodo_id" v-on:change="listarSeccion()">
+                                    <option v-bind:value="0" selected>Seleccione un periodo</option>
+                                    <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
+                                        {{ periodo.periodo_inicio +'-'+ periodo.periodo_fin }}
+                                    </option>
+                                </select>
+                                <select class="form-control col-md-4" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
+                                    <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
+                                        {{ seccion.nombre_seccion }}
+                                    </option>
+                                </select>
+                                <select class="form-control col-md-4" v-model.trim="asignatura_id" v-on:change="listarNota(1)">
+                                    <option v-for="asignatura in array_asignatura" :key="asignatura.id" v-bind:value="asignatura.id" >
+                                        {{ asignatura.nombre_asignatura }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Opciones</th>
+                                <th>Cedula</th>
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th>Asignatura</th>
+                                <th>Promedio</th>
+                            </tr>
+                        </thead>
+                        <tbody v-if="array_nota.length">
+                            <tr v-for="nota in array_nota" :key="nota.id">
+                                <td>
+                                </td>
+                                <td v-text="nota.cedula"></td>
+                                <td v-text="nota.apellido"></td>
+                                <td v-text="nota.nombre"></td>
+                                <td v-text="nota.nombre_asignatura"></td>
+                                <td v-text="nota.promedio"></td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="6">
+                                    NO hay notas registradas
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item" v-if="pagination.current_page > 1">
+                                <a href="#" class="page-link" v-on:click.prevent="cambiarPagina(pagination.current_page - 1)">
+                                    Pre
+                                </a>
+                            </li>
+                            <li class="page-item" v-for="page in pages_number" :key="page" v-bind:class="[page == is_actived ? 'active' : '']">
+                                <a href="#" class="page-link" v-on:click.prevent="cambiarPagina(page)" v-text="page">
+                                </a>
+                            </li>
+                            <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                <a href="#" class="page-link" v-on:click.prevent="cambiarPagina(pagination.current_page + 1)">
+                                    Next
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </template>
+            <template v-else-if="listado == 0">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <select class="form-control col-md-4" v-model.trim="periodo_id" v-on:change="listarSeccion()">
+                                    <option v-bind:value="0" selected>Seleccione un periodo</option>
+                                    <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
+                                        {{ periodo.periodo_inicio +'-'+ periodo.periodo_fin }}
+                                    </option>
+                                </select>
+                                <select class="form-control col-md-4" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
+                                    <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
+                                        {{ seccion.nombre_seccion }}
+                                    </option>
+                                </select>
+                                <select class="form-control col-md-4" v-model.trim="asignatura_id">
+                                    <option v-for="asignatura in array_asignatura" :key="asignatura.id" v-bind:value="asignatura.id" >
+                                        {{ asignatura.nombre_asignatura }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div v-show="error_nota" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in error_msj_nota" :key="error" v-text="error">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label>Alumno <span style="color:red;" v-show="alumno_id == 0">(*Seleccione)</span></label>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control" v-model="cedula" v-on:keyup.enter="buscarAlumno()" placeholder="Ingrese cedula del alumno">
+                                    <button v-on:click="buscarAlumno()" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <input type="text" readonly class="form-control" v-model="alumno">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Lapso <span style="color:red;" v-show="lapso == 0">(*Ingrese)</span></label>
+                                <select v-model.trim="lapso" class="form-control">
+                                    <option v-bind:value="1">
+                                        Primer lapso
+                                    </option>
+                                    <option v-bind:value="2">
+                                        Segundo lapso
+                                    </option>
+                                    <option v-bind:value="3">
+                                        Tercer lapso
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Nota <span style="color:red;" v-show="nota == 0">(*Ingrese)</span></label>
+                                <input type="number" value="0" class="form-control" v-model="nota">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button v-on:click="agregarAlumno()" class="btn btn-success form-control btnagregar">
+                                    <i class="icon-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="table-responsive col-md-12">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <th>Opciones</th>
+                                    <th>Cedula</th>
+                                    <th>Alumno</th>
+                                    <th>Lapso</th>
+                                    <th>Nota</th>
+                                </thead>
+                                <tbody v-if="array_notas_ingresadas.length">
+                                    <tr v-for="(detalle, index) in array_notas_ingresadas" :key="detalle.id">
+                                        <td>
+                                            <button @click="eliminarAlumno(index)" type="button" class="btn btn-danger btn-sm">
+                                                <i class="icon-close"></i>
+                                            </button>
+                                        </td>
+                                        <td v-text="detalle.cedula"></td>
+                                        <td v-text="detalle.alumno"></td>
+                                        <td>
+                                            <input v-model="detalle.lapso" type="number" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input v-model="detalle.nota" type="number" class="form-control">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody v-else>
+                                    <tr>
+                                        <td colspan="5">
+                                            NO hay notas ingresadas
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" v-on:click="listado = 1" class="btn btn-secondary">Cerrar</button>
+                            <button type="button" class="btn btn-primary" v-on:click="registrarNotas()">Registrar Notas</button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+        <!-- Fin ejemplo de tabla Listado -->
+    </div>
+    </main>
+</template>
+
+<script>
+    export default {
+        data (){
+            return {
+                periodo_id : 0,
+                seccion_id : 0,
+                alumno_id : 0,
+                asignatura_id : 0,
+                nota_id : 0,
+                lapso : 0,
+                nota : 0,
+                cedula : 0,
+                alumno : '',
+                array_periodo : [],
+                array_seccion : [],
+                array_alumno : [],
+                array_asignatura : [],
+                array_nota : [],
+                array_notas_ingresadas : [],
+                listado: 1, //Si visualizo el estado
+                modal : 0,
+                titulo_modal : '',
+                tipo_accion : 0,
+                error_nota : 0,
+                error_msj_nota : 0,
+                pagination : {
+                    'total' : 0,
+                    'current_page' :0,
+                    'per_page' : 0,
+                    'last_page' : 0,
+                    'from' : 0,
+                    'to' : 0
+                },
+                offset : 3
+            }
+        },
+        computed : {
+            is_actived: function (){
+                return this.pagination.current_page;
+            },
+            pages_number: function (){
+
+                if (!this.pagination.to){
+                    return [];
+                }
+
+                var from = this.pagination.current_page - this.offset;
+
+                if (from < 1) from = 1;
+
+                var to = from + (this.offset * 2);
+
+                if (to >= this.pagination.last_page) to = this.pagination.last_page;
+
+                var page_array = [];
+
+                while (from <= to) {
+                    page_array.push(from);
+                    from++;
+                }
+
+                return page_array;
+            }
+        },
+        methods : {
+            listarNota (page){
+                let me = this;
+                var url = '/nota?page=' + page + '&seccion_id=' + this.seccion_id + '&asignatura_id=' + this.asignatura_id;
+
+                axios.get(url).then(function (response) {
+                    var respuesta = response.data;
+                    me.array_nota = respuesta.notas.data;
+                    me.pagination = respuesta.pagination;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            listarPeriodo (){
+                let me = this;
+                var url = '/periodo/listar-periodos';
+
+                axios.get(url).then(function (response) {
+                    me.array_periodo = response.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            listarSeccion (){
+                let me = this;
+                var url = '/seccion/listar-seccion-alumno?periodo_id=' + this.periodo_id;
+
+                axios.get(url).then(function (response) {
+                    me.array_seccion = response.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            listarAsignatura (){
+                let me = this;
+                var url = '/asignatura/listar-asignatura?seccion_id=' + this.seccion_id;
+
+                axios.get(url).then(function (response) {
+                    me.array_asignatura = response.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            cambiarPagina (page){
+                let me = this;
+                //actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia la peticion para visualizar la data de esa pagina
+                me.listarNota(page);
+            },
+            buscarAlumno (){
+                let me = this;
+                var url = '/alumno/buscar-alumno?cedula=' + me.cedula + '&seccion_id=' + me.seccion_id;
+
+                axios.get(url).then(function (response) {
+                    me.array_alumno = response.data;
+
+                    if (me.array_alumno.length > 0)
+                    {
+                        me.alumno = me.array_alumno[0]['nombre'] + ' ' + me.array_alumno[0]['apellido'];
+                        me.cedula = me.array_alumno[0]['cedula'];
+                        me.alumno_id = me.array_alumno[0]['id'];
+
+                    } else{
+
+                        me.alumno= 'No existe el alumno en esta seccion';
+                        me.alumno_id = 0;
+
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            registrarNotas (){
+                
+                if ( this.validarNota() ) {
+                    return;
+                }
+
+                let me = this;
+
+                axios.post('/nota/registrar', {
+
+                    'asignatura_id' : this.asignatura_id,
+                    'data': this.array_notas_ingresadas
+
+                }).then(function (){
+
+                    me.listado = 1;
+                    me.listarNota(1);
+                    me.array_notas_ingresadas = [];
+                })
+                .catch(function (){
+                    console.log(error);
+               });
+           },
+            validarNota (){
+                this.error_nota = 0;
+                this.error_msj_nota =[];
+
+                if ( !this.periodo_id ) this.error_msj_nota.push('Seleccione un periodo');
+
+                if ( !this.seccion_id ) this.error_msj_nota.push('Seleccione una seccion');
+
+                if ( !this.asignatura_id ) this.error_msj_nota.push('Seleccione una asignatura');
+
+                if ( this.array_notas_ingresadas <= 0 ) this.error_msj_nota.push('Ingrese notas');
+
+                if (this.error_msj_nota.length) this.error_nota = 1;
+
+                return this.error_nota;
+            },
+            encuentra (alumno_id){
+                var sw = false;
+
+                for (var i = 0; i < this.array_notas_ingresadas.length; i++) {
+                    
+                    if (this.array_notas_ingresadas[i].alumno_id == alumno_id) {
+                        
+                        sw = true;
+
+                    }
+
+                }
+
+                return sw;
+            },
+            agregarAlumno (){
+                let me = this;
+
+                if (me.alumno_id <= 0 || me.nota <= 0 || me.lapso <= 0)
+                {
+
+                }
+                else {
+
+                    if ( me.encuentra(me.alumno_id) ) {
+                        swal({
+                            type: 'error',
+                            title: 'Error...',
+                            text: 'Ese alumno ya se encuentra agregado',
+                        })
+                    }
+                    else{
+
+                        me.array_notas_ingresadas.push({
+                            alumno_id : me.alumno_id,
+                            cedula : me.cedula,
+                            alumno : me.alumno,
+                            nota : me.nota,
+                            lapso : me.lapso
+                        });
+
+                        me.alumno_id = 0;
+                        me.cedula = 0;
+                        me.alumno = '';
+                        me.nota = 0;
+                        me.lapso = 0;
+                        
+                    }
+                }
+            },
+            eliminarAlumno (index){
+                let me = this;
+                me.array_notas_ingresadas.splice(index, 1);
+            },
+            mostrarNota (){
+                let me = this;
+                this.listado = 0;
+
+                me.periodo_id = 0;
+                me.seccion_id = 0;
+                me.alumno_id = 0;
+                me.asignatura_id = 0;
+                me.array_notas_ingresadas = [];
+            },
+        },
+        mounted() {
+            this.listarPeriodo();
+        }
+ }
+</script>
+<style>
+    .modal-content{
+        width: 100% !important;
+        position: absolute !important;
+    }
+    .mostrar{
+        display: list-item !important;
+        opacity: 1 !important;
+        position: absolute !important;
+        background-color: #3c29297a !important;
+    }
+    .div-error{
+        display: flex;
+        justify-content: center;
+    }
+    .text-error{
+        color: red;
+        font-weight: bold;
+    }
+    @media (min-width: 600px) {
+        .btnagregar {
+            margin-top: 2rem;
+        }
+    }
+</style>

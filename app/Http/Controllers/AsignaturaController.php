@@ -48,6 +48,23 @@ class AsignaturaController extends Controller
         ];
     }
 
+    public function listarAsignatura(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $seccion_id = $request->seccion_id;
+
+        $asignaturas = DB::select('SELECT a.id, a.nombre_asignatura
+            FROM asignaturas a
+            JOIN asignatura_seccion a_s ON a.id = a_s.asignatura_id
+            JOIN secciones s ON s.id = a_s.seccion_id
+            WHERE s.id = :seccion_id', [
+                'seccion_id' => $seccion_id
+            ]);
+
+        return $asignaturas;
+    }
+
     public function store(Request $request)
     {
     	if (!$request->ajax()) return redirect('/');
@@ -57,6 +74,9 @@ class AsignaturaController extends Controller
 		$asignatura->save();
     }
 
+    /*
+        se relacionan asignatura con seccion con los metodos de laravel
+    */
     public function registrarSeccion(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -74,6 +94,9 @@ class AsignaturaController extends Controller
 		$asignatura->save();
     }
 
+    /*
+        se borra la relacion asignatura con seccion con los metodos de laravel
+    */
     public function deleteSeccion(Request $request, $asignatura_id, $seccion_id)
     {
         if (!$request->ajax()) return redirect('/');

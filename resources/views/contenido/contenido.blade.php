@@ -20,10 +20,7 @@
 	    	<alumno></alumno>
 		</template>
 		<template v-if="menu==5">
-	    	
-		</template>
-		<template v-if="menu==6">
-	    	
+	    	<nota></nota>
 		</template>
 		<template v-if="menu==7">
 	    	<user></user>
