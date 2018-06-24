@@ -10,14 +10,14 @@ class SeccionController extends Controller
 {
     public function index(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
 
         if ($buscar == '') {
 
-            $secciones =  Seccion::orderBy('nombre_seccion', 'asc')->paginate(10);
+            $secciones =  Seccion::orderBy('ano', 'asc')->paginate(10);
 
             foreach ($secciones as $key => $seccion) {
             	$seccion->periodo->orderBy('periodo_inicio');
@@ -27,8 +27,8 @@ class SeccionController extends Controller
 
             $secciones = Seccion::where($criterio, 'like', '%'.$buscar.'%')
             	->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
-            	->select('secciones.id', 'secciones.nombre_seccion', 'secciones.periodo_id', 'secciones.created_at', 'secciones.updated_at')
-                ->orderBy('nombre_seccion', 'asc')
+            	->select('secciones.id', 'secciones.nombre_seccion', 'secciones.ano', 'secciones.periodo_id', 'secciones.created_at', 'secciones.updated_at')
+                ->orderBy('ano', 'asc')
                 ->paginate(10);
 
             foreach ($secciones as $key => $seccion) {
@@ -54,9 +54,10 @@ class SeccionController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
 
-        $secciones = DB::select('select secciones.id, secciones.nombre_seccion
+        $secciones = DB::select('select secciones.id, secciones.nombre_seccion, secciones.ano
             from secciones
-            where id NOT IN (select seccion_id from asignatura_seccion where asignatura_id = :asignatura_id);', [
+            where id NOT IN (select seccion_id from asignatura_seccion where asignatura_id = :asignatura_id)
+            order by ano;', [
                 'asignatura_id' => $request->asignatura_id
             ]);
 
@@ -67,7 +68,7 @@ class SeccionController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
 
-        $secciones = Seccion::select('secciones.id', 'nombre_seccion', 'periodos.periodo_inicio',
+        $secciones = Seccion::select('secciones.id', 'nombre_seccion', 'ano', 'periodos.periodo_inicio',
             'periodos.periodo_fin')
             ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             ->where('periodos.id', $request->periodo_id)
@@ -82,6 +83,7 @@ class SeccionController extends Controller
 
         $seccion = new Seccion();
         $seccion->nombre_seccion = $request->nombre_seccion;
+        $seccion->ano = $request->ano;
         $seccion->periodo_id = $request->periodo_id;
         $seccion->save();
     }
@@ -92,6 +94,7 @@ class SeccionController extends Controller
 
         $seccion = Seccion::find( $request->id );
         $seccion->nombre_seccion = $request->nombre_seccion;
+        $seccion->ano = $request->ano;
         $seccion->periodo_id = $request->periodo_id;
         $seccion->save();
     }

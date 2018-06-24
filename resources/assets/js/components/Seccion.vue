@@ -15,6 +15,7 @@
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
                               <option value="nombre_seccion">Nombre seccion</option>
+                              <option value="ano">Año</option>
                               <option value="periodo_inicio">Periodo inicio</option>
                               <option value="periodo_fin">Periodo fin</option>
                             </select>
@@ -30,7 +31,8 @@
                     <thead>
                         <tr>
                             <th>Opciones</th>
-                            <th>Nombre de la seccion</th>
+                            <th>Seccion</th>
+                            <th>Año</th>
                             <th>Periodo</th>
                         </tr>
                     </thead>
@@ -42,6 +44,7 @@
                                 </button> &nbsp;
                             </td>
                             <td v-text="seccion.nombre_seccion"></td>
+                            <td v-text="seccion.ano"></td>
                             <td v-text="seccion.periodo.periodo_inicio + '-' + seccion.periodo.periodo_fin"></td>
                         </tr>
                     </tbody>
@@ -97,6 +100,17 @@
                                 <input type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la seccion">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label" for="email-input">Año</label>
+                            <div class="col-md-9">
+                                <select v-model.trim="ano">
+                                    <option v-bind:value="0" selected>Seleccione un año</option>
+                                    <option v-for="ano in array_ano" :key="ano.id" v-bind:value="ano" >
+                                        {{ ano }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                         <div v-show="error_seccion" class="form-group row div-error">
                             <div class="text-center text-error">
                                 <div v-for="error in error_msj_per" :key="error" v-text="error"></div>
@@ -125,6 +139,8 @@
                 periodo_id : 0,
                 seccion_id : 0,
                 nombre_seccion : '',
+                ano : 0,
+                array_ano : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                 array_periodo: [],
                 array_seccion : [],
                 modal : 0,
@@ -212,7 +228,8 @@
 
                 axios.post('/seccion/registrar', {
                     'periodo_id': this.periodo_id,
-                    'nombre_seccion': this.nombre_seccion
+                    'nombre_seccion': this.nombre_seccion,
+                    'ano': this.ano
                 }).then(function (response){
                     me.cerrarModal();
                     me.listarSeccion(1, '', 'nombre_seccion');
@@ -232,6 +249,7 @@
                 axios.put('/seccion/actualizar', {
                     'periodo_id': this.periodo_id,
                     'nombre_seccion': this.nombre_seccion,
+                    'ano': this.ano,
                     'id': this.seccion_id
                 }).then(function (response){
                     me.cerrarModal();
@@ -249,7 +267,11 @@
 
                 if (!this.nombre_seccion) this.error_msj_per.push('El nombre de la seccion no debe estar vacio');
 
-                if ( this.nombre_seccion.length > 45 ) this.error_msj_asig.push('El nombre de la seccion no debe ser mayor de 45 caracteres');
+                if (!this.ano) this.error_msj_per.push('El año de la seccion no debe estar vacio');
+
+                if ( this.ano < 1 && this.ano > 20) this.error_msj_per.push('El año de la seccion no debe ser menor a 1 ni mayor de 15');
+
+                if ( this.nombre_seccion.length > 20 ) this.error_msj_asig.push('El nombre de la seccion no debe ser mayor de 20 caracteres');
 
                 if (this.error_msj_per.length) this.error_seccion = 1;
 
@@ -261,6 +283,7 @@
                 this.seccion_id = 0;
                 this.periodo_id = '';
                 this.nombre_seccion = '';
+                this.ano = 0;
             },
             abrirModal (modelo, accion, data = []){
                 switch (modelo){
@@ -273,6 +296,7 @@
                                 this.titulo_modal = 'Registrar seccion',
                                 this.periodo_id = 0;
                                 this.nombre_seccion = '';
+                                this.ano = 0;
                                 this.tipo_accion = 1;
                                 break;
                             }
@@ -284,6 +308,7 @@
                                 this.periodo_id = data['periodo_id'];
                                 this.seccion_id = data['id'];
                                 this.nombre_seccion = data['nombre_seccion'];
+                                this.ano = data['ano'];
                                 break;
                             }
                         }

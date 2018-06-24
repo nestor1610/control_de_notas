@@ -132,7 +132,7 @@
                                         
                                     <option v-bind:value="0" selected>Ninguna seccion</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id">
-                                            {{ seccion.nombre_seccion }}
+                                            {{ seccion.nombre_seccion + ' - año: ' + seccion.ano }}
                                     </option>
 
                                 </select>

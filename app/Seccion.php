@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Seccion extends Model
 {
     protected $table = 'secciones';
-    protected $fillable = ['nombre_seccion', 'periodo_id'];
+    protected $fillable = ['nombre_seccion', 'ano', 'periodo_id'];
 
     /*
 		indicamos una relacion de 1 a muchos con el modelo periodo

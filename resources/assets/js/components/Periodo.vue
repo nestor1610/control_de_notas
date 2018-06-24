@@ -13,15 +13,19 @@
                 <div class="form-group row">
                     <div class="col-md-6">
                         <div class="input-group">
-                            <select class="form-control col-md-3" v-model="criterio">
-                              <option value="periodo_inicio">Inicio</option>
-                              <option value="periodo_fin">Fin</option>
-                            </select>
-                            <input v-on:keyup.enter="listarPeriodo(buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
-                            <button v-on:click="listarPeriodo(buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                            <label class="form-control" for="text-input">Inicio del periodo</label>
+                            <input type="number" v-model="periodo_inicio" class="form-control" placeholder="Inicio">
+                            <label class="form-control" for="text-input">Fin del periodo</label>
+                            <input type="number" v-model="periodo_fin" class="form-control" placeholder="Fin">
+                            <button v-on:click="listarPeriodo(periodo_inicio, periodo_fin, 1)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
                                 <i class="icon-trash"></i> Limpiar
                             </button>
+                        </div>
+                    </div>
+                    <div v-show="error_periodo" class="col-md-6 div-error">
+                        <div class="text-center text-error">
+                            <div v-for="error in error_msj_per" :key="error" v-text="error"></div>
                         </div>
                     </div>
                 </div>
@@ -99,22 +103,28 @@
         data (){
             return {
                 periodo_id : 0,
-                periodo_inicio : '',
-                periodo_fin : '',
+                periodo_inicio : 0,
+                periodo_fin : 0,
                 array_periodo : [],
                 modal : 0,
                 titulo_modal : '',
                 tipo_accion : 0,
                 error_periodo : 0,
-                error_msj_per : 0,
-                criterio : 'periodo_inicio',
-                buscar : ''
+                error_msj_per : 0
             }
         },
         methods : {
-            listarPeriodo (buscar, criterio){
+            listarPeriodo (periodo_inicio, periodo_fin, busqueda = 0){
+
+                if ( !busqueda ){
+
+                } else{
+                    if ( this.validarBusqueda() ) return;
+                }
+
                 let me = this;
-                var url = '/periodo?buscar='+buscar+'&criterio='+criterio;
+
+                var url = '/periodo?periodo_inicio='+periodo_inicio+'&periodo_fin='+periodo_fin;
 
                 axios.get(url).then(function (response) {
                     me.array_periodo = response.data;
@@ -135,7 +145,7 @@
                     'periodo_fin': this.periodo_fin
                 }).then(function (response){
                     me.cerrarModal();
-                    me.listarPeriodo('', 'periodo_inicio');
+                    me.listarPeriodo(0, 0);
                 })
                 .catch(function (error){
                     console.log(error);
@@ -155,23 +165,51 @@
                     'id': this.periodo_id
                 }).then(function (response){
                     me.cerrarModal();
-                    me.listarPeriodo('', 'periodo_inicio');
+                    me.listarPeriodo(0, 0);
                 })
                 .catch(function (error){
                     console.log(error);
                 });
             },
+            validarBusqueda (){
+                this.error_periodo = 0;
+                this.error_msj_per =[];
+                this.periodo_inicio = parseInt( this.periodo_inicio );
+                this.periodo_fin = parseInt( this.periodo_fin );
+
+                if ( this.periodo_inicio > 2099 ) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+
+                if ( this.periodo_inicio < 2000 ) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
+
+                if ( this.periodo_fin > 2099 ) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+
+                if ( this.periodo_fin < 2000 ) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+
+                if ( this.periodo_inicio >= this.periodo_fin ) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
+
+                if (this.error_msj_per.length) this.error_periodo = 1;
+
+                return this.error_periodo;
+            },
             validarPeriodo (){
                 this.error_periodo = 0;
                 this.error_msj_per =[];
+                this.periodo_inicio = parseInt( this.periodo_inicio );
+                this.periodo_fin = parseInt( this.periodo_fin );
 
                 if (!this.periodo_inicio) this.error_msj_per.push('El inicio del periodo no puede estar vacio');
 
-                if ( this.periodo_inicio.length > 15 ) this.error_msj_per.push('El inicio del periodo no debe ser mayor de 15 caracteres');
+                if ( this.periodo_inicio > 2099 ) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+
+                if ( this.periodo_inicio < 2000 ) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
 
                 if (!this.periodo_fin) this.error_msj_per.push('El final del periodo no puede estar vacio');
 
-                if ( this.periodo_fin.length > 15 ) this.error_msj_per.push('El fin del periodo no debe ser mayor de 15 caracteres');
+                if ( this.periodo_fin > 2099 ) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+
+                if ( this.periodo_fin < 2000 ) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+
+                if ( this.periodo_inicio >= this.periodo_fin ) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
 
                 if (this.error_msj_per.length) this.error_periodo = 1;
 
@@ -181,8 +219,10 @@
                 this.modal = 0;
                 this.titulo_modal = '';
                 this.periodo_id = 0;
-                this.periodo_inicio = '';
-                this.periodo_fin = '';
+                this.periodo_inicio = 0;
+                this.periodo_fin = 0;
+                this.error_periodo = 0;
+                this.error_msj_per = '';
             },
             abrirModal (modelo, accion, data = []){
                 switch (modelo){
@@ -193,8 +233,8 @@
                             {
                                 this.modal = 1;
                                 this.titulo_modal = 'Registrar periodo',
-                                this.periodo_inicio = '';
-                                this.periodo_fin = '';
+                                this.periodo_inicio = 0;
+                                this.periodo_fin = 0;
                                 this.tipo_accion = 1;
                                 break;
                             }
@@ -213,13 +253,15 @@
                 }
             },
             limpiarBuscar (){
-                this.buscar = '';
-                this.criterio = 'periodo_inicio';
-                this.listarPeriodo(this.buscar, this.criterio);
+                this.periodo_inicio = 0;
+                this.periodo_fin = 0;
+                this.error_periodo = 0;
+                this.error_msj_per = '';
+                this.listarPeriodo(this.periodo_inicio, this.periodo_fin);
             }
         },
         mounted() {
-            this.listarPeriodo(this.buscar, this.criterio);
+            this.listarPeriodo(this.periodo_inicio, this.periodo_fin);
         }
  }
 </script>

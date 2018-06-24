@@ -33352,28 +33352,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             periodo_id: 0,
-            periodo_inicio: '',
-            periodo_fin: '',
+            periodo_inicio: 0,
+            periodo_fin: 0,
             array_periodo: [],
             modal: 0,
             titulo_modal: '',
             tipo_accion: 0,
             error_periodo: 0,
-            error_msj_per: 0,
-            criterio: 'periodo_inicio',
-            buscar: ''
+            error_msj_per: 0
         };
     },
 
     methods: {
-        listarPeriodo: function listarPeriodo(buscar, criterio) {
+        listarPeriodo: function listarPeriodo(periodo_inicio, periodo_fin) {
+            var busqueda = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+
+            if (!busqueda) {} else {
+                if (this.validarBusqueda()) return;
+            }
+
             var me = this;
-            var url = '/periodo?buscar=' + buscar + '&criterio=' + criterio;
+
+            var url = '/periodo?periodo_inicio=' + periodo_inicio + '&periodo_fin=' + periodo_fin;
 
             axios.get(url).then(function (response) {
                 me.array_periodo = response.data;
@@ -33394,7 +33404,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'periodo_fin': this.periodo_fin
             }).then(function (response) {
                 me.cerrarModal();
-                me.listarPeriodo('', 'periodo_inicio');
+                me.listarPeriodo(0, 0);
             }).catch(function (error) {
                 console.log(error);
             });
@@ -33413,22 +33423,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.periodo_id
             }).then(function (response) {
                 me.cerrarModal();
-                me.listarPeriodo('', 'periodo_inicio');
+                me.listarPeriodo(0, 0);
             }).catch(function (error) {
                 console.log(error);
             });
         },
+        validarBusqueda: function validarBusqueda() {
+            this.error_periodo = 0;
+            this.error_msj_per = [];
+            this.periodo_inicio = parseInt(this.periodo_inicio);
+            this.periodo_fin = parseInt(this.periodo_fin);
+
+            if (this.periodo_inicio > 2099) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+
+            if (this.periodo_inicio < 2000) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
+
+            if (this.periodo_fin > 2099) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+
+            if (this.periodo_fin < 2000) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+
+            if (this.periodo_inicio >= this.periodo_fin) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
+
+            if (this.error_msj_per.length) this.error_periodo = 1;
+
+            return this.error_periodo;
+        },
         validarPeriodo: function validarPeriodo() {
             this.error_periodo = 0;
             this.error_msj_per = [];
+            this.periodo_inicio = parseInt(this.periodo_inicio);
+            this.periodo_fin = parseInt(this.periodo_fin);
 
             if (!this.periodo_inicio) this.error_msj_per.push('El inicio del periodo no puede estar vacio');
 
-            if (this.periodo_inicio.length > 15) this.error_msj_per.push('El inicio del periodo no debe ser mayor de 15 caracteres');
+            if (this.periodo_inicio > 2099) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+
+            if (this.periodo_inicio < 2000) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
 
             if (!this.periodo_fin) this.error_msj_per.push('El final del periodo no puede estar vacio');
 
-            if (this.periodo_fin.length > 15) this.error_msj_per.push('El fin del periodo no debe ser mayor de 15 caracteres');
+            if (this.periodo_fin > 2099) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+
+            if (this.periodo_fin < 2000) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+
+            if (this.periodo_inicio >= this.periodo_fin) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
 
             if (this.error_msj_per.length) this.error_periodo = 1;
 
@@ -33438,8 +33476,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.modal = 0;
             this.titulo_modal = '';
             this.periodo_id = 0;
-            this.periodo_inicio = '';
-            this.periodo_fin = '';
+            this.periodo_inicio = 0;
+            this.periodo_fin = 0;
+            this.error_periodo = 0;
+            this.error_msj_per = '';
         },
         abrirModal: function abrirModal(modelo, accion) {
             var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -33451,8 +33491,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             case "registrar":
                                 {
                                     this.modal = 1;
-                                    this.titulo_modal = 'Registrar periodo', this.periodo_inicio = '';
-                                    this.periodo_fin = '';
+                                    this.titulo_modal = 'Registrar periodo', this.periodo_inicio = 0;
+                                    this.periodo_fin = 0;
                                     this.tipo_accion = 1;
                                     break;
                                 }
@@ -33471,13 +33511,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         limpiarBuscar: function limpiarBuscar() {
-            this.buscar = '';
-            this.criterio = 'periodo_inicio';
-            this.listarPeriodo(this.buscar, this.criterio);
+            this.periodo_inicio = 0;
+            this.periodo_fin = 0;
+            this.error_periodo = 0;
+            this.error_msj_per = '';
+            this.listarPeriodo(this.periodo_inicio, this.periodo_fin);
         }
     },
     mounted: function mounted() {
-        this.listarPeriodo(this.buscar, this.criterio);
+        this.listarPeriodo(this.periodo_inicio, this.periodo_fin);
     }
 });
 
@@ -33518,42 +33560,9 @@ var render = function() {
             _c("div", { staticClass: "col-md-6" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.criterio,
-                        expression: "criterio"
-                      }
-                    ],
-                    staticClass: "form-control col-md-3",
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.criterio = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "periodo_inicio" } }, [
-                      _vm._v("Inicio")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "periodo_fin" } }, [
-                      _vm._v("Fin")
-                    ])
-                  ]
+                  "label",
+                  { staticClass: "form-control", attrs: { for: "text-input" } },
+                  [_vm._v("Inicio del periodo")]
                 ),
                 _vm._v(" "),
                 _c("input", {
@@ -33561,28 +33570,47 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.buscar,
-                      expression: "buscar"
+                      value: _vm.periodo_inicio,
+                      expression: "periodo_inicio"
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Texto a buscar" },
-                  domProps: { value: _vm.buscar },
+                  attrs: { type: "number", placeholder: "Inicio" },
+                  domProps: { value: _vm.periodo_inicio },
                   on: {
-                    keyup: function($event) {
-                      if (
-                        !("button" in $event) &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      _vm.listarPeriodo(_vm.buscar, _vm.criterio)
-                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.buscar = $event.target.value
+                      _vm.periodo_inicio = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  { staticClass: "form-control", attrs: { for: "text-input" } },
+                  [_vm._v("Fin del periodo")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.periodo_fin,
+                      expression: "periodo_fin"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "number", placeholder: "Fin" },
+                  domProps: { value: _vm.periodo_fin },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.periodo_fin = $event.target.value
                     }
                   }
                 }),
@@ -33594,7 +33622,11 @@ var render = function() {
                     attrs: { type: "submit" },
                     on: {
                       click: function($event) {
-                        _vm.listarPeriodo(_vm.buscar, _vm.criterio)
+                        _vm.listarPeriodo(
+                          _vm.periodo_inicio,
+                          _vm.periodo_fin,
+                          1
+                        )
                       }
                     }
                   },
@@ -33618,7 +33650,34 @@ var render = function() {
                   ]
                 )
               ])
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.error_periodo,
+                    expression: "error_periodo"
+                  }
+                ],
+                staticClass: "col-md-6 div-error"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "text-center text-error" },
+                  _vm._l(_vm.error_msj_per, function(error) {
+                    return _c("div", {
+                      key: error,
+                      domProps: { textContent: _vm._s(error) }
+                    })
+                  })
+                )
+              ]
+            )
           ]),
           _vm._v(" "),
           _c(
@@ -34133,6 +34192,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -34140,6 +34213,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             periodo_id: 0,
             seccion_id: 0,
             nombre_seccion: '',
+            ano: 0,
+            array_ano: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             array_periodo: [],
             array_seccion: [],
             modal: 0,
@@ -34228,7 +34303,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             axios.post('/seccion/registrar', {
                 'periodo_id': this.periodo_id,
-                'nombre_seccion': this.nombre_seccion
+                'nombre_seccion': this.nombre_seccion,
+                'ano': this.ano
             }).then(function (response) {
                 me.cerrarModal();
                 me.listarSeccion(1, '', 'nombre_seccion');
@@ -34247,6 +34323,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.put('/seccion/actualizar', {
                 'periodo_id': this.periodo_id,
                 'nombre_seccion': this.nombre_seccion,
+                'ano': this.ano,
                 'id': this.seccion_id
             }).then(function (response) {
                 me.cerrarModal();
@@ -34263,7 +34340,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (!this.nombre_seccion) this.error_msj_per.push('El nombre de la seccion no debe estar vacio');
 
-            if (this.nombre_seccion.length > 45) this.error_msj_asig.push('El nombre de la seccion no debe ser mayor de 45 caracteres');
+            if (!this.ano) this.error_msj_per.push('El año de la seccion no debe estar vacio');
+
+            if (this.ano < 1 && this.ano > 20) this.error_msj_per.push('El año de la seccion no debe ser menor a 1 ni mayor de 15');
+
+            if (this.nombre_seccion.length > 20) this.error_msj_asig.push('El nombre de la seccion no debe ser mayor de 20 caracteres');
 
             if (this.error_msj_per.length) this.error_seccion = 1;
 
@@ -34275,6 +34356,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.seccion_id = 0;
             this.periodo_id = '';
             this.nombre_seccion = '';
+            this.ano = 0;
         },
         abrirModal: function abrirModal(modelo, accion) {
             var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -34288,6 +34370,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.modal = 1;
                                     this.titulo_modal = 'Registrar seccion', this.periodo_id = 0;
                                     this.nombre_seccion = '';
+                                    this.ano = 0;
                                     this.tipo_accion = 1;
                                     break;
                                 }
@@ -34299,6 +34382,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.periodo_id = data['periodo_id'];
                                     this.seccion_id = data['id'];
                                     this.nombre_seccion = data['nombre_seccion'];
+                                    this.ano = data['ano'];
                                     break;
                                 }
                         }
@@ -34385,6 +34469,8 @@ var render = function() {
                     _c("option", { attrs: { value: "nombre_seccion" } }, [
                       _vm._v("Nombre seccion")
                     ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "ano" } }, [_vm._v("Año")]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "periodo_inicio" } }, [
                       _vm._v("Periodo inicio")
@@ -34490,6 +34576,10 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(seccion.nombre_seccion) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(seccion.ano) }
                     }),
                     _vm._v(" "),
                     _c("td", {
@@ -34773,6 +34863,74 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "email-input" }
+                        },
+                        [_vm._v("Año")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.trim",
+                                value: _vm.ano,
+                                expression: "ano",
+                                modifiers: { trim: true }
+                              }
+                            ],
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.ano = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "option",
+                              {
+                                attrs: { selected: "" },
+                                domProps: { value: 0 }
+                              },
+                              [_vm._v("Seleccione un año")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.array_ano, function(ano) {
+                              return _c(
+                                "option",
+                                { key: ano.id, domProps: { value: ano } },
+                                [
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(ano) +
+                                      "\n                                "
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "div",
                       {
@@ -34866,7 +35024,9 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Opciones")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Nombre de la seccion")]),
+        _c("th", [_vm._v("Seccion")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Año")]),
         _vm._v(" "),
         _c("th", [_vm._v("Periodo")])
       ])
@@ -35980,7 +36140,11 @@ var render = function() {
                                 [
                                   _vm._v(
                                     "\n                                        " +
-                                      _vm._s(seccion.nombre_seccion) +
+                                      _vm._s(
+                                        seccion.nombre_seccion +
+                                          " - año: " +
+                                          seccion.ano
+                                      ) +
                                       "\n                                "
                                   )
                                 ]

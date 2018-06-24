@@ -11,13 +11,18 @@ class PeriodoController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
 
-        $buscar = $request->buscar;
-        $criterio = $request->criterio;
+        $periodo_inicio = $request->periodo_inicio;
+        $periodo_fin = $request->periodo_fin;
+        //$criterio = $request->criterio;
 
-        if ($buscar == '')
+        if ($periodo_inicio == 0 && $periodo_fin == 0)
             $periodos =  Periodo::orderBy('periodo_inicio', 'desc')->get();
-        else
-            $periodos = Periodo::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->get();
+        else {
+            $periodos = Periodo::where([
+                ['periodo_inicio', 'like', $periodo_inicio],
+                ['periodo_fin', 'like', $periodo_fin]
+            ])->orderBy('id', 'desc')->get();
+        }
 
         return $periodos;
     }

@@ -15,7 +15,8 @@ class CreateSeccionesTable extends Migration
     {
         Schema::create('secciones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre_seccion', 45);
+            $table->string('nombre_seccion', 20);
+            $table->unsignedInteger('ano');
             $table->integer('periodo_id')->unsigned();
             $table->foreign('periodo_id')->references('id')->on('periodos');
             $table->timestamps();
