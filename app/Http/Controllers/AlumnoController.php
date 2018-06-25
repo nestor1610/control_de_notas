@@ -31,11 +31,11 @@ class AlumnoController extends Controller
             $alumnos = DB::table('secciones')
             	->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             	->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
-            	->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion', 'alumnos.id', 'alumnos.seccion_id',
-            		'alumnos.cedula','alumnos.nombre', 
-            		'alumnos.apellido', 'alumnos.telefono', 'alumnos.email',
-            		'alumnos.dir_ciudad', 'alumnos.dir_avenida', 'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
-                ->orderBy('periodos.periodo_inicio', 'secciones.nombre_seccion', 'alumnos.apellido')
+            	->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
+                    'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
+                    'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                    'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
+                ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
                 ->paginate(10);
 
         } else {
@@ -43,12 +43,12 @@ class AlumnoController extends Controller
             $alumnos = DB::table('secciones')
             	->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             	->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
-            	->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion', 'alumnos.id', 'alumnos.seccion_id',
-            		'alumnos.cedula','alumnos.nombre', 
-            		'alumnos.apellido', 'alumnos.telefono', 'alumnos.email',
-            		'alumnos.dir_ciudad', 'alumnos.dir_avenida', 'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
+            	->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
+                    'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
+                    'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                    'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
             	->where($criterio, 'like', '%'.$buscar.'%')
-                ->orderBy('periodos.periodo_inicio', 'secciones.nombre_seccion', 'alumnos.apellido')
+                ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
                 ->paginate(10);
 
         }
@@ -64,6 +64,26 @@ class AlumnoController extends Controller
             ],
             'alumnos' => $alumnos
         ];
+    }
+
+    public function alumnosSeccion(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $seccion_id = $request->seccion_id;
+
+        $alumnos = DB::table('secciones')
+            ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
+            ->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
+            ->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
+                'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
+                'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
+            ->where('alumnos.seccion_id', $seccion_id)
+            ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
+            ->get();
+
+        return $alumnos;
     }
 
     /*

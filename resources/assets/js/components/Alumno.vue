@@ -16,6 +16,7 @@
                             <select class="form-control col-md-3" v-model="criterio">
                               <option value="periodos.periodo_inicio">Periodo inicio</option>
                               <option value="periodos.periodo_fin">Periodo fin</option>
+                              <option value="secciones.ano">ano</option>
                               <option value="secciones.nombre_seccion">Seccion</option>
                               <option value="alumnos.nombre">Nombre</option>
                               <option value="alumnos.apellido">Apellido</option>
@@ -36,6 +37,7 @@
                         <tr>
                             <th>Opciones</th>
                             <th>Periodo</th>
+                            <th>Año</th>
                             <th>Seccion</th>
                             <th>Cedula</th>
                             <th>Apellido</th>
@@ -64,6 +66,7 @@
                                 </template>
                             </td>
                             <td v-text="alumno.periodo_inicio + '-' + alumno.periodo_fin"></td>
+                            <td v-text="alumno.ano"></td>
                             <td v-text="alumno.nombre_seccion"></td>
                             <td v-text="alumno.cedula"></td>
                             <td v-text="alumno.apellido"></td>
@@ -130,7 +133,7 @@
                             <div class="col-md-3">
                                 <select v-model.trim="seccion_id">
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
-                                        {{ seccion.nombre_seccion }}
+                                        {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                     </option>
                                 </select>
                             </div>
@@ -473,7 +476,7 @@
 
                 if (!this.cedula) this.error_msj_alum.push('La cedula del alumno no debe estar vacia');
 
-                if (this.cedula < 20000000) this.error_msj_alum.push('La cedula del alumno no es valida');
+                if (this.cedula < 17999999) this.error_msj_alum.push('La cedula del alumno no es valida');
 
                 if (!this.nombre) this.error_msj_alum.push('El nombre del alumno no debe estar vacio');
 

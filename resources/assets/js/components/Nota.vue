@@ -12,22 +12,36 @@
             <template v-if="listado == 1">
                 <div class="card-body">
                     <div class="form-group row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <select class="form-control col-md-4" v-model.trim="periodo_id" v-on:change="listarSeccion()">
+                                <select class="form-control col-md-3" v-model.trim="periodo_id" v-on:change="listarSeccion()">
                                     <option v-bind:value="0" selected>Seleccione un periodo</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
                                         {{ periodo.periodo_inicio +'-'+ periodo.periodo_fin }}
                                     </option>
                                 </select>
-                                <select class="form-control col-md-4" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
+                                <select v-show="periodo_id > 0" class="form-control col-md-3" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
+                                    <option v-bind:value="0" selected>Seleccione una seccion</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
-                                        {{ seccion.nombre_seccion }}
+                                        {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                     </option>
                                 </select>
-                                <select class="form-control col-md-4" v-model.trim="asignatura_id" v-on:change="listarNota(1)">
+                                <select v-show="seccion_id > 0" class="form-control col-md-3" v-model.trim="asignatura_id">
+                                    <option v-bind:value="0" selected>Seleccione una asignatura</option>
                                     <option v-for="asignatura in array_asignatura" :key="asignatura.id" v-bind:value="asignatura.id" >
                                         {{ asignatura.nombre_asignatura }}
+                                    </option>
+                                </select>
+                                <select v-show="asignatura_id > 0" v-model.trim="lapso" class="form-control  col-md-3" v-on:change="listarNota(1)">
+                                    <option v-bind:value="0" selected>Seleccione un lapso</option>
+                                    <option v-bind:value="1">
+                                        Primer lapso
+                                    </option>
+                                    <option v-bind:value="2">
+                                        Segundo lapso
+                                    </option>
+                                    <option v-bind:value="3">
+                                        Tercer lapso
                                     </option>
                                 </select>
                             </div>
@@ -41,23 +55,34 @@
                                 <th>Apellido</th>
                                 <th>Nombre</th>
                                 <th>Asignatura</th>
-                                <th>Promedio</th>
+                                <th>Lapso</th>
+                                <th>Nota</th>
                             </tr>
                         </thead>
                         <tbody v-if="array_nota.length">
                             <tr v-for="nota in array_nota" :key="nota.id">
                                 <td>
+                                    <button v-on:click="abrirModal('nota', 'actualizar', nota)" type="button" class="btn btn-warning btn-sm">
+                                        <i class="icon-pencil"></i>
+                                    </button>
+                                    <!-- <button type="button" class="btn btn-success btn-sm">
+                                        <i class="icon-eye"></i>
+                                    </button> -->
+                                    <button v-on:click="cargarPdf(nota.seccion_id, nota.alumno_id)" type="button" class="btn btn-info btn-sm">
+                                        <i class="icon-book-open"></i>
+                                    </button>
                                 </td>
                                 <td v-text="nota.cedula"></td>
                                 <td v-text="nota.apellido"></td>
                                 <td v-text="nota.nombre"></td>
                                 <td v-text="nota.nombre_asignatura"></td>
-                                <td v-text="nota.promedio"></td>
+                                <td v-text="nota.lapso"></td>
+                                <td v-text="nota.nota"></td>
                             </tr>
                         </tbody>
                         <tbody v-else>
                             <tr>
-                                <td colspan="6">
+                                <td colspan="7">
                                     NO hay notas registradas
                                 </td>
                             </tr>
@@ -88,49 +113,26 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="input-group">
-                                <select class="form-control col-md-4" v-model.trim="periodo_id" v-on:change="listarSeccion()">
+                                <select class="form-control col-md-3" v-model.trim="periodo_id" v-on:change="listarSeccion()">
                                     <option v-bind:value="0" selected>Seleccione un periodo</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
                                         {{ periodo.periodo_inicio +'-'+ periodo.periodo_fin }}
                                     </option>
                                 </select>
-                                <select class="form-control col-md-4" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
+                                <select v-show="periodo_id > 0" class="form-control col-md-3" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
+                                    <option v-bind:value="0" selected>Seleccione una seccion</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
-                                        {{ seccion.nombre_seccion }}
+                                        {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                     </option>
                                 </select>
-                                <select class="form-control col-md-4" v-model.trim="asignatura_id">
+                                <select v-show="seccion_id > 0" class="form-control col-md-3" v-model.trim="asignatura_id">
+                                    <option v-bind:value="0" selected>Seleccione una asignatura</option>
                                     <option v-for="asignatura in array_asignatura" :key="asignatura.id" v-bind:value="asignatura.id" >
                                         {{ asignatura.nombre_asignatura }}
                                     </option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div v-show="error_nota" class="form-group row div-error">
-                            <div class="text-center text-error">
-                                <div v-for="error in error_msj_nota" :key="error" v-text="error">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-7">
-                            <div class="form-group">
-                                <label>Alumno <span style="color:red;" v-show="alumno_id == 0">(*Seleccione)</span></label>
-                                <div class="form-inline">
-                                    <input type="text" class="form-control" v-model="cedula" v-on:keyup.enter="buscarAlumno()" placeholder="Ingrese cedula del alumno">
-                                    <button v-on:click="buscarAlumno()" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                                    <input type="text" readonly class="form-control" v-model="alumno">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Lapso <span style="color:red;" v-show="lapso == 0">(*Ingrese)</span></label>
-                                <select v-model.trim="lapso" class="form-control">
+                                <select v-show="asignatura_id > 0" v-model.trim="lapso" class="form-control  col-md-3">
+                                    <option v-bind:value="0" selected>Seleccione un lapso</option>
                                     <option v-bind:value="1">
                                         Primer lapso
                                     </option>
@@ -141,6 +143,26 @@
                                         Tercer lapso
                                     </option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div v-show="error_nota" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in error_msj_nota" :key="error" v-text="error">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label>Alumno <span style="color:red;" v-show="alumno_id == 0">(*Seleccione)</span></label>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control" v-model="cedula" v-on:keyup.enter="buscarAlumno()" placeholder="Ingrese cedula del alumno">
+                                    <button v-on:click="buscarAlumno()" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <input type="text" readonly class="form-control" v-model="alumno">
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -164,7 +186,6 @@
                                     <th>Opciones</th>
                                     <th>Cedula</th>
                                     <th>Alumno</th>
-                                    <th>Lapso</th>
                                     <th>Nota</th>
                                 </thead>
                                 <tbody v-if="array_notas_ingresadas.length">
@@ -177,16 +198,13 @@
                                         <td v-text="detalle.cedula"></td>
                                         <td v-text="detalle.alumno"></td>
                                         <td>
-                                            <input v-model="detalle.lapso" type="number" class="form-control">
-                                        </td>
-                                        <td>
                                             <input v-model="detalle.nota" type="number" class="form-control">
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <td colspan="5">
+                                        <td colspan="4">
                                             NO hay notas ingresadas
                                         </td>
                                     </tr>
@@ -202,6 +220,41 @@
             </template>
         </div>
         <!-- Fin ejemplo de tabla Listado -->
+    </div>
+    <div :class="{'mostrar' : modal}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-primary modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 v-text="titulo_modal" class="modal-title"></h4>
+                    <button type="button" class="close" v-on:click="cerrarModal()" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                            </div>
+                            <label class="col-md-3 form-control-label" for="email-input">Nota</label>
+                            <div class="col-md-3">
+                                <input type="number" v-model.trim="nota" class="form-control" placeholder="Nota">
+                            </div>
+                        </div>
+                        <div v-show="error_nota" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in error_msj_nota" :key="error" v-text="error"></div>
+                            </div>
+                        </div> 
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal()">Cerrar</button>
+                    <button v-on:click="actualizarNota()" type="button" class="btn btn-primary">Actualizar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
     </main>
 </template>
@@ -273,7 +326,7 @@
         methods : {
             listarNota (page){
                 let me = this;
-                var url = '/nota?page=' + page + '&seccion_id=' + this.seccion_id + '&asignatura_id=' + this.asignatura_id;
+                var url = '/nota?page=' + page + '&seccion_id=' + this.seccion_id + '&asignatura_id=' + this.asignatura_id + '&lapso=' + this.lapso;
 
                 axios.get(url).then(function (response) {
                     var respuesta = response.data;
@@ -282,6 +335,9 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            cargarPdf(seccion_id, alumno_id) {
+                window.open('http://127.0.0.1:8000/nota/pdf/alumno?seccion_id='+seccion_id+'&alumno_id='+alumno_id, '_blank');
             },
             listarPeriodo (){
                 let me = this;
@@ -367,9 +423,40 @@
                     console.log(error);
                });
            },
+            actualizarNota (){
+                
+                if ( this.validarNotaActualizada() ) {
+                    return;
+                }
+
+                let me = this;
+
+                axios.put('/nota/actualizar', {
+
+                    'nota_id' : this.nota_id,
+                    'nota' : this.nota
+
+                }).then(function (){
+
+                    me.modal = 0;
+                    me.listarNota(1);
+                    me.nota_id = 0;
+                    me.nota = 0;
+                })
+                .catch(function (){
+                    console.log(error);
+               });
+           },
             validarNota (){
+                let me = this;
                 this.error_nota = 0;
                 this.error_msj_nota =[];
+
+                me.array_notas_ingresadas.map( function (x) {
+                    if (x.nota <= 0 || x.nota > 20) {
+                        me.error_msj_nota.push( 'Nota debe ser mayor a cero y menor o igual a 20' );
+                    }
+                } );
 
                 if ( !this.periodo_id ) this.error_msj_nota.push('Seleccione un periodo');
 
@@ -377,7 +464,21 @@
 
                 if ( !this.asignatura_id ) this.error_msj_nota.push('Seleccione una asignatura');
 
+                if ( !this.lapso ) this.error_msj_nota.push('Seleccione un lapso');
+
                 if ( this.array_notas_ingresadas <= 0 ) this.error_msj_nota.push('Ingrese notas');
+
+                if (this.error_msj_nota.length) this.error_nota = 1;
+
+                return this.error_nota;
+            },
+            validarNotaActualizada (){
+                this.error_nota = 0;
+                this.error_msj_nota =[];
+
+                if ( !this.nota ) this.error_msj_nota.push('Ingrese una nota');
+
+                if ( this.nota <= 0 || this.nota > 20 ) this.error_msj_nota.push('Nota debe ser mayor a cero y menor o igual a 20');
 
                 if (this.error_msj_nota.length) this.error_nota = 1;
 
@@ -401,7 +502,7 @@
             agregarAlumno (){
                 let me = this;
 
-                if (me.alumno_id <= 0 || me.nota <= 0 || me.lapso <= 0)
+                if (me.alumno_id <= 0 || me.nota <= 0 || me.nota > 20)
                 {
 
                 }
@@ -428,7 +529,6 @@
                         me.cedula = 0;
                         me.alumno = '';
                         me.nota = 0;
-                        me.lapso = 0;
                         
                     }
                 }
@@ -445,8 +545,33 @@
                 me.seccion_id = 0;
                 me.alumno_id = 0;
                 me.asignatura_id = 0;
+                me.lapso = 0;
                 me.array_notas_ingresadas = [];
             },
+            cerrarModal (){
+                this.modal = 0;
+                this.titulo_modal = '';
+                this.nota_id = 0;
+                this.nota = 0;
+            },
+            abrirModal (modelo, accion, data = []){
+                switch (modelo){
+                    case "nota":
+                    {
+                        switch (accion){
+                            case "actualizar":
+                            {
+                                this.modal = 1;
+                                this.titulo_modal = 'Actualizar nota';
+                                this.nota_id = data['id'];
+                                this.nota = data['nota'];
+                                this.lapso = data['lapso'];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         },
         mounted() {
             this.listarPeriodo();

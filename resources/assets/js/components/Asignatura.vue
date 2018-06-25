@@ -46,7 +46,7 @@
                             <td>
                                 <ul>
                                     <li v-for="seccion in asignatura.secciones" :key="seccion.id">
-                                        {{ seccion.nombre_seccion }}
+                                        {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                         <button v-on:click="eliminarSeccion(seccion)" type="button" class="btn btn-danger btn-sm">
                                             <i class="icon-trash"></i>
                                         </button>
@@ -132,7 +132,7 @@
                                         
                                     <option v-bind:value="0" selected>Ninguna seccion</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id">
-                                            {{ seccion.nombre_seccion + ' - año: ' + seccion.ano }}
+                                        {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                     </option>
 
                                 </select>

@@ -59,6 +59,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 
 		/* Alumnos */
 		Route::get('/alumno', 'AlumnoController@index');
+		Route::get('/alumno/seccion', 'AlumnoController@alumnosSeccion');
 		Route::get('/alumno/buscar-alumno', 'AlumnoController@buscarAlumno');
 		Route::get('/alumno/listar-alumno', 'AlumnoController@listarAlumnos');
 		Route::post('/alumno/registrar', 'AlumnoController@store');
@@ -69,6 +70,8 @@ Route::group( ['middleware' => ['auth'] ], function () {
 		/* Notas */
 		Route::get('/nota', 'NotaController@index');
 		Route::post('/nota/registrar', 'NotaController@store');
+		Route::put('/nota/actualizar', 'NotaController@update');
+		Route::get('/nota/pdf/alumno', 'NotaController@listarPdf');
 
 		/* Roles */
 		Route::get('/rol', 'RolController@index');

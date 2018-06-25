@@ -9,7 +9,7 @@
                     <i class="icon-plus"></i>&nbsp;Nuevo
                 </button>
             </div>
-            <div class="card-body">
+            <div v-if="!listado" class="card-body">
                 <div class="form-group row">
                     <div class="col-md-6">
                         <div class="input-group">
@@ -42,6 +42,9 @@
                                 <button v-on:click="abrirModal('seccion', 'actualizar', seccion)" type="button" class="btn btn-warning btn-sm">
                                   <i class="icon-pencil"></i>
                                 </button> &nbsp;
+                                <button v-on:click="listarAlumnos(seccion.id)" type="button" class="btn btn-success btn-sm">
+                                  <i class="icon-eye"></i>
+                                </button> &nbsp;
                             </td>
                             <td v-text="seccion.nombre_seccion"></td>
                             <td v-text="seccion.ano"></td>
@@ -68,8 +71,54 @@
                     </ul>
                 </nav>
             </div>
-        </div>
         <!-- Fin ejemplo de tabla Listado -->
+        <div v-else="listado">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Periodo</th>
+                                <th>Año</th>
+                                <th>Seccion</th>
+                                <th>Cedula</th>
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th>email</th>
+                                <th>telefono</th>
+                                <th>Direccion</th>
+                                <th>Condicion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="alumno in array_alumno" :key="alumno.id">
+                                <td v-text="alumno.periodo_inicio + '-' + alumno.periodo_fin"></td>
+                                <td v-text="alumno.ano"></td>
+                                <td v-text="alumno.nombre_seccion"></td>
+                                <td v-text="alumno.cedula"></td>
+                                <td v-text="alumno.apellido"></td>
+                                <td v-text="alumno.nombre"></td>
+                                <td v-text="alumno.email"></td>
+                                <td v-text="alumno.telefono"></td>
+                                <td>{{ direccionAlumno(alumno) }}</td>
+                                <td>
+                                    <div v-if="alumno.condicion">
+                                        <span class="badge badge-success">Activo</span>
+                                    </div>
+                                    <div v-else>
+                                        <span class="badge badge-danger">Desactivado</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <button type="button" v-on:click="cerrarListado()" class="btn btn-secondary">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!--Inicio del modal agregar/actualizar-->
     <div :class="{'mostrar' : modal}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
@@ -143,7 +192,9 @@
                 array_ano : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                 array_periodo: [],
                 array_seccion : [],
+                array_alumno : [],
                 modal : 0,
+                listado : 0,
                 titulo_modal : '',
                 tipo_accion : 0,
                 error_seccion : 0,
@@ -201,6 +252,31 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            listarAlumnos (seccion_id){
+                let me = this;
+                var url = '/alumno/seccion?seccion_id=' + seccion_id;
+
+                axios.get(url).then(function (response) {
+                    me.array_alumno = response.data;
+                    me.abrirListado();
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            direccionAlumno (alumno){
+                var avenida = '';
+                var ciudad = '';
+                var calle = '';
+                var casa = '';
+
+                if (alumno.dir_avenida != null) avenida = alumno.dir_avenida;
+                if (alumno.dir_ciudad != null) ciudad = alumno.dir_ciudad;
+                if (alumno.dir_calle != null) calle = alumno.dir_calle;
+                if (alumno.dir_casa != null) casa = alumno.dir_casa;
+
+                return 'Ciudad: ' + ciudad + ' Avenida: ' + avenida + ' Calle: ' + calle + ' Casa: ' + casa;
+
             },
             cambiarPagina (page, buscar, criterio){
                 let me = this;
@@ -276,6 +352,13 @@
                 if (this.error_msj_per.length) this.error_seccion = 1;
 
                 return this.error_seccion;
+            },
+            abrirListado (){
+                this.listado = 1;
+            },
+            cerrarListado (){
+                this.listado = 0;
+                this.array_alumno = [];
             },
             cerrarModal (){
                 this.modal = 0;
