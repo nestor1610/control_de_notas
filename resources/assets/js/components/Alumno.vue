@@ -352,6 +352,11 @@
                     'dir_casa': this.dir_casa
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Registrado',
+                      'El alumno ha sido registrado',
+                      'success'
+                    )
                     me.listarAlumno(1, '', 'periodos.periodo_inicio');
                 })
                 .catch(function (error){
@@ -380,6 +385,11 @@
                     'id': this.alumno_id
                 }).then(function (){
                     me.cerrarModal();
+                    swal(
+                      'Actualizado',
+                      'El alumno ha sido actualizado',
+                      'success'
+                    )
                     me.listarAlumno(1, '', 'periodos.periodo_inicio');
                 })
                 .catch(function (error){

@@ -33404,6 +33404,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'periodo_fin': this.periodo_fin
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Registrado', 'El periodo ha sido registrado', 'success');
                 me.listarPeriodo(0, 0);
             }).catch(function (error) {
                 console.log(error);
@@ -33423,6 +33424,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.periodo_id
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Actualizado', 'El periodo ha sido actualizado', 'success');
                 me.listarPeriodo(0, 0);
             }).catch(function (error) {
                 console.log(error);
@@ -34382,6 +34384,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'ano': this.ano
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Registrado', 'La seccion ha sido registrada', 'success');
                 me.listarSeccion(1, '', 'nombre_seccion');
             }).catch(function (error) {
                 console.log(error);
@@ -34402,6 +34405,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.seccion_id
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Actualizada', 'La seccion ha sido actualizada', 'success');
                 me.listarSeccion(1, '', 'nombre_seccion');
             }).catch(function (error) {
                 console.log(error);
@@ -35642,6 +35646,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'nombre_asignatura': this.nombre_asignatura
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Registrada', 'La asignatura ha sido registrada', 'success');
                 me.listarAsignatura(1, '', 'nombre_asignatura');
             }).catch(function (error) {
                 console.log(error);
@@ -35660,6 +35665,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'asignatura_id': this.asignatura_id
             }).then(function (response) {
                 me.listarAsignatura(1, '', 'nombre_asignatura');
+                swal('Ingresada', 'La seccion ha sido ingresada', 'success');
                 me.listarSeccion();
             }).catch(function (error) {
                 console.log(error);
@@ -35674,6 +35680,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.delete('/asignatura/eliminar/' + me.asignatura_id + '/' + me.seccion_id).then(function (response) {
                 console.log(response.data);
                 me.listarAsignatura(1, '', 'nombre_asignatura');
+                swal('Retirada', 'La seccion ha sido retirada', 'success');
                 me.asignatura_id = 0;
                 me.seccion_id = 0;
             }).catch(function (error) {
@@ -35693,6 +35700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.asignatura_id
             }).then(function () {
                 me.cerrarModal();
+                swal('Actualizada', 'La asignatura ha sido actualizada', 'success');
                 me.listarAsignatura(1, '', 'nombre_asignatura');
             }).catch(function (error) {
                 console.log(error);
@@ -37147,6 +37155,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'rol_id': this.rol_id
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Registrado', 'El usuario ha sido registrado', 'success');
                 me.listarUsuario('', 'email');
             }).catch(function (error) {
                 console.log(error);
@@ -37167,6 +37176,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.usuario_id
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Registrado', 'El usuario ha sido registrado', 'success');
                 me.listarUsuario('', 'email');
             }).catch(function (error) {
                 console.log(error);
@@ -38198,6 +38208,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'dir_casa': this.dir_casa
             }).then(function (response) {
                 me.cerrarModal();
+                swal('Registrado', 'El alumno ha sido registrado', 'success');
                 me.listarAlumno(1, '', 'periodos.periodo_inicio');
             }).catch(function (error) {
                 console.log(error);
@@ -38225,6 +38236,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.alumno_id
             }).then(function () {
                 me.cerrarModal();
+                swal('Actualizado', 'El alumno ha sido actualizado', 'success');
                 me.listarAlumno(1, '', 'periodos.periodo_inicio');
             }).catch(function (error) {
                 console.log(error);
@@ -39966,6 +39978,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 me.listado = 1;
                 me.listarNota(1);
+                swal('Registradas', 'Las notas han sido registradas', 'success');
                 me.array_notas_ingresadas = [];
             }).catch(function () {
                 console.log(error);
@@ -39988,6 +40001,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 me.modal = 0;
                 me.listarNota(1);
+                swal('Actualizada', 'La nota ha sido actualizada', 'success');
                 me.nota_id = 0;
                 me.nota = 0;
             }).catch(function () {

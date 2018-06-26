@@ -256,6 +256,11 @@
                     'nombre_asignatura': this.nombre_asignatura
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Registrada',
+                      'La asignatura ha sido registrada',
+                      'success'
+                    )
                     me.listarAsignatura(1, '', 'nombre_asignatura');
                 })
                 .catch(function (error){
@@ -275,6 +280,11 @@
                     'asignatura_id': this.asignatura_id
                 }).then(function (response){
                     me.listarAsignatura(1, '', 'nombre_asignatura');
+                    swal(
+                      'Ingresada',
+                      'La seccion ha sido ingresada',
+                      'success'
+                    )
                     me.listarSeccion();
                 })
                 .catch(function (error){
@@ -291,6 +301,11 @@
                 .then(function (response){
                     console.log(response.data);
                     me.listarAsignatura(1, '', 'nombre_asignatura');
+                    swal(
+                      'Retirada',
+                      'La seccion ha sido retirada',
+                      'success'
+                    )
                     me.asignatura_id = 0;
                     me.seccion_id = 0;
                 })
@@ -312,6 +327,11 @@
                     'id': this.asignatura_id
                 }).then(function (){
                     me.cerrarModal();
+                    swal(
+                      'Actualizada',
+                      'La asignatura ha sido actualizada',
+                      'success'
+                    )
                     me.listarAsignatura(1, '', 'nombre_asignatura');
                 })
                 .catch(function (error){

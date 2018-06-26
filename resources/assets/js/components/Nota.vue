@@ -417,6 +417,11 @@
 
                     me.listado = 1;
                     me.listarNota(1);
+                    swal(
+                      'Registradas',
+                      'Las notas han sido registradas',
+                      'success'
+                    )
                     me.array_notas_ingresadas = [];
                 })
                 .catch(function (){
@@ -440,6 +445,11 @@
 
                     me.modal = 0;
                     me.listarNota(1);
+                    swal(
+                      'Actualizada',
+                      'La nota ha sido actualizada',
+                      'success'
+                    )
                     me.nota_id = 0;
                     me.nota = 0;
                 })

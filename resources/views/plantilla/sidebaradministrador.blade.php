@@ -5,25 +5,25 @@
                 <a class="nav-link active" href="#"><i class="icon-speedometer"></i> Escritorio</a>
             </li>
             <li class="nav-title">
-                Mantenimiento
+                Menu
             </li>
             <li @click="menu=1" class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-book-open"></i> Periodos</a>
+                <a class="nav-link" href="#"><i class="icon-book-open"></i>Modulo Periodos</a>
             </li>
             <li @click="menu=2" class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-book-open"></i> Secciones</a>
+                <a class="nav-link" href="#"><i class="icon-book-open"></i>Modulo Secciones</a>
             </li>
             <li @click="menu=3" class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-book-open"></i> Asignaturas</a>
+                <a class="nav-link" href="#"><i class="icon-book-open"></i>Modulo Asignaturas</a>
             </li>
             <li @click="menu=4" class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-book-open"></i> Alumnos</a>
+                <a class="nav-link" href="#"><i class="icon-book-open"></i>Modulo Alumnos</a>
             </li>
             <li @click="menu=5" class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-book-open"></i> Notas</a>
+                <a class="nav-link" href="#"><i class="icon-book-open"></i>Modulo Notas</a>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-people"></i> Acceso</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-people"></i>Modulo Acceso</a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=6" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-user"></i> Usuarios</a>

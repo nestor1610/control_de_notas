@@ -167,6 +167,11 @@
                     'rol_id': this.rol_id
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Registrado',
+                      'El usuario ha sido registrado',
+                      'success'
+                    )
                     me.listarUsuario('', 'email');
                 })
                 .catch(function (error){
@@ -188,6 +193,11 @@
                     'id': this.usuario_id
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Registrado',
+                      'El usuario ha sido registrado',
+                      'success'
+                    )
                     me.listarUsuario('', 'email');
                 })
                 .catch(function (error){

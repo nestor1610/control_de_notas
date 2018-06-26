@@ -308,6 +308,11 @@
                     'ano': this.ano
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Registrado',
+                      'La seccion ha sido registrada',
+                      'success'
+                    )
                     me.listarSeccion(1, '', 'nombre_seccion');
                 })
                 .catch(function (error){
@@ -329,6 +334,11 @@
                     'id': this.seccion_id
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Actualizada',
+                      'La seccion ha sido actualizada',
+                      'success'
+                    )
                     me.listarSeccion(1, '', 'nombre_seccion');
                 })
                 .catch(function (error){

@@ -145,6 +145,11 @@
                     'periodo_fin': this.periodo_fin
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Registrado',
+                      'El periodo ha sido registrado',
+                      'success'
+                    )
                     me.listarPeriodo(0, 0);
                 })
                 .catch(function (error){
@@ -165,6 +170,11 @@
                     'id': this.periodo_id
                 }).then(function (response){
                     me.cerrarModal();
+                    swal(
+                      'Actualizado',
+                      'El periodo ha sido actualizado',
+                      'success'
+                    )
                     me.listarPeriodo(0, 0);
                 })
                 .catch(function (error){
