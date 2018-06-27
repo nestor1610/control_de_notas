@@ -4,10 +4,15 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Roles
+                <div class="col-md-12">
+                    <p class="h1 text-center">Roles</p>
+                </div>
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    <div class="col-md-2">
+                        <p class="h3 text-right">Buscador</p>
+                    </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
@@ -25,12 +30,17 @@
                 <table class="table table-bordered table-striped table-sm">
                     <thead>
                         <tr>
+                            <th colspan="3">
+                                <p class="h3 text-center">Listado de roles</p>
+                            </th>
+                        </tr>
+                        <tr>
                             <th>Nombre</th>
                             <th>Descripcion</th>
                             <th>Estado</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="array_rol.length">
                         <tr v-for="rol in array_rol" :key="rol.id">
                             <td v-text="rol.nombre"></td>
                             <td v-text="rol.descripcion"></td>
@@ -41,6 +51,13 @@
                                 <div v-else>
                                     <span class="badge badge-danger">Desactivado</span>
                                 </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="3">
+                                <p class="h2 text-center">NO hay roles registrados</p>
                             </td>
                         </tr>
                     </tbody>

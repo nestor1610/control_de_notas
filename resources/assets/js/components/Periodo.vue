@@ -4,13 +4,15 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Periodos
-                <button v-on:click="abrirModal('periodo', 'registrar')" type="button" class="btn btn-secondary">
-                    <i class="icon-plus"></i>&nbsp;Nuevo
-                </button>
+                <div class="col-md-12">
+                    <p class="h1 text-center">Periodos</p>
+                </div>
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    <div class="col-md-2">
+                        <p class="h3 text-right">Buscador</p>
+                    </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <label class="form-control" for="text-input">Inicio del periodo</label>
@@ -23,21 +25,33 @@
                             </button>
                         </div>
                     </div>
-                    <div v-show="error_periodo" class="col-md-6 div-error">
-                        <div class="text-center text-error">
-                            <div v-for="error in error_msj_per" :key="error" v-text="error"></div>
+                    <div class="col-md-4 text-center">
+                        <button v-on:click="abrirModal('periodo', 'registrar')" type="button" class="btn btn-secondary">
+                            <i class="icon-plus"></i>&nbsp;Nuevo periodo
+                        </button>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <div v-show="error_periodo" class="div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in error_msj_per" :key="error" v-text="error"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-striped table-sm">
                     <thead>
                         <tr>
+                            <tr>
+                                <th colspan="3">
+                                    <p class="h3 text-center">Listado de periodos</p>
+                                </th>
+                            </tr>
                             <th>Opciones</th>
                             <th>Inicio de periodo</th>
                             <th>Fin de periodo</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="array_periodo.length">
                         <tr v-for="periodo in array_periodo" :key="periodo.id">
                             <td>
                                 <button v-on:click="abrirModal('periodo', 'actualizar', periodo)" type="button" class="btn btn-warning btn-sm">
@@ -46,6 +60,13 @@
                             </td>
                             <td v-text="periodo.periodo_inicio"></td>
                             <td v-text="periodo.periodo_fin"></td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="3">
+                                <p class="h2 text-center">NO hay periodos registrados</p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -66,13 +87,17 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Inicio del periodo</label>
+                            <label class="col-md-3 form-control-label" for="text-input">
+                                Inicio del periodo <span style="color:red;" v-show="periodo_inicio.length == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="periodo_inicio" class="form-control" placeholder="Inicio del periodo">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Fin del periodo</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Fin del periodo <span style="color:red;" v-show="periodo_fin.length == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="periodo_fin" class="form-control" placeholder="Fin del periodo">
                             </div>

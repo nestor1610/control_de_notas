@@ -4,25 +4,27 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Asignaturas
-                <button v-on:click="abrirModal('alumno', 'registrar')" type="button" class="btn btn-secondary">
-                    <i class="icon-plus"></i>&nbsp;Nuevo
-                </button>
+                <div class="col-md-12">
+                    <p class="h1 text-center">Alumnos</p>
+                </div>
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    <div class="col-md-2">
+                        <p class="h3 text-right">Buscador</p>
+                    </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
-                              <option value="periodos.periodo_inicio">Periodo inicio</option>
-                              <option value="periodos.periodo_fin">Periodo fin</option>
+                              <option value="alumnos.cedula">Cedula</option>
                               <option value="secciones.ano">ano</option>
-                              <option value="secciones.nombre_seccion">Seccion</option>
                               <option value="alumnos.nombre">Nombre</option>
                               <option value="alumnos.apellido">Apellido</option>
-                              <option value="alumnos.cedula">Cedula</option>
+                              <option value="secciones.nombre_seccion">Seccion</option>
                               <option value="alumnos.email">email</option>
                               <option value="alumnos.telefono">Telefono</option>
+                              <option value="periodos.periodo_inicio">Periodo inicio</option>
+                              <option value="periodos.periodo_fin">Periodo fin</option>
                             </select>
                             <input v-on:keyup.enter="listarAlumno(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarAlumno(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -31,9 +33,19 @@
                             </button>
                         </div>
                     </div>
+                    <div class="col-md-4 text-center">
+                        <button v-on:click="abrirModal('alumno', 'registrar')" type="button" class="btn btn-secondary">
+                            <i class="icon-plus"></i>&nbsp;Nuevo Alumno
+                        </button>
+                    </div>
                 </div>
                 <table class="table table-bordered table-striped table-sm">
                     <thead>
+                        <tr>
+                            <th colspan="11">
+                                <p class="h3 text-center">Listado de alumnos</p>
+                            </th>
+                        </tr>
                         <tr>
                             <th>Opciones</th>
                             <th>Periodo</th>
@@ -48,7 +60,7 @@
                             <th>Condicion</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="array_alumno.length">
                         <tr v-for="alumno in array_alumno" :key="alumno.id">
                             <td>
                                 <button v-on:click="abrirModal('alumno', 'actualizar', alumno)" type="button" class="btn btn-warning btn-sm">
@@ -81,6 +93,13 @@
                                 <div v-else>
                                     <span class="badge badge-danger">Desactivado</span>
                                 </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="11">
+                                <p class="h2 text-center">NO hay alumnos registrados</p>
                             </td>
                         </tr>
                     </tbody>
@@ -120,7 +139,9 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Periodo</label>
+                            <label class="col-md-3 form-control-label" for="text-input">
+                                Periodo <span style="color:red;" v-show="periodo_id == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-3">
                                 <select v-model.trim="periodo_id" v-on:change="listarSeccion()">
                                     <option v-bind:value="0" selected>Seleccione un periodo</option>
@@ -129,7 +150,9 @@
                                     </option>
                                 </select>
                             </div>
-                            <label class="col-md-3 form-control-label" for="text-input">Seccion</label>
+                            <label class="col-md-3 form-control-label" for="text-input">
+                                Seccion <span style="color:red;" v-show="seccion_id == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-3">
                                 <select v-model.trim="seccion_id">
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
@@ -139,19 +162,25 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Cedula</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Cedula <span style="color:red;" v-show="cedula.length == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="cedula" class="form-control" placeholder="Cedula">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Nombre</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Nombre <span style="color:red;" v-show="nombre.length == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="nombre" class="form-control" placeholder="Nombre">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Apellido</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                            Apellido <span style="color:red;" v-show="apellido.length == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="apellido" class="form-control" placeholder="Apellido">
                             </div>
@@ -245,7 +274,7 @@
                     'to' : 0
                 },
                 offset : 3,
-                criterio : 'periodos.periodo_inicio',
+                criterio : 'alumnos.cedula',
                 buscar : ''
             }
         },
@@ -357,7 +386,7 @@
                       'El alumno ha sido registrado',
                       'success'
                     )
-                    me.listarAlumno(1, '', 'periodos.periodo_inicio');
+                    me.listarAlumno(1, '', 'alumnos.cedula');
                 })
                 .catch(function (error){
                     console.log(error);
@@ -390,7 +419,7 @@
                       'El alumno ha sido actualizado',
                       'success'
                     )
-                    me.listarAlumno(1, '', 'periodos.periodo_inicio');
+                    me.listarAlumno(1, '', 'alumnos.cedula');
                 })
                 .catch(function (error){
                     console.log(error);
@@ -417,7 +446,7 @@
                     axios.put('/alumno/desactivar', {
                         'id': alumno_id
                     }).then(function (response){
-                        me.listarAlumno(1, '', 'periodos.periodo_inicio');
+                        me.listarAlumno(1, '', 'alumnos.cedula');
                         swal(
                           'Desactivado',
                           'El alumno ha sido desactivado',
@@ -457,7 +486,7 @@
                     axios.put('/alumno/activar', {
                         'id': alumno_id
                     }).then(function (response){
-                        me.listarAlumno(1, '', 'periodos.periodo_inicio');
+                        me.listarAlumno(1, '', 'alumnos.cedula');
                         swal(
                           'Activado',
                           'El alumno ha sido activado',
@@ -565,7 +594,7 @@
             },
             limpiarBuscar (){
                 this.buscar = '';
-                this.criterio = 'periodos.periodo_inicio';
+                this.criterio = 'alumnos.cedula';
                 this.listarAlumno(1, this.buscar, this.criterio);
             }
         },

@@ -4,16 +4,15 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Notas
-                <button v-on:click="mostrarNota()" type="button" class="btn btn-secondary">
-                    <i class="icon-plus"></i>&nbsp;Nuevo
-                </button>
+                <div class="col-md-12">
+                    <p class="h1 text-center">Notas</p>
+                </div>
             </div>
             <template v-if="listado == 1">
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <div class="input-group">
+                            <div class="form-group row">
                                 <select class="form-control col-md-3" v-model.trim="periodo_id" v-on:change="listarSeccion()">
                                     <option v-bind:value="0" selected>Seleccione un periodo</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
@@ -46,10 +45,20 @@
                                 </select>
                             </div>
                         </div>
+                            <div class="col-md-2 text-left">
+                                <button v-on:click="mostrarNota()" type="button" class="btn btn-secondary">
+                                    <i class="icon-plus"></i>&nbsp;Nueva nota
+                                </button>
+                            </div>
                     </div>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
+                                <tr>
+                                    <th colspan="7">
+                                        <p class="h3 text-center">Listado de notas</p>
+                                    </th>
+                                </tr>
                                 <th>Opciones</th>
                                 <th>Cedula</th>
                                 <th>Apellido</th>
@@ -83,7 +92,7 @@
                         <tbody v-else>
                             <tr>
                                 <td colspan="7">
-                                    NO hay notas registradas
+                                    <p class="h2 text-center">NO hay notas registradas</p>
                                 </td>
                             </tr>
                         </tbody>
@@ -183,6 +192,11 @@
                         <div class="table-responsive col-md-12">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
+                                    <tr>
+                                        <th colspan="4">
+                                            <p class="h3 text-center">Notas ingresadas</p>
+                                        </th>
+                                    </tr>
                                     <th>Opciones</th>
                                     <th>Cedula</th>
                                     <th>Alumno</th>
@@ -205,7 +219,7 @@
                                 <tbody v-else>
                                     <tr>
                                         <td colspan="4">
-                                            NO hay notas ingresadas
+                                            <p class="h2 text-center">NO hay notas ingresadas</p>
                                         </td>
                                     </tr>
                                 </tbody>

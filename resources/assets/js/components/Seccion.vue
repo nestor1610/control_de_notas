@@ -4,13 +4,15 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Secciones
-                <button v-on:click="abrirModal('seccion', 'registrar')" type="button" class="btn btn-secondary">
-                    <i class="icon-plus"></i>&nbsp;Nuevo
-                </button>
+                <div class="col-md-12">
+                    <p class="h1 text-center">Secciones</p>
+                </div>
             </div>
             <div v-if="!listado" class="card-body">
                 <div class="form-group row">
+                    <div class="col-md-2">
+                        <p class="h3 text-right">Buscador</p>
+                    </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
@@ -26,9 +28,19 @@
                             </button>
                         </div>
                     </div>
+                    <div class="col-md-4 text-center">
+                        <button v-on:click="abrirModal('seccion', 'registrar')" type="button" class="btn btn-secondary">
+                            <i class="icon-plus"></i>&nbsp;Nueva seccion
+                        </button>
+                    </div>
                 </div>
                 <table class="table table-bordered table-striped table-sm">
                     <thead>
+                        <tr>
+                            <th colspan="4">
+                                <p class="h3 text-center">Listado de secciones</p>
+                            </th>
+                        </tr>
                         <tr>
                             <th>Opciones</th>
                             <th>Seccion</th>
@@ -36,7 +48,7 @@
                             <th>Periodo</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="array_seccion.length">
                         <tr v-for="seccion in array_seccion" :key="seccion.id">
                             <td>
                                 <button v-on:click="abrirModal('seccion', 'actualizar', seccion)" type="button" class="btn btn-warning btn-sm">
@@ -49,6 +61,13 @@
                             <td v-text="seccion.nombre_seccion"></td>
                             <td v-text="seccion.ano"></td>
                             <td v-text="seccion.periodo.periodo_inicio + '-' + seccion.periodo.periodo_fin"></td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="4">
+                                <p class="h2 text-center">NO hay secciones registradas</p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -133,7 +152,9 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Seccion</label>
+                            <label class="col-md-3 form-control-label" for="text-input">
+                                Periodo <span style="color:red;" v-show="periodo_id == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <select v-model.trim="periodo_id">
                                     <option v-bind:value="0" selected>Seleccione un periodo</option>
@@ -144,13 +165,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Seccion</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Seccion <span style="color:red;" v-show="nombre_seccion.length == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la seccion">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Año</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Año <span style="color:red;" v-show="ano == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <select v-model.trim="ano">
                                     <option v-bind:value="0" selected>Seleccione un año</option>

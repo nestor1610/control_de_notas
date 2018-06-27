@@ -4,13 +4,15 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Asignaturas
-                <button v-on:click="abrirModal('asignatura', 'registrar')" type="button" class="btn btn-secondary">
-                    <i class="icon-plus"></i>&nbsp;Nuevo
-                </button>
+                <div class="col-md-12">
+                    <p class="h1 text-center">Asignaturas</p>
+                </div>
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    <div class="col-md-2">
+                        <p class="h3 text-right">Buscador</p>
+                    </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
@@ -23,16 +25,26 @@
                             </button>
                         </div>
                     </div>
+                    <div class="col-md-4 text-center">
+                        <button v-on:click="abrirModal('asignatura', 'registrar')" type="button" class="btn btn-secondary">
+                            <i class="icon-plus"></i>&nbsp;Nueva Asignatura
+                        </button>
+                    </div>
                 </div>
                 <table class="table table-bordered table-striped table-sm">
                     <thead>
+                        <tr>
+                            <th colspan="3">
+                                <p class="h3 text-center">Listado de asignaturas</p>
+                            </th>
+                        </tr>
                         <tr>
                             <th>Opciones</th>
                             <th>Asignatura</th>
                             <th>Secciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="array_asignatura.length">
                         <tr v-for="asignatura in array_asignatura" :key="asignatura.id">
                             <td>
                                 <button v-on:click="abrirModal('asignatura', 'actualizar', asignatura)" type="button" class="btn btn-warning btn-sm">
@@ -52,6 +64,13 @@
                                         </button>
                                     </li>
                                 </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="3">
+                                <p class="h2 text-center">NO hay asignaturas registradas</p>
                             </td>
                         </tr>
                     </tbody>
@@ -91,7 +110,9 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Asignatura</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Asignatura <span style="color:red;" v-show="nombre_asignatura.length == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="nombre_asignatura" class="form-control" placeholder="Nombre de la asignatura">
                             </div>
