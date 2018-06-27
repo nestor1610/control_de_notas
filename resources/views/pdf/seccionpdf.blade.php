@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reporte de notas</title>
+    <title>Alumnos</title>
     <style>
         body {
             margin: 0;
@@ -88,56 +88,30 @@
         <table class="table table-bordered table-striped table-sm">
             <thead>
                 <tr>
-                    <th colspan="4">Datos del alumno</th>
+                    <th colspan="6">{{'Alumnos de la seccion: '.$alumnos[0]->nombre_seccion.' Año: '.$alumnos[0]->ano}}</th>
+                </tr>
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
+                    <th>Direccion</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($alumnos as $alumno)
                 <tr>
-                    <td>{{ 'Periodo: '.$alumno->periodo_inicio.'-'.$alumno->periodo_fin }}</td>
-                    <td colspan="3">{{ 'Seccion: '.$alumno->nombre_seccion.' año: '.$alumno->ano }}</td>
+                    <td>{{ $alumno->cedula }}</td>
+                    <td>{{ $alumno->nombre }}</td>
+                    <td>{{ $alumno->apellido }}</td>
+                    <td>{{ $alumno->telefono }}</td>
+                    <td>{{ $alumno->email }}</td>
+                    <td>
+                        {{ 'Ciudad: '.$alumno->dir_ciudad.' Avenida: '.$alumno->dir_avenida.' Calle: '.$alumno->dir_calle.' Casa: '.$alumno->dir_casa }}
+                    </td>
                 </tr>
-                <tr>
-                    <td>{{ 'Cedula: V-'.$alumno->cedula }}</td>
-                    <td colspan="2">{{ 'Apellido: '.$alumno->apellido }}</td>
-                    <td>{{ 'Nombre: '.$alumno->nombre }}</td>
-                </tr>
-                <tr>
-                    <td colspan="2">{{ 'Telefono: '.$alumno->telefono }}</td>
-                    <td colspan="2">{{ 'email: '.$alumno->email }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'Ciudad: '.$alumno->dir_ciudad }}</td>
-                    <td>{{ 'Avenida: '.$alumno->dir_avenida }}</td>
-                    <td>{{ 'Calle: '.$alumno->dir_calle }}</td>
-                    <td>{{ 'Casa: '.$alumno->dir_casa }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <table class="table table-bordered table-striped table-sm">
-            <thead>
-                <tr>
-                    <th colspan="5">Calificaciones</th>
-                </tr>
-                <tr>
-                    <th>Asignatura</th>
-                    <th>Lapso 1</th>
-                    <th>Lapso 2</th>
-                    <th>Lapso 3</th>
-                    <th>Final</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($notas as $nota)
-                <tr>
-                    <td>{{ $nota['asignatura'] }}</td>
-                    <td>{{ $nota['primer_lapso'] }}</td>
-                    <td>{{ $nota['segundo_lapso'] }}</td>
-                    <td>{{ $nota['tercer_lapso'] }}</td>
-                    <td>{{ number_format($nota['promedio_asignatura'], 2, ',', '.') }}</td>
-                </tr>
-                @endforeach                               
+                @endforeach
             </tbody>
         </table>
     </div>

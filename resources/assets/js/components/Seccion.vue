@@ -57,6 +57,9 @@
                                 <button v-on:click="listarAlumnos(seccion.id)" type="button" class="btn btn-success btn-sm">
                                   <i class="icon-eye"></i>
                                 </button> &nbsp;
+                                <button v-on:click="cargarPdf(seccion.id)" type="button" class="btn btn-info btn-sm">
+                                    <i class="icon-book-open"></i>
+                                </button>
                             </td>
                             <td v-text="seccion.nombre_seccion"></td>
                             <td v-text="seccion.ano"></td>
@@ -166,7 +169,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Seccion <span style="color:red;" v-show="nombre_seccion.length == 0">(*Seleccione)</span>
+                                Seccion <span style="color:red;" v-show="nombre_seccion.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la seccion">
@@ -214,7 +217,7 @@
                 seccion_id : 0,
                 nombre_seccion : '',
                 ano : 0,
-                array_ano : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                array_ano : [1, 2, 3, 4, 5, 6],
                 array_periodo: [],
                 array_seccion : [],
                 array_alumno : [],
@@ -288,6 +291,9 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            cargarPdf(seccion_id) {
+                window.open('http://127.0.0.1:8000/alumno/pdf/seccion?seccion_id='+seccion_id, '_blank');
             },
             direccionAlumno (alumno){
                 var avenida = '';

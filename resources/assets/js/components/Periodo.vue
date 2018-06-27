@@ -88,7 +88,7 @@
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">
-                                Inicio del periodo <span style="color:red;" v-show="periodo_inicio.length == 0">(*Seleccione)</span>
+                                Inicio del periodo <span style="color:red;" v-show="periodo_inicio.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="periodo_inicio" class="form-control" placeholder="Inicio del periodo">
@@ -96,7 +96,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Fin del periodo <span style="color:red;" v-show="periodo_fin.length == 0">(*Seleccione)</span>
+                                Fin del periodo <span style="color:red;" v-show="periodo_fin.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="periodo_fin" class="form-control" placeholder="Fin del periodo">

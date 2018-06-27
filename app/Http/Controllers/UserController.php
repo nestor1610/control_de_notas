@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -56,5 +57,19 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt( $request->password );
         $user->save();
+    }
+
+    public function delete(Request $request, $usuario_id)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        if ($usuario_id == Auth::user()->id)
+            return 0;
+
+        $user = User::findOrFail($usuario_id);
+        $user->delete();
+
+        return 1;
+
     }
 }

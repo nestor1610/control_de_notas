@@ -33845,7 +33845,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Seleccione)")]
+                            [_vm._v("(*Ingrese)")]
                           )
                         ]
                       ),
@@ -33906,7 +33906,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Seleccione)")]
+                            [_vm._v("(*Ingrese)")]
                           )
                         ]
                       ),
@@ -34394,6 +34394,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -34402,7 +34405,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             seccion_id: 0,
             nombre_seccion: '',
             ano: 0,
-            array_ano: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            array_ano: [1, 2, 3, 4, 5, 6],
             array_periodo: [],
             array_seccion: [],
             array_alumno: [],
@@ -34477,6 +34480,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+        cargarPdf: function cargarPdf(seccion_id) {
+            window.open('http://127.0.0.1:8000/alumno/pdf/seccion?seccion_id=' + seccion_id, '_blank');
         },
         direccionAlumno: function direccionAlumno(alumno) {
             var avenida = '';
@@ -34827,7 +34833,20 @@ var render = function() {
                                 },
                                 [_c("i", { staticClass: "icon-eye" })]
                               ),
-                              _vm._v("  \n                        ")
+                              _vm._v("  \n                            "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-info btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.cargarPdf(seccion.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "icon-book-open" })]
+                              )
                             ]),
                             _vm._v(" "),
                             _c("td", {
@@ -35221,7 +35240,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Seleccione)")]
+                            [_vm._v("(*Ingrese)")]
                           )
                         ]
                       ),
@@ -36431,7 +36450,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Seleccione)")]
+                            [_vm._v("(*Ingrese)")]
                           )
                         ]
                       ),
@@ -37466,6 +37485,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -37474,6 +37529,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             usuario_id: 0,
             email: '',
             password: '',
+            password_confirmar: '',
             array_usuario: [],
             array_rol: [],
             modal: 0,
@@ -37560,9 +37616,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (!this.password) this.error_msj_usu.push('El password del usuario no puede estar vacio');
 
+            if (!this.password_confirmar) this.error_msj_usu.push('Confirme el password');
+
+            if (this.password != this.password_confirmar) this.error_msj_usu.push('El password debe coincidir');
+
             if (this.error_msj_usu.length) this.error_usuario = 1;
 
             return this.error_usuario;
+        },
+        eliminarUsuario: function eliminarUsuario(usuario_id) {
+            var _this = this;
+
+            swal({
+                title: '¿Estas seguro de eliminar a este usuario?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+
+                    var me = _this;
+
+                    axios.delete('/user/delete/' + usuario_id).then(function (response) {
+                        var respuesta = response.data;
+
+                        if (respuesta) {
+
+                            me.listarUsuario('', 'email');
+                            swal('Eliminado', 'El usuario ha sido eliminado', 'success');
+                        } else {
+                            swal('Error', 'No puedes eliminar tu usuario', 'error');
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel) {}
+            });
         },
         cerrarModal: function cerrarModal() {
             this.modal = 0;
@@ -37571,6 +37669,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.usuario_id = 0;
             this.email = '';
             this.password = '';
+            this.password_confirmar = '';
         },
         abrirModal: function abrirModal(modelo, accion) {
             var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -37625,29 +37724,12 @@ var render = function() {
   return _c("main", { staticClass: "main" }, [
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Usuarios\n            "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  _vm.abrirModal("usuario", "registrar")
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n            ")
-            ]
-          )
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
+            _vm._m(1),
+            _vm._v(" "),
             _c("div", { staticClass: "col-md-6" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
@@ -37747,6 +37829,25 @@ var render = function() {
                   ]
                 )
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-4 text-center" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.abrirModal("usuario", "registrar")
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "icon-plus" }),
+                  _vm._v(" Nuevo usuario\n                    ")
+                ]
+              )
             ])
           ]),
           _vm._v(" "),
@@ -37754,53 +37855,76 @@ var render = function() {
             "table",
             { staticClass: "table table-bordered table-striped table-sm" },
             [
-              _vm._m(0),
+              _vm._m(2),
               _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.array_usuario, function(usuario) {
-                  return _c("tr", { key: usuario.id }, [
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-warning btn-sm",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              _vm.abrirModal("usuario", "actualizar", usuario)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "icon-pencil" })]
-                      ),
-                      _vm._v("  \n                        ")
-                    ]),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: { textContent: _vm._s(usuario.rol.nombre) }
-                    }),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: { textContent: _vm._s(usuario.email) }
-                    }),
-                    _vm._v(" "),
-                    _c("td", [
-                      usuario.condicion
-                        ? _c("div", [
-                            _c("span", { staticClass: "badge badge-success" }, [
-                              _vm._v("Activo")
-                            ])
-                          ])
-                        : _c("div", [
-                            _c("span", { staticClass: "badge badge-danger" }, [
-                              _vm._v("Desactivado")
-                            ])
-                          ])
-                    ])
-                  ])
-                })
-              )
+              _vm.array_usuario.length
+                ? _c(
+                    "tbody",
+                    _vm._l(_vm.array_usuario, function(usuario) {
+                      return _c("tr", { key: usuario.id }, [
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-warning btn-sm",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  _vm.abrirModal(
+                                    "usuario",
+                                    "actualizar",
+                                    usuario
+                                  )
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "icon-pencil" })]
+                          ),
+                          _vm._v("  \n                            "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger btn-sm",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  _vm.eliminarUsuario(usuario.id)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "icon-trash" })]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", {
+                          domProps: { textContent: _vm._s(usuario.rol.nombre) }
+                        }),
+                        _vm._v(" "),
+                        _c("td", {
+                          domProps: { textContent: _vm._s(usuario.email) }
+                        }),
+                        _vm._v(" "),
+                        _c("td", [
+                          usuario.condicion
+                            ? _c("div", [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-success" },
+                                  [_vm._v("Activo")]
+                                )
+                              ])
+                            : _c("div", [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-danger" },
+                                  [_vm._v("Desactivado")]
+                                )
+                              ])
+                        ])
+                      ])
+                    })
+                  )
+                : _c("tbody", [_vm._m(3)])
             ]
           )
         ])
@@ -37873,7 +37997,24 @@ var render = function() {
                           staticClass: "col-md-3 form-control-label",
                           attrs: { for: "text-input" }
                         },
-                        [_vm._v("Rol")]
+                        [
+                          _vm._v("\n                            Rol "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.rol_id == 0,
+                                  expression: "rol_id == 0"
+                                }
+                              ],
+                              staticStyle: { color: "red" }
+                            },
+                            [_vm._v("(*Seleccione)")]
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-9" }, [
@@ -37941,7 +38082,24 @@ var render = function() {
                           staticClass: "col-md-3 form-control-label",
                           attrs: { for: "text-input" }
                         },
-                        [_vm._v("Email")]
+                        [
+                          _vm._v("\n                            Email "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.email.length == 0,
+                                  expression: "email.length == 0"
+                                }
+                              ],
+                              staticStyle: { color: "red" }
+                            },
+                            [_vm._v("(*Ingrese)")]
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-9" }, [
@@ -37980,7 +38138,24 @@ var render = function() {
                           staticClass: "col-md-3 form-control-label",
                           attrs: { for: "email-input" }
                         },
-                        [_vm._v("Password")]
+                        [
+                          _vm._v("\n                            Password "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.password.length == 0,
+                                  expression: "password.length == 0"
+                                }
+                              ],
+                              staticStyle: { color: "red" }
+                            },
+                            [_vm._v("(*Ingrese)")]
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-9" }, [
@@ -38003,6 +38178,64 @@ var render = function() {
                                 return
                               }
                               _vm.password = $event.target.value.trim()
+                            },
+                            blur: function($event) {
+                              _vm.$forceUpdate()
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "email-input" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Confirmar password "
+                          ),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.password_confirmar.length == 0,
+                                  expression: "password_confirmar.length == 0"
+                                }
+                              ],
+                              staticStyle: { color: "red" }
+                            },
+                            [_vm._v("(*Ingrese)")]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model.trim",
+                              value: _vm.password_confirmar,
+                              expression: "password_confirmar",
+                              modifiers: { trim: true }
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "password", placeholder: "Password" },
+                          domProps: { value: _vm.password_confirmar },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.password_confirmar = $event.target.value.trim()
                             },
                             blur: function($event) {
                               _vm.$forceUpdate()
@@ -38101,7 +38334,33 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("p", { staticClass: "h1 text-center" }, [_vm._v("Usuarios")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("p", { staticClass: "h3 text-right" }, [_vm._v("Buscador")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { colspan: "4" } }, [
+          _c("p", { staticClass: "h3 text-center" }, [
+            _vm._v("Listado de usuarios")
+          ])
+        ])
+      ]),
+      _vm._v(" "),
       _c("tr", [
         _c("th", [_vm._v("Opciones")]),
         _vm._v(" "),
@@ -38110,6 +38369,18 @@ var staticRenderFns = [
         _c("th", [_vm._v("Email")]),
         _vm._v(" "),
         _c("th", [_vm._v("Condicion")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "4" } }, [
+        _c("p", { staticClass: "h2 text-center" }, [
+          _vm._v("NO hay usuarios registrados")
+        ])
       ])
     ])
   }
@@ -39456,7 +39727,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Seleccione)")]
+                            [_vm._v("(*Ingrese)")]
                           )
                         ]
                       ),
@@ -39512,7 +39783,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Seleccione)")]
+                            [_vm._v("(*Ingrese)")]
                           )
                         ]
                       ),
@@ -39568,7 +39839,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Seleccione)")]
+                            [_vm._v("(*Ingrese)")]
                           )
                         ]
                       ),

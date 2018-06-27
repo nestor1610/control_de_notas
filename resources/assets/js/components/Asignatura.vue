@@ -111,7 +111,7 @@
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Asignatura <span style="color:red;" v-show="nombre_asignatura.length == 0">(*Seleccione)</span>
+                                Asignatura <span style="color:red;" v-show="nombre_asignatura.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="nombre_asignatura" class="form-control" placeholder="Nombre de la asignatura">

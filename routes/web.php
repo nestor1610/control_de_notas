@@ -66,6 +66,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 		Route::put('/alumno/actualizar', 'AlumnoController@update');
 		Route::put('/alumno/activar', 'AlumnoController@activate');
 		Route::put('/alumno/desactivar', 'AlumnoController@desactive');
+		Route::get('/alumno/pdf/seccion', 'AlumnoController@seccionPdf');
 
 		/* Notas */
 		Route::get('/nota', 'NotaController@index');
@@ -81,6 +82,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 		Route::get('/user', 'UserController@index');
 		Route::post('/user/registrar', 'UserController@store');
 		Route::put('/user/actualizar', 'UserController@update');
+		Route::delete('/user/delete/{usuario_id}', 'userController@delete');
 
 	});
 

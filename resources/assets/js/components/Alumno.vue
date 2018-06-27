@@ -163,7 +163,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Cedula <span style="color:red;" v-show="cedula.length == 0">(*Seleccione)</span>
+                                Cedula <span style="color:red;" v-show="cedula.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="cedula" class="form-control" placeholder="Cedula">
@@ -171,7 +171,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Nombre <span style="color:red;" v-show="nombre.length == 0">(*Seleccione)</span>
+                                Nombre <span style="color:red;" v-show="nombre.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="nombre" class="form-control" placeholder="Nombre">
@@ -179,7 +179,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                            Apellido <span style="color:red;" v-show="apellido.length == 0">(*Seleccione)</span>
+                            Apellido <span style="color:red;" v-show="apellido.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="apellido" class="form-control" placeholder="Apellido">

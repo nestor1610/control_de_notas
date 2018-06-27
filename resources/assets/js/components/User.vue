@@ -4,13 +4,15 @@
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Usuarios
-                <button v-on:click="abrirModal('usuario', 'registrar')" type="button" class="btn btn-secondary">
-                    <i class="icon-plus"></i>&nbsp;Nuevo
-                </button>
+                <div class="col-md-12">
+                    <p class="h1 text-center">Usuarios</p>
+                </div>
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    <div class="col-md-2">
+                        <p class="h3 text-right">Buscador</p>
+                    </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
@@ -23,9 +25,19 @@
                             </button>
                         </div>
                     </div>
+                    <div class="col-md-4 text-center">
+                        <button v-on:click="abrirModal('usuario', 'registrar')" type="button" class="btn btn-secondary">
+                            <i class="icon-plus"></i>&nbsp;Nuevo usuario
+                        </button>
+                    </div>
                 </div>
                 <table class="table table-bordered table-striped table-sm">
                     <thead>
+                        <tr>
+                            <th colspan="4">
+                                <p class="h3 text-center">Listado de usuarios</p>
+                            </th>
+                        </tr>
                         <tr>
                             <th>Opciones</th>
                             <th>Rol</th>
@@ -33,12 +45,15 @@
                             <th>Condicion</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="array_usuario.length">
                         <tr v-for="usuario in array_usuario" :key="usuario.id">
                             <td>
                                 <button v-on:click="abrirModal('usuario', 'actualizar', usuario)" type="button" class="btn btn-warning btn-sm">
                                   <i class="icon-pencil"></i>
                                 </button> &nbsp;
+                                <button type="button" class="btn btn-danger btn-sm" v-on:click="eliminarUsuario(usuario.id)">
+                                    <i class="icon-trash"></i>
+                                </button>
                             </td>
                             <td v-text="usuario.rol.nombre"></td>
                             <td v-text="usuario.email"></td>
@@ -49,6 +64,13 @@
                                 <div v-else>
                                     <span class="badge badge-danger">Desactivado</span>
                                 </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="4">
+                                <p class="h2 text-center">NO hay usuarios registrados</p>
                             </td>
                         </tr>
                     </tbody>
@@ -70,7 +92,9 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Rol</label>
+                            <label class="col-md-3 form-control-label" for="text-input">
+                                Rol <span style="color:red;" v-show="rol_id == 0">(*Seleccione)</span>
+                            </label>
                             <div class="col-md-9">
                                 <select v-model.trim="rol_id">
                                     <option v-bind:value="0" selected>Seleccione un rol</option>
@@ -81,15 +105,27 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Email</label>
+                            <label class="col-md-3 form-control-label" for="text-input">
+                                Email <span style="color:red;" v-show="email.length == 0">(*Ingrese)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="email" class="form-control" placeholder="Email">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Password</label>
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Password <span style="color:red;" v-show="password.length == 0">(*Ingrese)</span>
+                            </label>
                             <div class="col-md-9">
                                 <input type="password" v-model.trim="password" class="form-control" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label" for="email-input">
+                                Confirmar password <span style="color:red;" v-show="password_confirmar.length == 0">(*Ingrese)</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="password" v-model.trim="password_confirmar" class="form-control" placeholder="Password">
                             </div>
                         </div>
                         <div v-show="error_usuario" class="form-group row div-error">
@@ -121,6 +157,7 @@
                 usuario_id : 0,
                 email : '',
                 password : '',
+                password_confirmar : '',
                 array_usuario : [],
                 array_rol : [],
                 modal : 0,
@@ -216,9 +253,64 @@
 
                 if (!this.password) this.error_msj_usu.push('El password del usuario no puede estar vacio');
 
+                if (!this.password_confirmar) this.error_msj_usu.push('Confirme el password');
+
+                if ( this.password != this.password_confirmar) this.error_msj_usu.push('El password debe coincidir');
+
                 if (this.error_msj_usu.length) this.error_usuario = 1;
 
                 return this.error_usuario;
+            },
+            eliminarUsuario (usuario_id){
+                swal({
+                  title: '¿Estas seguro de eliminar a este usuario?',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Aceptar',
+                  cancelButtonText: 'Cancelar',
+                  confirmButtonClass: 'btn btn-success',
+                  cancelButtonClass: 'btn btn-danger',
+                  buttonsStyling: false,
+                  reverseButtons: true
+                }).then((result) => {
+                  if (result.value) {
+
+                    let me = this;
+
+                    axios.delete('/user/delete/' + usuario_id)
+                    .then(function (response){
+                        var respuesta = response.data;
+
+                        if (respuesta) {
+                            
+                            me.listarUsuario('', 'email');
+                            swal(
+                              'Eliminado',
+                              'El usuario ha sido eliminado',
+                              'success'
+                            )
+
+                        } else {
+                            swal(
+                              'Error',
+                              'No puedes eliminar tu usuario',
+                              'error'
+                            )
+                        }
+                    })
+                    .catch(function (error){
+                        console.log(error);
+                    });
+
+                  } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                  ) {
+                    
+                  }
+                })
             },
             cerrarModal (){
                 this.modal = 0;
@@ -227,6 +319,7 @@
                 this.usuario_id = 0;
                 this.email = '';
                 this.password = '';
+                this.password_confirmar = '';
             },
             abrirModal (modelo, accion, data = []){
                 switch (modelo){

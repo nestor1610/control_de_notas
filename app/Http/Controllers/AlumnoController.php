@@ -175,4 +175,26 @@ class AlumnoController extends Controller
         $alumno->condicion = 0;
         $alumno->save();
     }
+
+    public function seccionPdf(Request $request)
+    {
+        $seccion_id = $request->seccion_id;
+
+        $alumnos = DB::table('secciones')
+            ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
+            ->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
+            ->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
+                'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
+                'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
+            ->where('alumnos.seccion_id', $seccion_id)
+            ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
+            ->get();
+
+        $pdf = \PDF::loadView('pdf.seccionpdf', [
+            'alumnos' => $alumnos
+        ]);
+
+        return $pdf->download($alumnos[0]->nombre_seccion.'_'.$alumnos[0]->ano.'_'.$alumnos[0]->periodo_inicio.'-'.$alumnos[0]->periodo_fin.'.pdf');
+    }
 }
