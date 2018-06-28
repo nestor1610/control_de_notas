@@ -300,13 +300,29 @@
                     'seccion_id': this.seccion_id,
                     'asignatura_id': this.asignatura_id
                 }).then(function (response){
-                    me.listarAsignatura(1, '', 'nombre_asignatura');
-                    swal(
-                      'Ingresada',
-                      'La seccion ha sido ingresada',
-                      'success'
-                    )
-                    me.listarSeccion();
+
+                    console.log(response);
+
+                    var respuesta = response.data;
+
+                    if (respuesta) {
+
+                        me.listarAsignatura(1, '', 'nombre_asignatura');
+                        swal(
+                          'Asignada',
+                          'La asignatura ha sido asignada a la seccion',
+                          'success'
+                        )
+                        me.listarSeccion();
+
+                    } else {
+                        swal(
+                          'Error',
+                          'No puedes asignar una asignatura a una seccion sin alumnos',
+                          'error'
+                        )
+                    }
+                    
                 })
                 .catch(function (error){
                     console.log(error);

@@ -82,13 +82,13 @@
 </head>
 <body>
     <div>
-        <h3>U.E.C.P "Andres Bello"  <span class="derecha">{{now()}}</span></h3>
+        <h3>U.E.C.P "Andres Bello"  <span class="derecha">{{date('Y/m/d')}}</span></h3>
     </div>
     <div>
         <table class="table table-bordered table-striped table-sm">
             <thead>
                 <tr>
-                    <th colspan="6">{{'Alumnos de la seccion: '.$alumnos[0]->nombre_seccion.' Año: '.$alumnos[0]->ano}}</th>
+                    <th colspan="6">{{'Alumnos de la seccion: '.$seccion->nombre_seccion.' Año: '.$seccion->ano.' Periodo: '.$seccion->periodo_inicio.'-'.$seccion->periodo_fin}}</th>
                 </tr>
                 <tr>
                     <th>Cedula</th>
@@ -100,18 +100,24 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($alumnos as $alumno)
-                <tr>
-                    <td>{{ $alumno->cedula }}</td>
-                    <td>{{ $alumno->nombre }}</td>
-                    <td>{{ $alumno->apellido }}</td>
-                    <td>{{ $alumno->telefono }}</td>
-                    <td>{{ $alumno->email }}</td>
-                    <td>
-                        {{ 'Ciudad: '.$alumno->dir_ciudad.' Avenida: '.$alumno->dir_avenida.' Calle: '.$alumno->dir_calle.' Casa: '.$alumno->dir_casa }}
-                    </td>
-                </tr>
-                @endforeach
+                @if ( count($alumnos) > 0 )
+                    @foreach ($alumnos as $alumno)
+                    <tr>
+                        <td>{{ $alumno->cedula }}</td>
+                        <td>{{ $alumno->nombre }}</td>
+                        <td>{{ $alumno->apellido }}</td>
+                        <td>{{ $alumno->telefono }}</td>
+                        <td>{{ $alumno->email }}</td>
+                        <td>
+                            {{ 'Ciudad: '.$alumno->dir_ciudad.' Avenida: '.$alumno->dir_avenida.' Calle: '.$alumno->dir_calle.' Casa: '.$alumno->dir_casa }}
+                        </td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                       <td colspan="6">No hay alumnos en esta seccion</td> 
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>

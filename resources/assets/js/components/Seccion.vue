@@ -54,7 +54,7 @@
                                 <button v-on:click="abrirModal('seccion', 'actualizar', seccion)" type="button" class="btn btn-warning btn-sm">
                                   <i class="icon-pencil"></i>
                                 </button> &nbsp;
-                                <button v-on:click="listarAlumnos(seccion.id)" type="button" class="btn btn-success btn-sm">
+                                <button v-on:click="listarAlumnos(seccion.id, seccion.nombre_seccion)" type="button" class="btn btn-success btn-sm">
                                   <i class="icon-eye"></i>
                                 </button> &nbsp;
                                 <button v-on:click="cargarPdf(seccion.id)" type="button" class="btn btn-info btn-sm">
@@ -99,6 +99,11 @@
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
+                                <th colspan="10">
+                                    <p class="h3 text-center">Alumnos de la seccion: {{ nombre_seccion }}</p>
+                                </th>
+                            </tr>
+                            <tr>
                                 <th>Periodo</th>
                                 <th>Año</th>
                                 <th>Seccion</th>
@@ -108,10 +113,9 @@
                                 <th>email</th>
                                 <th>telefono</th>
                                 <th>Direccion</th>
-                                <th>Condicion</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="array_alumno.length">
                             <tr v-for="alumno in array_alumno" :key="alumno.id">
                                 <td v-text="alumno.periodo_inicio + '-' + alumno.periodo_fin"></td>
                                 <td v-text="alumno.ano"></td>
@@ -122,14 +126,13 @@
                                 <td v-text="alumno.email"></td>
                                 <td v-text="alumno.telefono"></td>
                                 <td>{{ direccionAlumno(alumno) }}</td>
-                                <td>
-                                    <div v-if="alumno.condicion">
-                                        <span class="badge badge-success">Activo</span>
-                                    </div>
-                                    <div v-else>
-                                        <span class="badge badge-danger">Desactivado</span>
-                                    </div>
-                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <th colspan="10">
+                                    <p class="h3 text-center">No hay alumnos en esta seccion</p>
+                                </th>
                             </tr>
                         </tbody>
                     </table>
@@ -281,12 +284,13 @@
                     console.log(error);
                 });
             },
-            listarAlumnos (seccion_id){
+            listarAlumnos (seccion_id, nombre_seccion){
                 let me = this;
                 var url = '/alumno/seccion?seccion_id=' + seccion_id;
 
                 axios.get(url).then(function (response) {
                     me.array_alumno = response.data;
+                    me.nombre_seccion = nombre_seccion;
                     me.abrirListado();
                 }).catch(function (error) {
                     console.log(error);

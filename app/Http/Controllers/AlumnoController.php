@@ -191,10 +191,31 @@ class AlumnoController extends Controller
             ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
             ->get();
 
-        $pdf = \PDF::loadView('pdf.seccionpdf', [
-            'alumnos' => $alumnos
-        ]);
+            $seccion = DB::table('secciones')
+            ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
+            ->select('secciones.nombre_seccion', 'secciones.ano', 'periodos.periodo_inicio', 'periodos.periodo_fin')
+            ->where('secciones.id', $seccion_id)
+            ->first();
 
-        return $pdf->download($alumnos[0]->nombre_seccion.'_'.$alumnos[0]->ano.'_'.$alumnos[0]->periodo_inicio.'-'.$alumnos[0]->periodo_fin.'.pdf');
+        if ( count($alumnos) > 0 ) {
+            
+            $pdf = \PDF::loadView('pdf.seccionpdf', [
+                'alumnos' => $alumnos,
+                'seccion' => $seccion
+            ]);
+
+            return $pdf->download($seccion->nombre_seccion.'_'.$seccion->ano.'_'.$seccion->periodo_inicio.'-'.$seccion->periodo_fin.'.pdf');
+
+        } else {
+
+            $pdf = \PDF::loadView('pdf.seccionpdf', [
+                'alumnos' => [],
+                'seccion' => $seccion
+            ]);
+
+            return $pdf->download($seccion->nombre_seccion.'_'.$seccion->ano.'_'.$seccion->periodo_inicio.'-'.$seccion->periodo_fin.'.pdf');
+
+        }
+
     }
 }

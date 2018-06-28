@@ -5,7 +5,20 @@
 	@if( Auth::user()->rol_id == 1 )
 
 		<template v-if="menu==0">
-
+			<main class="main">
+				<div class="container-fluid">
+				    <div class="card">
+				        <div class="card-header">
+				            <div class="col-md-12">
+				                <p class="h1 text-center">U.E.C Andrés Bello</p>
+				            </div>
+				        </div>
+				        <div class="card-body">
+				         	<img src="img/pasillo.jpg" class="img-fluid" alt="Responsive image">
+				        </div>
+				    </div>
+				</div>
+			</main>
 		</template>
 		<template v-if="menu==1">
 	    	<periodo></periodo>

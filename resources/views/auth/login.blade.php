@@ -31,11 +31,11 @@
               </div>
             </form>
           </div>
-          <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+          <div class="card text-black py-5 d-md-down-none" style="width:44%">
             <div class="card-body text-center">
               <div>
                 <h2>Control de Notas</h2>
-                <p>Sistema de control de notas.</p>
+                <img src="img/logo.jpg" class="img-fluid" alt="Responsive image">
               </div>
             </div>
           </div>

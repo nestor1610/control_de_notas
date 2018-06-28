@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Asignatura;
+use App\Alumno;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -80,6 +81,11 @@ class AsignaturaController extends Controller
     public function registrarSeccion(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
+
+        $alumnos = Alumno::where('seccion_id', $request->seccion_id)->first();
+
+        if ($alumnos == null)
+            return 0;
 
         $asignatura = Asignatura::findOrFail($request->asignatura_id);
         $asignatura->secciones()->attach($request->seccion_id);

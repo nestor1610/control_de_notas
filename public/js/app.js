@@ -34397,6 +34397,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -34470,12 +34473,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        listarAlumnos: function listarAlumnos(seccion_id) {
+        listarAlumnos: function listarAlumnos(seccion_id, nombre_seccion) {
             var me = this;
             var url = '/alumno/seccion?seccion_id=' + seccion_id;
 
             axios.get(url).then(function (response) {
                 me.array_alumno = response.data;
+                me.nombre_seccion = nombre_seccion;
                 me.abrirListado();
             }).catch(function (error) {
                 console.log(error);
@@ -34827,7 +34831,10 @@ var render = function() {
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      _vm.listarAlumnos(seccion.id)
+                                      _vm.listarAlumnos(
+                                        seccion.id,
+                                        seccion.nombre_seccion
+                                      )
                                     }
                                   }
                                 },
@@ -34974,74 +34981,77 @@ var render = function() {
                     staticClass: "table table-bordered table-striped table-sm"
                   },
                   [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.array_alumno, function(alumno) {
-                        return _c("tr", { key: alumno.id }, [
-                          _c("td", {
-                            domProps: {
-                              textContent: _vm._s(
-                                alumno.periodo_inicio + "-" + alumno.periodo_fin
-                              )
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("td", {
-                            domProps: { textContent: _vm._s(alumno.ano) }
-                          }),
-                          _vm._v(" "),
-                          _c("td", {
-                            domProps: {
-                              textContent: _vm._s(alumno.nombre_seccion)
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("td", {
-                            domProps: { textContent: _vm._s(alumno.cedula) }
-                          }),
-                          _vm._v(" "),
-                          _c("td", {
-                            domProps: { textContent: _vm._s(alumno.apellido) }
-                          }),
-                          _vm._v(" "),
-                          _c("td", {
-                            domProps: { textContent: _vm._s(alumno.nombre) }
-                          }),
-                          _vm._v(" "),
-                          _c("td", {
-                            domProps: { textContent: _vm._s(alumno.email) }
-                          }),
-                          _vm._v(" "),
-                          _c("td", {
-                            domProps: { textContent: _vm._s(alumno.telefono) }
-                          }),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.direccionAlumno(alumno)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            alumno.condicion
-                              ? _c("div", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "badge badge-success" },
-                                    [_vm._v("Activo")]
-                                  )
-                                ])
-                              : _c("div", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "badge badge-danger" },
-                                    [_vm._v("Desactivado")]
-                                  )
-                                ])
+                    _c("thead", [
+                      _c("tr", [
+                        _c("th", { attrs: { colspan: "10" } }, [
+                          _c("p", { staticClass: "h3 text-center" }, [
+                            _vm._v(
+                              "Alumnos de la seccion: " +
+                                _vm._s(_vm.nombre_seccion)
+                            )
                           ])
                         ])
-                      })
-                    )
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(4)
+                    ]),
+                    _vm._v(" "),
+                    _vm.array_alumno.length
+                      ? _c(
+                          "tbody",
+                          _vm._l(_vm.array_alumno, function(alumno) {
+                            return _c("tr", { key: alumno.id }, [
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(
+                                    alumno.periodo_inicio +
+                                      "-" +
+                                      alumno.periodo_fin
+                                  )
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(alumno.ano) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(alumno.nombre_seccion)
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(alumno.cedula) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(alumno.apellido)
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(alumno.nombre) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: { textContent: _vm._s(alumno.email) }
+                              }),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(alumno.telefono)
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(_vm._s(_vm.direccionAlumno(alumno)))
+                              ])
+                            ])
+                          })
+                        )
+                      : _c("tbody", [_vm._m(5)])
                   ]
                 ),
                 _vm._v(" "),
@@ -35505,27 +35515,35 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Periodo")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Año")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Seccion")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Cedula")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Apellido")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Nombre")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("email")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("telefono")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Direccion")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Condicion")])
+    return _c("tr", [
+      _c("th", [_vm._v("Periodo")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Año")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Seccion")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Cedula")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Apellido")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Nombre")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("email")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("telefono")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Direccion")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", { attrs: { colspan: "10" } }, [
+        _c("p", { staticClass: "h3 text-center" }, [
+          _vm._v("No hay alumnos en esta seccion")
+        ])
       ])
     ])
   }
@@ -35934,9 +35952,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'seccion_id': this.seccion_id,
                 'asignatura_id': this.asignatura_id
             }).then(function (response) {
-                me.listarAsignatura(1, '', 'nombre_asignatura');
-                swal('Ingresada', 'La seccion ha sido ingresada', 'success');
-                me.listarSeccion();
+
+                console.log(response);
+
+                var respuesta = response.data;
+
+                if (respuesta) {
+
+                    me.listarAsignatura(1, '', 'nombre_asignatura');
+                    swal('Asignada', 'La asignatura ha sido asignada a la seccion', 'success');
+                    me.listarSeccion();
+                } else {
+                    swal('Error', 'No puedes asignar una asignatura a una seccion sin alumnos', 'error');
+                }
             }).catch(function (error) {
                 console.log(error);
             });
