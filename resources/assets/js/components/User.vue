@@ -42,7 +42,7 @@
                             <th>Opciones</th>
                             <th>Rol</th>
                             <th>Email</th>
-                            <th>Condicion</th>
+                            <th>Condición</th>
                         </tr>
                     </thead>
                     <tbody v-if="array_usuario.length">

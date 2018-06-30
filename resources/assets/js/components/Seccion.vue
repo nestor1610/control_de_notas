@@ -16,10 +16,10 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
-                              <option value="nombre_seccion">Nombre seccion</option>
+                              <option value="nombre_seccion">Nombre sección</option>
                               <option value="ano">Año</option>
-                              <option value="periodo_inicio">Periodo inicio</option>
-                              <option value="periodo_fin">Periodo fin</option>
+                              <option value="periodo_inicio">Período inicio</option>
+                              <option value="periodo_fin">Período fin</option>
                             </select>
                             <input v-on:keyup.enter="listarSeccion(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarSeccion(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-md-4 text-center">
                         <button v-on:click="abrirModal('seccion', 'registrar')" type="button" class="btn btn-secondary">
-                            <i class="icon-plus"></i>&nbsp;Nueva seccion
+                            <i class="icon-plus"></i>&nbsp;Nueva sección
                         </button>
                     </div>
                 </div>
@@ -43,9 +43,9 @@
                         </tr>
                         <tr>
                             <th>Opciones</th>
-                            <th>Seccion</th>
+                            <th>Sección</th>
                             <th>Año</th>
-                            <th>Periodo</th>
+                            <th>Período</th>
                         </tr>
                     </thead>
                     <tbody v-if="array_seccion.length">
@@ -100,19 +100,19 @@
                         <thead>
                             <tr>
                                 <th colspan="10">
-                                    <p class="h3 text-center">Alumnos de la seccion: {{ nombre_seccion }}</p>
+                                    <p class="h3 text-center">Alumnos de la sección: {{ nombre_seccion }}</p>
                                 </th>
                             </tr>
                             <tr>
-                                <th>Periodo</th>
+                                <th>Período</th>
                                 <th>Año</th>
-                                <th>Seccion</th>
-                                <th>Cedula</th>
+                                <th>Sección</th>
+                                <th>Cédula</th>
                                 <th>Apellido</th>
                                 <th>Nombre</th>
                                 <th>email</th>
-                                <th>telefono</th>
-                                <th>Direccion</th>
+                                <th>teléfono</th>
+                                <th>Dirección</th>
                             </tr>
                         </thead>
                         <tbody v-if="array_alumno.length">
@@ -131,7 +131,7 @@
                         <tbody v-else>
                             <tr>
                                 <th colspan="10">
-                                    <p class="h3 text-center">No hay alumnos en esta seccion</p>
+                                    <p class="h3 text-center">No hay alumnos en esta sección</p>
                                 </th>
                             </tr>
                         </tbody>
@@ -163,7 +163,7 @@
                             </label>
                             <div class="col-md-9">
                                 <select v-model.trim="periodo_id">
-                                    <option v-bind:value="0" selected>Seleccione un periodo</option>
+                                    <option v-bind:value="0" selected>Seleccione un período</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
                                         {{ periodo.periodo_inicio + '-' + periodo.periodo_fin }}
                                     </option>
@@ -175,7 +175,7 @@
                                 Seccion <span style="color:red;" v-show="nombre_seccion.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la seccion">
+                                <input type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la sección">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -317,7 +317,7 @@
                 let me = this;
                 //actualiza la pagina actual
                 me.pagination.current_page = page;
-                //envia la peticion para visualizar la data de esa pagina
+                //envia la peticion para visualizar lós datos de esa pagina
                 me.listarSeccion(page, buscar, criterio);
             },
             listarPeriodo (){
@@ -345,7 +345,7 @@
                     me.cerrarModal();
                     swal(
                       'Registrado',
-                      'La seccion ha sido registrada',
+                      'La sección ha sido registrada',
                       'success'
                     )
                     me.listarSeccion(1, '', 'nombre_seccion');
@@ -371,7 +371,7 @@
                     me.cerrarModal();
                     swal(
                       'Actualizada',
-                      'La seccion ha sido actualizada',
+                      'La sección ha sido actualizada',
                       'success'
                     )
                     me.listarSeccion(1, '', 'nombre_seccion');
@@ -384,15 +384,15 @@
                 this.error_seccion = 0;
                 this.error_msj_per =[];
 
-                if (!this.periodo_id) this.error_msj_per.push('Seleccione un periodo');
+                if (!this.periodo_id) this.error_msj_per.push('Seleccione un período');
 
-                if (!this.nombre_seccion) this.error_msj_per.push('El nombre de la seccion no debe estar vacio');
+                if (!this.nombre_seccion) this.error_msj_per.push('El nombre de la seccion no debe estar vacío');
 
-                if (!this.ano) this.error_msj_per.push('El año de la seccion no debe estar vacio');
+                if (!this.ano) this.error_msj_per.push('El año de la sección no debe estar vacío');
 
-                if ( this.ano < 1 && this.ano > 20) this.error_msj_per.push('El año de la seccion no debe ser menor a 1 ni mayor de 15');
+                if ( this.ano < 1 && this.ano > 20) this.error_msj_per.push('El año de la sección no debe ser menor a 1 ni mayor de 15');
 
-                if ( this.nombre_seccion.length > 20 ) this.error_msj_asig.push('El nombre de la seccion no debe ser mayor de 20 caracteres');
+                if ( this.nombre_seccion.length > 20 ) this.error_msj_asig.push('El nombre de la sección no debe ser mayor de 20 caracteres');
 
                 if (this.error_msj_per.length) this.error_seccion = 1;
 
@@ -421,7 +421,7 @@
                             case "registrar":
                             {
                                 this.modal = 1;
-                                this.titulo_modal = 'Registrar seccion',
+                                this.titulo_modal = 'Registrar sección',
                                 this.periodo_id = 0;
                                 this.nombre_seccion = '';
                                 this.ano = 0;
@@ -431,7 +431,7 @@
                             case "actualizar":
                             {
                                 this.modal = 1;
-                                this.titulo_modal = 'Actualizar seccion';
+                                this.titulo_modal = 'Actualizar sección';
                                 this.tipo_accion = 2;
                                 this.periodo_id = data['periodo_id'];
                                 this.seccion_id = data['id'];

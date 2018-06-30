@@ -89,6 +89,8 @@ class AsignaturaController extends Controller
 
         $asignatura = Asignatura::findOrFail($request->asignatura_id);
         $asignatura->secciones()->attach($request->seccion_id);
+
+        return 1;
     }
 
     public function update(Request $request)

@@ -14,13 +14,13 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <select class="form-control col-md-3" v-model.trim="periodo_id" v-on:change="listarSeccion()">
-                                    <option v-bind:value="0" selected>Seleccione un periodo</option>
+                                    <option v-bind:value="0" selected>Seleccione un período</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
                                         {{ periodo.periodo_inicio +'-'+ periodo.periodo_fin }}
                                     </option>
                                 </select>
                                 <select v-show="periodo_id > 0" class="form-control col-md-3" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
-                                    <option v-bind:value="0" selected>Seleccione una seccion</option>
+                                    <option v-bind:value="0" selected>Seleccione una sección</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
                                         {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                     </option>
@@ -60,7 +60,7 @@
                                     </th>
                                 </tr>
                                 <th>Opciones</th>
-                                <th>Cedula</th>
+                                <th>Cédula</th>
                                 <th>Apellido</th>
                                 <th>Nombre</th>
                                 <th>Asignatura</th>
@@ -123,13 +123,13 @@
                         <div class="col-md-12">
                             <div class="input-group">
                                 <select class="form-control col-md-3" v-model.trim="periodo_id" v-on:change="listarSeccion()">
-                                    <option v-bind:value="0" selected>Seleccione un periodo</option>
+                                    <option v-bind:value="0" selected>Seleccione un período</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
                                         {{ periodo.periodo_inicio +'-'+ periodo.periodo_fin }}
                                     </option>
                                 </select>
                                 <select v-show="periodo_id > 0" class="form-control col-md-3" v-model.trim="seccion_id" v-on:change="listarAsignatura()">
-                                    <option v-bind:value="0" selected>Seleccione una seccion</option>
+                                    <option v-bind:value="0" selected>Seleccione una sección</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id" >
                                         {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                     </option>
@@ -198,7 +198,7 @@
                                         </th>
                                     </tr>
                                     <th>Opciones</th>
-                                    <th>Cedula</th>
+                                    <th>Cédula</th>
                                     <th>Alumno</th>
                                     <th>Nota</th>
                                 </thead>
@@ -405,7 +405,7 @@
 
                     } else{
 
-                        me.alumno= 'No existe el alumno en esta seccion';
+                        me.alumno= 'No existe el alumno en esta sección';
                         me.alumno_id = 0;
 
                     }
@@ -457,15 +457,13 @@
 
                 }).then(function (){
 
-                    me.modal = 0;
+                    me.cerrarModal();
                     me.listarNota(1);
                     swal(
                       'Actualizada',
                       'La nota ha sido actualizada',
                       'success'
                     )
-                    me.nota_id = 0;
-                    me.nota = 0;
                 })
                 .catch(function (){
                     console.log(error);
@@ -482,9 +480,9 @@
                     }
                 } );
 
-                if ( !this.periodo_id ) this.error_msj_nota.push('Seleccione un periodo');
+                if ( !this.periodo_id ) this.error_msj_nota.push('Seleccione un período');
 
-                if ( !this.seccion_id ) this.error_msj_nota.push('Seleccione una seccion');
+                if ( !this.seccion_id ) this.error_msj_nota.push('Seleccione una sección');
 
                 if ( !this.asignatura_id ) this.error_msj_nota.push('Seleccione una asignatura');
 

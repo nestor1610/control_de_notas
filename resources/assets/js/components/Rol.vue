@@ -17,7 +17,7 @@
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
                               <option value="nombre">Nombre</option>
-                              <option value="descripcion">Descripcion</option>
+                              <option value="descripcion">Descripción</option>
                             </select>
                             <input v-on:keyup.enter="listarRol(buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarRol(buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -36,7 +36,7 @@
                         </tr>
                         <tr>
                             <th>Nombre</th>
-                            <th>Descripcion</th>
+                            <th>Descripción</th>
                             <th>Estado</th>
                         </tr>
                     </thead>

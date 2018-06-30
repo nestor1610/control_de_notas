@@ -16,15 +16,15 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <select class="form-control col-md-3" v-model="criterio">
-                              <option value="alumnos.cedula">Cedula</option>
-                              <option value="secciones.ano">ano</option>
+                              <option value="alumnos.cedula">Cédula</option>
+                              <option value="secciones.ano">año</option>
                               <option value="alumnos.nombre">Nombre</option>
                               <option value="alumnos.apellido">Apellido</option>
-                              <option value="secciones.nombre_seccion">Seccion</option>
+                              <option value="secciones.nombre_seccion">Sección</option>
                               <option value="alumnos.email">email</option>
-                              <option value="alumnos.telefono">Telefono</option>
-                              <option value="periodos.periodo_inicio">Periodo inicio</option>
-                              <option value="periodos.periodo_fin">Periodo fin</option>
+                              <option value="alumnos.telefono">Teléfono</option>
+                              <option value="periodos.periodo_inicio">Período inicio</option>
+                              <option value="periodos.periodo_fin">Período fín</option>
                             </select>
                             <input v-on:keyup.enter="listarAlumno(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarAlumno(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -48,16 +48,16 @@
                         </tr>
                         <tr>
                             <th>Opciones</th>
-                            <th>Periodo</th>
+                            <th>Período</th>
                             <th>Año</th>
-                            <th>Seccion</th>
-                            <th>Cedula</th>
+                            <th>Sección</th>
+                            <th>Cédula</th>
                             <th>Apellido</th>
                             <th>Nombre</th>
                             <th>email</th>
-                            <th>telefono</th>
-                            <th>Direccion</th>
-                            <th>Condicion</th>
+                            <th>teléfono</th>
+                            <th>Dirección</th>
+                            <th>Condición</th>
                         </tr>
                     </thead>
                     <tbody v-if="array_alumno.length">
@@ -88,10 +88,10 @@
                             <td>{{ direccionAlumno(alumno) }}</td>
                             <td>
                                 <div v-if="alumno.condicion">
-                                    <span class="badge badge-success">Activo</span>
+                                    <span class="badge badge-success">Activó</span>
                                 </div>
                                 <div v-else>
-                                    <span class="badge badge-danger">Desactivado</span>
+                                    <span class="badge badge-danger">Desactivadó</span>
                                 </div>
                             </td>
                         </tr>
@@ -140,18 +140,18 @@
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">
-                                Periodo <span style="color:red;" v-show="periodo_id == 0">(*Seleccione)</span>
+                                Período <span style="color:red;" v-show="periodo_id == 0">(*Seleccione)</span>
                             </label>
                             <div class="col-md-3">
                                 <select v-model.trim="periodo_id" v-on:change="listarSeccion()">
-                                    <option v-bind:value="0" selected>Seleccione un periodo</option>
+                                    <option v-bind:value="0" selected>Seleccione un período</option>
                                     <option v-for="periodo in array_periodo" :key="periodo.id" v-bind:value="periodo.id" >
                                         {{ periodo.periodo_inicio +'-'+ periodo.periodo_fin }}
                                     </option>
                                 </select>
                             </div>
                             <label class="col-md-3 form-control-label" for="text-input">
-                                Seccion <span style="color:red;" v-show="seccion_id == 0">(*Seleccione)</span>
+                                Sección <span style="color:red;" v-show="seccion_id == 0">(*Seleccione)</span>
                             </label>
                             <div class="col-md-3">
                                 <select v-model.trim="seccion_id">
@@ -163,7 +163,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Cedula <span style="color:red;" v-show="cedula.length == 0">(*Ingrese)</span>
+                                Cédula <span style="color:red;" v-show="cedula.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="cedula" class="form-control" placeholder="Cedula">
@@ -171,7 +171,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Nombre <span style="color:red;" v-show="nombre.length == 0">(*Ingrese)</span>
+                                Nombre <span style="color:red;" v-show="nombre.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="nombre" class="form-control" placeholder="Nombre">
@@ -179,14 +179,14 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                            Apellido <span style="color:red;" v-show="apellido.length == 0">(*Ingrese)</span>
+                            Apellido <span style="color:red;" v-show="apellido.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="apellido" class="form-control" placeholder="Apellido">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Telefono</label>
+                            <label class="col-md-3 form-control-label" for="email-input">Teléfono</label>
                             <div class="col-md-9">
                                 <input type="text" v-model.trim="telefono" class="form-control" placeholder="Telefono">
                             </div>
@@ -427,7 +427,7 @@
             },
             desactivarAlumno (alumno_id){
                 swal({
-                  title: '¿Estas seguro de desactivar a este alumno?',
+                  title: '¿Estas seguro de desactivar a éste alumno?',
                   type: 'warning',
                   showCancelButton: true,
                   confirmButtonColor: '#3085d6',
@@ -467,7 +467,7 @@
             },
             activarAlumno (alumno_id){
                 swal({
-                  title: '¿Estas seguro de activar a este alumno?',
+                  title: '¿Estas seguro de activar a éste alumno?',
                   type: 'warning',
                   showCancelButton: true,
                   confirmButtonColor: '#3085d6',

@@ -33429,7 +33429,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'periodo_fin': this.periodo_fin
             }).then(function (response) {
                 me.cerrarModal();
-                swal('Registrado', 'El periodo ha sido registrado', 'success');
+                swal('Registrado', 'El período ha sido registrado', 'success');
                 me.listarPeriodo(0, 0);
             }).catch(function (error) {
                 console.log(error);
@@ -33449,7 +33449,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.periodo_id
             }).then(function (response) {
                 me.cerrarModal();
-                swal('Actualizado', 'El periodo ha sido actualizado', 'success');
+                swal('Actualizado', 'El período ha sido actualizado', 'success');
                 me.listarPeriodo(0, 0);
             }).catch(function (error) {
                 console.log(error);
@@ -33461,15 +33461,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.periodo_inicio = parseInt(this.periodo_inicio);
             this.periodo_fin = parseInt(this.periodo_fin);
 
-            if (this.periodo_inicio > 2099) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+            if (this.periodo_inicio > 2099) this.error_msj_per.push('El inicio del período no debe ser mayor del 2099');
 
-            if (this.periodo_inicio < 2000) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
+            if (this.periodo_inicio < 2000) this.error_msj_per.push('El inicio del período no debe ser menor del 2000');
 
-            if (this.periodo_fin > 2099) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+            if (this.periodo_fin > 2099) this.error_msj_per.push('El fin del período no debe ser mayor del 2099');
 
-            if (this.periodo_fin < 2000) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+            if (this.periodo_fin < 2000) this.error_msj_per.push('El fin del período no debe ser menor del 2000');
 
-            if (this.periodo_inicio >= this.periodo_fin) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
+            if (this.periodo_inicio >= this.periodo_fin) this.error_msj_per.push('El inicio del período no debe ser mayor o igual que el fin del período');
 
             if (this.error_msj_per.length) this.error_periodo = 1;
 
@@ -33481,19 +33481,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.periodo_inicio = parseInt(this.periodo_inicio);
             this.periodo_fin = parseInt(this.periodo_fin);
 
-            if (!this.periodo_inicio) this.error_msj_per.push('El inicio del periodo no puede estar vacio');
+            if (!this.periodo_inicio) this.error_msj_per.push('El inicio del período no puede estar vacío');
 
-            if (this.periodo_inicio > 2099) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+            if (this.periodo_inicio > 2099) this.error_msj_per.push('El inicio del período no debe ser mayor del 2099');
 
-            if (this.periodo_inicio < 2000) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
+            if (this.periodo_inicio < 2000) this.error_msj_per.push('El inicio del período no debe ser menor del 2000');
 
-            if (!this.periodo_fin) this.error_msj_per.push('El final del periodo no puede estar vacio');
+            if (!this.periodo_fin) this.error_msj_per.push('El final del período no puede estar vacío');
 
-            if (this.periodo_fin > 2099) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+            if (this.periodo_fin > 2099) this.error_msj_per.push('El fin del período no debe ser mayor del 2099');
 
-            if (this.periodo_fin < 2000) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+            if (this.periodo_fin < 2000) this.error_msj_per.push('El fin del período no debe ser menor del 2000');
 
-            if (this.periodo_inicio >= this.periodo_fin) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
+            if (this.periodo_inicio >= this.periodo_fin) this.error_msj_per.push('El inicio del período no debe ser mayor o igual que el fin del período');
 
             if (this.error_msj_per.length) this.error_periodo = 1;
 
@@ -33518,7 +33518,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             case "registrar":
                                 {
                                     this.modal = 1;
-                                    this.titulo_modal = 'Registrar periodo', this.periodo_inicio = 0;
+                                    this.titulo_modal = 'Registrar período', this.periodo_inicio = 0;
                                     this.periodo_fin = 0;
                                     this.tipo_accion = 1;
                                     break;
@@ -33526,7 +33526,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             case "actualizar":
                                 {
                                     this.modal = 1;
-                                    this.titulo_modal = 'Actualizar periodo';
+                                    this.titulo_modal = 'Actualizar período';
                                     this.tipo_accion = 2;
                                     this.periodo_id = data['id'];
                                     this.periodo_inicio = data['periodo_inicio'];
@@ -33572,7 +33572,7 @@ var render = function() {
                 _c(
                   "label",
                   { staticClass: "form-control", attrs: { for: "text-input" } },
-                  [_vm._v("Inicio del periodo")]
+                  [_vm._v("Inicio del período")]
                 ),
                 _vm._v(" "),
                 _c("input", {
@@ -33600,7 +33600,7 @@ var render = function() {
                 _c(
                   "label",
                   { staticClass: "form-control", attrs: { for: "text-input" } },
-                  [_vm._v("Fin del periodo")]
+                  [_vm._v("Fin del período")]
                 ),
                 _vm._v(" "),
                 _c("input", {
@@ -33676,7 +33676,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "icon-plus" }),
-                  _vm._v(" Nuevo periodo\n                    ")
+                  _vm._v(" Nuevo período\n                    ")
                 ]
               )
             ]),
@@ -33830,7 +33830,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                            Inicio del periodo "
+                            "\n                            Inicio del período "
                           ),
                           _c(
                             "span",
@@ -33864,7 +33864,7 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "text",
-                            placeholder: "Inicio del periodo"
+                            placeholder: "Inicio del período"
                           },
                           domProps: { value: _vm.periodo_inicio },
                           on: {
@@ -33891,7 +33891,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                            Fin del periodo "
+                            "\n                            Fin del período "
                           ),
                           _c(
                             "span",
@@ -33925,7 +33925,7 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "text",
-                            placeholder: "Fin del periodo"
+                            placeholder: "Fin del período"
                           },
                           domProps: { value: _vm.periodo_fin },
                           on: {
@@ -34034,7 +34034,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("div", { staticClass: "col-md-12" }, [
-        _c("p", { staticClass: "h1 text-center" }, [_vm._v("Periodos")])
+        _c("p", { staticClass: "h1 text-center" }, [_vm._v("Períodos")])
       ])
     ])
   },
@@ -34055,16 +34055,16 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", { attrs: { colspan: "3" } }, [
           _c("p", { staticClass: "h3 text-center" }, [
-            _vm._v("Listado de periodos")
+            _vm._v("Listado de períodos")
           ])
         ])
       ]),
       _vm._v(" "),
       _c("th", [_vm._v("Opciones")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Inicio de periodo")]),
+      _c("th", [_vm._v("Inicio de período")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Fin de periodo")])
+      _c("th", [_vm._v("Fin de período")])
     ])
   },
   function() {
@@ -34074,7 +34074,7 @@ var staticRenderFns = [
     return _c("tr", [
       _c("td", { attrs: { colspan: "3" } }, [
         _c("p", { staticClass: "h2 text-center" }, [
-          _vm._v("NO hay periodos registrados")
+          _vm._v("NO hay períodos registrados")
         ])
       ])
     ])
@@ -34505,7 +34505,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var me = this;
             //actualiza la pagina actual
             me.pagination.current_page = page;
-            //envia la peticion para visualizar la data de esa pagina
+            //envia la peticion para visualizar lós datos de esa pagina
             me.listarSeccion(page, buscar, criterio);
         },
         listarPeriodo: function listarPeriodo() {
@@ -34531,7 +34531,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'ano': this.ano
             }).then(function (response) {
                 me.cerrarModal();
-                swal('Registrado', 'La seccion ha sido registrada', 'success');
+                swal('Registrado', 'La sección ha sido registrada', 'success');
                 me.listarSeccion(1, '', 'nombre_seccion');
             }).catch(function (error) {
                 console.log(error);
@@ -34552,7 +34552,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': this.seccion_id
             }).then(function (response) {
                 me.cerrarModal();
-                swal('Actualizada', 'La seccion ha sido actualizada', 'success');
+                swal('Actualizada', 'La sección ha sido actualizada', 'success');
                 me.listarSeccion(1, '', 'nombre_seccion');
             }).catch(function (error) {
                 console.log(error);
@@ -34562,15 +34562,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.error_seccion = 0;
             this.error_msj_per = [];
 
-            if (!this.periodo_id) this.error_msj_per.push('Seleccione un periodo');
+            if (!this.periodo_id) this.error_msj_per.push('Seleccione un período');
 
-            if (!this.nombre_seccion) this.error_msj_per.push('El nombre de la seccion no debe estar vacio');
+            if (!this.nombre_seccion) this.error_msj_per.push('El nombre de la seccion no debe estar vacío');
 
-            if (!this.ano) this.error_msj_per.push('El año de la seccion no debe estar vacio');
+            if (!this.ano) this.error_msj_per.push('El año de la sección no debe estar vacío');
 
-            if (this.ano < 1 && this.ano > 20) this.error_msj_per.push('El año de la seccion no debe ser menor a 1 ni mayor de 15');
+            if (this.ano < 1 && this.ano > 20) this.error_msj_per.push('El año de la sección no debe ser menor a 1 ni mayor de 15');
 
-            if (this.nombre_seccion.length > 20) this.error_msj_asig.push('El nombre de la seccion no debe ser mayor de 20 caracteres');
+            if (this.nombre_seccion.length > 20) this.error_msj_asig.push('El nombre de la sección no debe ser mayor de 20 caracteres');
 
             if (this.error_msj_per.length) this.error_seccion = 1;
 
@@ -34601,7 +34601,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             case "registrar":
                                 {
                                     this.modal = 1;
-                                    this.titulo_modal = 'Registrar seccion', this.periodo_id = 0;
+                                    this.titulo_modal = 'Registrar sección', this.periodo_id = 0;
                                     this.nombre_seccion = '';
                                     this.ano = 0;
                                     this.tipo_accion = 1;
@@ -34610,7 +34610,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             case "actualizar":
                                 {
                                     this.modal = 1;
-                                    this.titulo_modal = 'Actualizar seccion';
+                                    this.titulo_modal = 'Actualizar sección';
                                     this.tipo_accion = 2;
                                     this.periodo_id = data['periodo_id'];
                                     this.seccion_id = data['id'];
@@ -34684,7 +34684,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "nombre_seccion" } }, [
-                          _vm._v("Nombre seccion")
+                          _vm._v("Nombre sección")
                         ]),
                         _vm._v(" "),
                         _c("option", { attrs: { value: "ano" } }, [
@@ -34692,11 +34692,11 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("option", { attrs: { value: "periodo_inicio" } }, [
-                          _vm._v("Periodo inicio")
+                          _vm._v("Período inicio")
                         ]),
                         _vm._v(" "),
                         _c("option", { attrs: { value: "periodo_fin" } }, [
-                          _vm._v("Periodo fin")
+                          _vm._v("Período fin")
                         ])
                       ]
                     ),
@@ -34788,7 +34788,7 @@ var render = function() {
                     },
                     [
                       _c("i", { staticClass: "icon-plus" }),
-                      _vm._v(" Nueva seccion\n                    ")
+                      _vm._v(" Nueva sección\n                    ")
                     ]
                   )
                 ])
@@ -34986,7 +34986,7 @@ var render = function() {
                         _c("th", { attrs: { colspan: "10" } }, [
                           _c("p", { staticClass: "h3 text-center" }, [
                             _vm._v(
-                              "Alumnos de la seccion: " +
+                              "Alumnos de la sección: " +
                                 _vm._s(_vm.nombre_seccion)
                             )
                           ])
@@ -35199,7 +35199,7 @@ var render = function() {
                                 attrs: { selected: "" },
                                 domProps: { value: 0 }
                               },
-                              [_vm._v("Seleccione un periodo")]
+                              [_vm._v("Seleccione un período")]
                             ),
                             _vm._v(" "),
                             _vm._l(_vm.array_periodo, function(periodo) {
@@ -35269,7 +35269,7 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "text",
-                            placeholder: "Nombre de la seccion"
+                            placeholder: "Nombre de la sección"
                           },
                           domProps: { value: _vm.nombre_seccion },
                           on: {
@@ -35491,11 +35491,11 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Opciones")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Seccion")]),
+        _c("th", [_vm._v("Sección")]),
         _vm._v(" "),
         _c("th", [_vm._v("Año")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Periodo")])
+        _c("th", [_vm._v("Período")])
       ])
     ])
   },
@@ -35516,13 +35516,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("th", [_vm._v("Periodo")]),
+      _c("th", [_vm._v("Período")]),
       _vm._v(" "),
       _c("th", [_vm._v("Año")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Seccion")]),
+      _c("th", [_vm._v("Sección")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Cedula")]),
+      _c("th", [_vm._v("Cédula")]),
       _vm._v(" "),
       _c("th", [_vm._v("Apellido")]),
       _vm._v(" "),
@@ -35530,9 +35530,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("email")]),
       _vm._v(" "),
-      _c("th", [_vm._v("telefono")]),
+      _c("th", [_vm._v("teléfono")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Direccion")])
+      _c("th", [_vm._v("Dirección")])
     ])
   },
   function() {
@@ -35542,7 +35542,7 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", { attrs: { colspan: "10" } }, [
         _c("p", { staticClass: "h3 text-center" }, [
-          _vm._v("No hay alumnos en esta seccion")
+          _vm._v("No hay alumnos en esta sección")
         ])
       ])
     ])
@@ -35953,17 +35953,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'asignatura_id': this.asignatura_id
             }).then(function (response) {
 
-                console.log(response);
-
                 var respuesta = response.data;
 
                 if (respuesta) {
 
                     me.listarAsignatura(1, '', 'nombre_asignatura');
-                    swal('Asignada', 'La asignatura ha sido asignada a la seccion', 'success');
+                    swal('Asignada', 'La asignatura ha sido asignada a la sección', 'success');
                     me.listarSeccion();
                 } else {
-                    swal('Error', 'No puedes asignar una asignatura a una seccion sin alumnos', 'error');
+                    swal('Error', 'No puedes asignar una asignatura a una sección sin alumnos', 'error');
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -35978,7 +35976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.delete('/asignatura/eliminar/' + me.asignatura_id + '/' + me.seccion_id).then(function (response) {
                 console.log(response.data);
                 me.listarAsignatura(1, '', 'nombre_asignatura');
-                swal('Retirada', 'La seccion ha sido retirada', 'success');
+                swal('Retirada', 'La sección ha sido retirada', 'success');
                 me.asignatura_id = 0;
                 me.seccion_id = 0;
             }).catch(function (error) {
@@ -36008,9 +36006,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.error_asignatura = 0;
             this.error_msj_asig = [];
 
-            if (!this.nombre_asignatura) this.error_msj_asig.push('El nombre de la asignatura no debe estar vacio');
+            if (!this.nombre_asignatura) this.error_msj_asig.push('El nombre de la asignatura no debe estar vacío');
 
-            if (this.nombre_asignatura.length > 30) this.error_msj_asig.push('El nombre de la asignatura no debe ser mayor de 30 caracteres');
+            if (this.nombre_asignatura.length > 30) this.error_msj_asig.push('El nombre de la asignatura no debe ser mayor de 30 carácteres');
 
             if (this.error_msj_asig.length) this.error_asignatura = 1;
 
@@ -36703,7 +36701,7 @@ var render = function() {
                                 attrs: { selected: "" },
                                 domProps: { value: 0 }
                               },
-                              [_vm._v("Ninguna seccion")]
+                              [_vm._v("Ninguna sección")]
                             ),
                             _vm._v(" "),
                             _vm._l(_vm.array_seccion, function(seccion) {
@@ -37121,7 +37119,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "descripcion" } }, [
-                      _vm._v("Descripcion")
+                      _vm._v("Descripción")
                     ])
                   ]
                 ),
@@ -37273,7 +37271,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Nombre")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Descripcion")]),
+        _c("th", [_vm._v("Descripción")]),
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
       ])
@@ -38396,7 +38394,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Email")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Condicion")])
+        _c("th", [_vm._v("Condición")])
       ])
     ])
   },
@@ -38940,7 +38938,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             swal({
-                title: '¿Estas seguro de desactivar a este alumno?',
+                title: '¿Estas seguro de desactivar a éste alumno?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -38973,7 +38971,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             swal({
-                title: '¿Estas seguro de activar a este alumno?',
+                title: '¿Estas seguro de activar a éste alumno?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -39151,11 +39149,11 @@ var render = function() {
                   },
                   [
                     _c("option", { attrs: { value: "alumnos.cedula" } }, [
-                      _vm._v("Cedula")
+                      _vm._v("Cédula")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "secciones.ano" } }, [
-                      _vm._v("ano")
+                      _vm._v("año")
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "alumnos.nombre" } }, [
@@ -39169,7 +39167,7 @@ var render = function() {
                     _c(
                       "option",
                       { attrs: { value: "secciones.nombre_seccion" } },
-                      [_vm._v("Seccion")]
+                      [_vm._v("Sección")]
                     ),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "alumnos.email" } }, [
@@ -39177,17 +39175,17 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "alumnos.telefono" } }, [
-                      _vm._v("Telefono")
+                      _vm._v("Teléfono")
                     ]),
                     _vm._v(" "),
                     _c(
                       "option",
                       { attrs: { value: "periodos.periodo_inicio" } },
-                      [_vm._v("Periodo inicio")]
+                      [_vm._v("Período inicio")]
                     ),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "periodos.periodo_fin" } }, [
-                      _vm._v("Periodo fin")
+                      _vm._v("Período fín")
                     ])
                   ]
                 ),
@@ -39389,14 +39387,14 @@ var render = function() {
                                 _c(
                                   "span",
                                   { staticClass: "badge badge-success" },
-                                  [_vm._v("Activo")]
+                                  [_vm._v("Activó")]
                                 )
                               ])
                             : _c("div", [
                                 _c(
                                   "span",
                                   { staticClass: "badge badge-danger" },
-                                  [_vm._v("Desactivado")]
+                                  [_vm._v("Desactivadó")]
                                 )
                               ])
                         ])
@@ -39564,7 +39562,7 @@ var render = function() {
                           attrs: { for: "text-input" }
                         },
                         [
-                          _vm._v("\n                            Periodo "),
+                          _vm._v("\n                            Período "),
                           _c(
                             "span",
                             {
@@ -39625,7 +39623,7 @@ var render = function() {
                                 attrs: { selected: "" },
                                 domProps: { value: 0 }
                               },
-                              [_vm._v("Seleccione un periodo")]
+                              [_vm._v("Seleccione un período")]
                             ),
                             _vm._v(" "),
                             _vm._l(_vm.array_periodo, function(periodo) {
@@ -39660,7 +39658,7 @@ var render = function() {
                           attrs: { for: "text-input" }
                         },
                         [
-                          _vm._v("\n                            Seccion "),
+                          _vm._v("\n                            Sección "),
                           _c(
                             "span",
                             {
@@ -39741,7 +39739,7 @@ var render = function() {
                           attrs: { for: "email-input" }
                         },
                         [
-                          _vm._v("\n                            Cedula "),
+                          _vm._v("\n                            Cédula "),
                           _c(
                             "span",
                             {
@@ -39755,7 +39753,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Ingrese)")]
+                            [_vm._v("(*Ingresé)")]
                           )
                         ]
                       ),
@@ -39811,7 +39809,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Ingrese)")]
+                            [_vm._v("(*Ingresé)")]
                           )
                         ]
                       ),
@@ -39867,7 +39865,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Ingrese)")]
+                            [_vm._v("(*Ingresé)")]
                           )
                         ]
                       ),
@@ -39908,7 +39906,7 @@ var render = function() {
                           staticClass: "col-md-3 form-control-label",
                           attrs: { for: "email-input" }
                         },
-                        [_vm._v("Telefono")]
+                        [_vm._v("Teléfono")]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-9" }, [
@@ -40254,13 +40252,13 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Opciones")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Periodo")]),
+        _c("th", [_vm._v("Período")]),
         _vm._v(" "),
         _c("th", [_vm._v("Año")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Seccion")]),
+        _c("th", [_vm._v("Sección")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Cedula")]),
+        _c("th", [_vm._v("Cédula")]),
         _vm._v(" "),
         _c("th", [_vm._v("Apellido")]),
         _vm._v(" "),
@@ -40268,11 +40266,11 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("email")]),
         _vm._v(" "),
-        _c("th", [_vm._v("telefono")]),
+        _c("th", [_vm._v("teléfono")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Direccion")]),
+        _c("th", [_vm._v("Dirección")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Condicion")])
+        _c("th", [_vm._v("Condición")])
       ])
     ])
   },
@@ -40801,7 +40799,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     me.alumno_id = me.array_alumno[0]['id'];
                 } else {
 
-                    me.alumno = 'No existe el alumno en esta seccion';
+                    me.alumno = 'No existe el alumno en esta sección';
                     me.alumno_id = 0;
                 }
             }).catch(function (error) {
@@ -40846,11 +40844,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             }).then(function () {
 
-                me.modal = 0;
+                me.cerrarModal();
                 me.listarNota(1);
                 swal('Actualizada', 'La nota ha sido actualizada', 'success');
-                me.nota_id = 0;
-                me.nota = 0;
             }).catch(function () {
                 console.log(error);
             });
@@ -40866,9 +40862,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
 
-            if (!this.periodo_id) this.error_msj_nota.push('Seleccione un periodo');
+            if (!this.periodo_id) this.error_msj_nota.push('Seleccione un período');
 
-            if (!this.seccion_id) this.error_msj_nota.push('Seleccione una seccion');
+            if (!this.seccion_id) this.error_msj_nota.push('Seleccione una sección');
 
             if (!this.asignatura_id) this.error_msj_nota.push('Seleccione una asignatura');
 
@@ -41044,7 +41040,7 @@ var render = function() {
                                 attrs: { selected: "" },
                                 domProps: { value: 0 }
                               },
-                              [_vm._v("Seleccione un periodo")]
+                              [_vm._v("Seleccione un período")]
                             ),
                             _vm._v(" "),
                             _vm._l(_vm.array_periodo, function(periodo) {
@@ -41119,7 +41115,7 @@ var render = function() {
                                 attrs: { selected: "" },
                                 domProps: { value: 0 }
                               },
-                              [_vm._v("Seleccione una seccion")]
+                              [_vm._v("Seleccione una sección")]
                             ),
                             _vm._v(" "),
                             _vm._l(_vm.array_seccion, function(seccion) {
@@ -41521,7 +41517,7 @@ var render = function() {
                                   attrs: { selected: "" },
                                   domProps: { value: 0 }
                                 },
-                                [_vm._v("Seleccione un periodo")]
+                                [_vm._v("Seleccione un período")]
                               ),
                               _vm._v(" "),
                               _vm._l(_vm.array_periodo, function(periodo) {
@@ -41596,7 +41592,7 @@ var render = function() {
                                   attrs: { selected: "" },
                                   domProps: { value: 0 }
                                 },
-                                [_vm._v("Seleccione una seccion")]
+                                [_vm._v("Seleccione una sección")]
                               ),
                               _vm._v(" "),
                               _vm._l(_vm.array_seccion, function(seccion) {
@@ -42277,7 +42273,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Opciones")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Cedula")]),
+      _c("th", [_vm._v("Cédula")]),
       _vm._v(" "),
       _c("th", [_vm._v("Apellido")]),
       _vm._v(" "),
@@ -42317,7 +42313,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Opciones")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Cedula")]),
+      _c("th", [_vm._v("Cédula")]),
       _vm._v(" "),
       _c("th", [_vm._v("Alumno")]),
       _vm._v(" "),

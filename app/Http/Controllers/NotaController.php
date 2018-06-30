@@ -168,8 +168,10 @@ class NotaController extends Controller
                     $nota_final[$index - 1]['segundo_lapso'] != '' &&
                     $nota_final[$index - 1]['tercer_lapso'] != '' ) {
 
-                    $nota_final[$index - 1]['promedio_asignatura'] = ( $nota_final[$index - 1]['primer_lapso'] + 
+                    $promedio = ( $nota_final[$index - 1]['primer_lapso'] + 
                         $nota_final[$index - 1]['segundo_lapso'] + $nota_final[$index - 1]['tercer_lapso'] ) / 3;
+
+                    $nota_final[$index - 1]['promedio_asignatura'] = number_format($promedio, 2, ',', '.');
 
                 } else {
                     $nota_final[$index - 1]['promedio_asignatura'] = '';

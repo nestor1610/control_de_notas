@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-md-12">
-                    <p class="h1 text-center">Periodos</p>
+                    <p class="h1 text-center">Períodos</p>
                 </div>
             </div>
             <div class="card-body">
@@ -15,9 +15,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="input-group">
-                            <label class="form-control" for="text-input">Inicio del periodo</label>
+                            <label class="form-control" for="text-input">Inicio del período</label>
                             <input type="number" v-model="periodo_inicio" class="form-control" placeholder="Inicio">
-                            <label class="form-control" for="text-input">Fin del periodo</label>
+                            <label class="form-control" for="text-input">Fin del período</label>
                             <input type="number" v-model="periodo_fin" class="form-control" placeholder="Fin">
                             <button v-on:click="listarPeriodo(periodo_inicio, periodo_fin, 1)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-4 text-center">
                         <button v-on:click="abrirModal('periodo', 'registrar')" type="button" class="btn btn-secondary">
-                            <i class="icon-plus"></i>&nbsp;Nuevo periodo
+                            <i class="icon-plus"></i>&nbsp;Nuevo período
                         </button>
                     </div>
                     <div class="col-md-12 text-center">
@@ -43,12 +43,12 @@
                         <tr>
                             <tr>
                                 <th colspan="3">
-                                    <p class="h3 text-center">Listado de periodos</p>
+                                    <p class="h3 text-center">Listado de períodos</p>
                                 </th>
                             </tr>
                             <th>Opciones</th>
-                            <th>Inicio de periodo</th>
-                            <th>Fin de periodo</th>
+                            <th>Inicio de período</th>
+                            <th>Fin de período</th>
                         </tr>
                     </thead>
                     <tbody v-if="array_periodo.length">
@@ -65,7 +65,7 @@
                     <tbody v-else>
                         <tr>
                             <td colspan="3">
-                                <p class="h2 text-center">NO hay periodos registrados</p>
+                                <p class="h2 text-center">NO hay períodos registrados</p>
                             </td>
                         </tr>
                     </tbody>
@@ -88,18 +88,18 @@
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">
-                                Inicio del periodo <span style="color:red;" v-show="periodo_inicio.length == 0">(*Ingrese)</span>
+                                Inicio del período <span style="color:red;" v-show="periodo_inicio.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="periodo_inicio" class="form-control" placeholder="Inicio del periodo">
+                                <input type="text" v-model.trim="periodo_inicio" class="form-control" placeholder="Inicio del período">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Fin del periodo <span style="color:red;" v-show="periodo_fin.length == 0">(*Ingrese)</span>
+                                Fin del período <span style="color:red;" v-show="periodo_fin.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="periodo_fin" class="form-control" placeholder="Fin del periodo">
+                                <input type="text" v-model.trim="periodo_fin" class="form-control" placeholder="Fin del período">
                             </div>
                         </div>
                         <div v-show="error_periodo" class="form-group row div-error">
@@ -172,7 +172,7 @@
                     me.cerrarModal();
                     swal(
                       'Registrado',
-                      'El periodo ha sido registrado',
+                      'El período ha sido registrado',
                       'success'
                     )
                     me.listarPeriodo(0, 0);
@@ -197,7 +197,7 @@
                     me.cerrarModal();
                     swal(
                       'Actualizado',
-                      'El periodo ha sido actualizado',
+                      'El período ha sido actualizado',
                       'success'
                     )
                     me.listarPeriodo(0, 0);
@@ -212,15 +212,15 @@
                 this.periodo_inicio = parseInt( this.periodo_inicio );
                 this.periodo_fin = parseInt( this.periodo_fin );
 
-                if ( this.periodo_inicio > 2099 ) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+                if ( this.periodo_inicio > 2099 ) this.error_msj_per.push('El inicio del período no debe ser mayor del 2099');
 
-                if ( this.periodo_inicio < 2000 ) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
+                if ( this.periodo_inicio < 2000 ) this.error_msj_per.push('El inicio del período no debe ser menor del 2000');
 
-                if ( this.periodo_fin > 2099 ) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+                if ( this.periodo_fin > 2099 ) this.error_msj_per.push('El fin del período no debe ser mayor del 2099');
 
-                if ( this.periodo_fin < 2000 ) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+                if ( this.periodo_fin < 2000 ) this.error_msj_per.push('El fin del período no debe ser menor del 2000');
 
-                if ( this.periodo_inicio >= this.periodo_fin ) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
+                if ( this.periodo_inicio >= this.periodo_fin ) this.error_msj_per.push('El inicio del período no debe ser mayor o igual que el fin del período');
 
                 if (this.error_msj_per.length) this.error_periodo = 1;
 
@@ -232,19 +232,19 @@
                 this.periodo_inicio = parseInt( this.periodo_inicio );
                 this.periodo_fin = parseInt( this.periodo_fin );
 
-                if (!this.periodo_inicio) this.error_msj_per.push('El inicio del periodo no puede estar vacio');
+                if (!this.periodo_inicio) this.error_msj_per.push('El inicio del período no puede estar vacío');
 
-                if ( this.periodo_inicio > 2099 ) this.error_msj_per.push('El inicio del periodo no debe ser mayor del 2099');
+                if ( this.periodo_inicio > 2099 ) this.error_msj_per.push('El inicio del período no debe ser mayor del 2099');
 
-                if ( this.periodo_inicio < 2000 ) this.error_msj_per.push('El inicio del periodo no debe ser menor del 2000');
+                if ( this.periodo_inicio < 2000 ) this.error_msj_per.push('El inicio del período no debe ser menor del 2000');
 
-                if (!this.periodo_fin) this.error_msj_per.push('El final del periodo no puede estar vacio');
+                if (!this.periodo_fin) this.error_msj_per.push('El final del período no puede estar vacío');
 
-                if ( this.periodo_fin > 2099 ) this.error_msj_per.push('El fin del periodo no debe ser mayor del 2099');
+                if ( this.periodo_fin > 2099 ) this.error_msj_per.push('El fin del período no debe ser mayor del 2099');
 
-                if ( this.periodo_fin < 2000 ) this.error_msj_per.push('El fin del periodo no debe ser menor del 2000');
+                if ( this.periodo_fin < 2000 ) this.error_msj_per.push('El fin del período no debe ser menor del 2000');
 
-                if ( this.periodo_inicio >= this.periodo_fin ) this.error_msj_per.push('El inicio del periodo no debe ser mayor o igual que el fin del periodo');
+                if ( this.periodo_inicio >= this.periodo_fin ) this.error_msj_per.push('El inicio del período no debe ser mayor o igual que el fin del período');
 
                 if (this.error_msj_per.length) this.error_periodo = 1;
 
@@ -267,7 +267,7 @@
                             case "registrar":
                             {
                                 this.modal = 1;
-                                this.titulo_modal = 'Registrar periodo',
+                                this.titulo_modal = 'Registrar período',
                                 this.periodo_inicio = 0;
                                 this.periodo_fin = 0;
                                 this.tipo_accion = 1;
@@ -276,7 +276,7 @@
                             case "actualizar":
                             {
                                 this.modal = 1;
-                                this.titulo_modal = 'Actualizar periodo';
+                                this.titulo_modal = 'Actualizar período';
                                 this.tipo_accion = 2;
                                 this.periodo_id = data['id'];
                                 this.periodo_inicio = data['periodo_inicio'];

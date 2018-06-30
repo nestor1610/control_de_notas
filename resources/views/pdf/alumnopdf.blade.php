@@ -135,7 +135,7 @@
                     <td>{{ $nota['primer_lapso'] }}</td>
                     <td>{{ $nota['segundo_lapso'] }}</td>
                     <td>{{ $nota['tercer_lapso'] }}</td>
-                    <td>{{ number_format($nota['promedio_asignatura'], 2, ',', '.') }}</td>
+                    <td>{{ $nota['promedio_asignatura'] }}</td>
                 </tr>
                 @endforeach                               
             </tbody>

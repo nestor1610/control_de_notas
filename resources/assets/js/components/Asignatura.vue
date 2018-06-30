@@ -151,7 +151,7 @@
                             <div class="col-md-9">
                                 <select v-model.trim="seccion_id">
                                         
-                                    <option v-bind:value="0" selected>Ninguna seccion</option>
+                                    <option v-bind:value="0" selected>Ninguna sección</option>
                                     <option v-for="seccion in array_seccion" :key="seccion.id" v-bind:value="seccion.id">
                                         {{ 'Año: ' + seccion.ano + ' - ' + seccion.nombre_seccion  }}
                                     </option>
@@ -301,8 +301,6 @@
                     'asignatura_id': this.asignatura_id
                 }).then(function (response){
 
-                    console.log(response);
-
                     var respuesta = response.data;
 
                     if (respuesta) {
@@ -310,7 +308,7 @@
                         me.listarAsignatura(1, '', 'nombre_asignatura');
                         swal(
                           'Asignada',
-                          'La asignatura ha sido asignada a la seccion',
+                          'La asignatura ha sido asignada a la sección',
                           'success'
                         )
                         me.listarSeccion();
@@ -318,7 +316,7 @@
                     } else {
                         swal(
                           'Error',
-                          'No puedes asignar una asignatura a una seccion sin alumnos',
+                          'No puedes asignar una asignatura a una sección sin alumnos',
                           'error'
                         )
                     }
@@ -340,7 +338,7 @@
                     me.listarAsignatura(1, '', 'nombre_asignatura');
                     swal(
                       'Retirada',
-                      'La seccion ha sido retirada',
+                      'La sección ha sido retirada',
                       'success'
                     )
                     me.asignatura_id = 0;
@@ -379,9 +377,9 @@
                 this.error_asignatura = 0;
                 this.error_msj_asig =[];
 
-                if (!this.nombre_asignatura) this.error_msj_asig.push('El nombre de la asignatura no debe estar vacio');
+                if (!this.nombre_asignatura) this.error_msj_asig.push('El nombre de la asignatura no debe estar vacío');
 
-                if ( this.nombre_asignatura.length > 30 ) this.error_msj_asig.push('El nombre de la asignatura no debe ser mayor de 30 caracteres');
+                if ( this.nombre_asignatura.length > 30 ) this.error_msj_asig.push('El nombre de la asignatura no debe ser mayor de 30 carácteres');
 
                 if (this.error_msj_asig.length) this.error_asignatura = 1;
 
