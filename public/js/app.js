@@ -34400,6 +34400,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -34487,6 +34490,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         cargarPdf: function cargarPdf(seccion_id) {
             window.open('http://127.0.0.1:8000/alumno/pdf/seccion?seccion_id=' + seccion_id, '_blank');
+        },
+        cargarPdfAsignaturas: function cargarPdfAsignaturas(seccion_id) {
+            window.open('http://127.0.0.1:8000/seccion/pdf/asignatura?id=' + seccion_id, '_blank');
         },
         direccionAlumno: function direccionAlumno(alumno) {
             var avenida = '';
@@ -34849,6 +34855,20 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       _vm.cargarPdf(seccion.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "icon-book-open" })]
+                              ),
+                              _vm._v("  \n                            "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-warning btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.cargarPdfAsignaturas(seccion.id)
                                     }
                                   }
                                 },
@@ -40668,6 +40688,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -40748,6 +40773,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         cargarPdf: function cargarPdf(seccion_id, alumno_id) {
             window.open('http://127.0.0.1:8000/nota/pdf/alumno?seccion_id=' + seccion_id + '&alumno_id=' + alumno_id, '_blank');
+        },
+        aprobadosPdf: function aprobadosPdf() {
+            window.open('http://127.0.0.1:8000/nota/pdf/aprobados?seccion_id=' + this.seccion_id, '_blank');
         },
         listarPeriodo: function listarPeriodo() {
             var me = this;
@@ -41295,7 +41323,34 @@ var render = function() {
                         },
                         [
                           _c("i", { staticClass: "icon-plus" }),
-                          _vm._v(" Nueva nota\n                            ")
+                          _vm._v(" Nueva nota\n                        ")
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2 text-left" }, [
+                      _c(
+                        "button",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.seccion_id > 0,
+                              expression: "seccion_id > 0"
+                            }
+                          ],
+                          staticClass: "btn btn-success btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.aprobadosPdf()
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "icon-book-open" }),
+                          _vm._v(" Alumnos aprobados\n                        ")
                         ]
                       )
                     ])

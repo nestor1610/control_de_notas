@@ -45,11 +45,16 @@
                                 </select>
                             </div>
                         </div>
-                            <div class="col-md-2 text-left">
-                                <button v-on:click="mostrarNota()" type="button" class="btn btn-secondary">
-                                    <i class="icon-plus"></i>&nbsp;Nueva nota
-                                </button>
-                            </div>
+                        <div class="col-md-2 text-left">
+                            <button v-on:click="mostrarNota()" type="button" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Nueva nota
+                            </button>
+                        </div>
+                        <div class="col-md-2 text-left">
+                            <button v-show="seccion_id > 0" v-on:click="aprobadosPdf()" type="button" class="btn btn-success btn-secondary">
+                                <i class="icon-book-open"></i>&nbsp;Alumnos aprobados
+                            </button>
+                        </div>
                     </div>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
@@ -352,6 +357,9 @@
             },
             cargarPdf(seccion_id, alumno_id) {
                 window.open('http://127.0.0.1:8000/nota/pdf/alumno?seccion_id='+seccion_id+'&alumno_id='+alumno_id, '_blank');
+            },
+            aprobadosPdf(){
+                window.open('http://127.0.0.1:8000/nota/pdf/aprobados?seccion_id='+this.seccion_id, '_blank');
             },
             listarPeriodo (){
                 let me = this;

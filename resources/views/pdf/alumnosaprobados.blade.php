@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Alumnos</title>
+    <title>Alumnos aprobados</title>
     <style>
         body {
             margin: 0;
@@ -88,34 +88,42 @@
         <table class="table table-bordered table-striped table-sm">
             <thead>
                 <tr>
-                    <th colspan="6">{{'Alumnos de la seccion: '.$seccion->nombre_seccion.' Año: '.$seccion->ano.' Periodo: '.$seccion->periodo_inicio.'-'.$seccion->periodo_fin}}</th>
+                    <th colspan="6">{{'Alumnos de la seccion: '.$seccion['nombre_seccion'].' Año: '.$seccion['ano'].' Periodo: '.$seccion['periodo']['periodo_inicio'].'-'.$seccion['periodo']['periodo_fin']}}</th>
                 </tr>
                 <tr>
                     <th>Cedula</th>
-                    <th>Nombre</th>
                     <th>Apellido</th>
-                    <th>Telefono</th>
-                    <th>Email</th>
-                    <th>Direccion</th>
+                    <th>Nombre</th>
+                    <th colspan="3">Asignaturas</th>
                 </tr>
             </thead>
             <tbody>
                 @if ( count($alumnos) > 0 )
                     @foreach ($alumnos as $alumno)
-                    <tr>
-                        <td>{{ $alumno->cedula }}</td>
-                        <td>{{ $alumno->nombre }}</td>
-                        <td>{{ $alumno->apellido }}</td>
-                        <td>{{ $alumno->telefono }}</td>
-                        <td>{{ $alumno->email }}</td>
-                        <td>
-                            {{ 'Ciudad: '.$alumno->dir_ciudad.' Avenida: '.$alumno->dir_avenida.' Calle: '.$alumno->dir_calle.' Casa: '.$alumno->dir_casa }}
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $alumno['cedula'] }}</td>
+                            <td>{{ $alumno['apellido'] }}</td>
+                            <td>{{ $alumno['nombre'] }}</td>
+                            <td colspan="3">
+                                @foreach ($alumno['asignaturas'] as $asignatura)
+                                    <li>
+                                        {{ $asignatura['nombre'].': '.$asignatura['promedio'] }}
+                                    </li>
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                {{'Aprobadas: '.$alumno['aprobadas'].', reprobadas: '.$alumno['reprobadas'].'. El alumno esta '.$alumno['estatus'].'.' }}
+                            </td>
+                        </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="6">{{'Total de asignaturas: '.$total_asignaturas }}</td>
+                    </tr>
                 @else
                     <tr>
-                       <td colspan="6">No hay alumnos en esta seccion</td> 
+                       <td colspan="6">No hay alumnos con notas del primer, segundo y tercer lapso en ninguna asignatura.</td> 
                     </tr>
                 @endif
             </tbody>

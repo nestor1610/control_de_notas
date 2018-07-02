@@ -46,6 +46,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 		Route::get('/seccion', 'SeccionController@index');
 		Route::get('/seccion/listar-seccion', 'SeccionController@listarSecciones');
 		Route::get('/seccion/listar-seccion-alumno', 'SeccionController@listarSeccionesAlumno');
+		Route::get('/seccion/pdf/asignatura', 'SeccionController@asignaturasSeccionPdf');
 		Route::post('/seccion/registrar', 'SeccionController@store');
 		Route::put('/seccion/actualizar', 'SeccionController@update');
 
@@ -73,6 +74,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 		Route::post('/nota/registrar', 'NotaController@store');
 		Route::put('/nota/actualizar', 'NotaController@update');
 		Route::get('/nota/pdf/alumno', 'NotaController@listarPdf');
+		Route::get('/nota/pdf/aprobados', 'NotaController@alumnosAprobadosPdf');
 
 		/* Roles */
 		Route::get('/rol', 'RolController@index');

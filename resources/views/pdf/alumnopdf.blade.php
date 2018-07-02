@@ -82,7 +82,7 @@
 </head>
 <body>
     <div>
-        <h3>U.E.C.P "Andres Bello"  <span class="derecha">{{date('Y/m/d')}}</span></h3>
+        <h3>U.E.C.P "Andrés Bello"  <span class="derecha">{{date('Y/m/d')}}</span></h3>
     </div>
     <div>
         <table class="table table-bordered table-striped table-sm">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Asignatura;
 use App\Nota;
+use App\Alumno;
+use App\Seccion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -188,5 +190,95 @@ class NotaController extends Controller
         ]);
 
         return $pdf->download($nombre_archivo);
+    }
+
+    public function alumnosAprobadosPdf(Request $request)
+    {
+        $alumnos = DB::select(
+            'SELECT a.cedula, a.apellido, a.nombre, asig.nombre_asignatura,
+                ROUND( ( SUM( n.nota ) / 3 ), 2 ) promedio, IF( ( SUM( n.nota ) / 3 ) > 10, 1, 0 ) estatus
+            FROM alumnos a
+            JOIN secciones s ON a.seccion_id = s.id
+            JOIN alumno_nota alum_not  ON alum_not.alumno_id = a.id
+            JOIN notas n ON n.id = alum_not.nota_id
+            JOIN asignatura_nota asig_not ON asig_not.nota_id = n.id
+            JOIN asignaturas asig ON asig.id = asig_not.asignatura_id
+            WHERE s.id = :seccion_id
+            GROUP BY a.cedula, a.apellido, a.nombre, asig.nombre_asignatura
+            HAVING count(n.nota) = 3 
+            ORDER BY a.cedula, asig.nombre_asignatura', [
+            'seccion_id' => $request->seccion_id
+        ]);
+
+        $seccion = Seccion::where('id', $request->seccion_id)
+            ->first();
+
+        $seccion->periodo;
+
+        $total_asignaturas = Seccion::findOrFail($request->seccion_id)
+            ->asignaturas()
+            ->count();
+
+        $cedula = 0;
+        $index = 0;
+        $aprobados = [];
+
+        if ( $alumnos != NULL ) {
+            
+            foreach ($alumnos as $key => $alumno) {
+                
+                if ( $alumno->cedula != $cedula ) {
+
+                    $aprobados[$index]['cedula'] = $alumno->cedula;
+                    $aprobados[$index]['apellido'] = $alumno->apellido;
+                    $aprobados[$index]['nombre'] = $alumno->nombre;
+                    $aprobados[$index]['asignaturas'][] = [
+                        'nombre' => $alumno->nombre_asignatura,
+                        'promedio' => $alumno->promedio
+                    ];
+                    $aprobados[$index]['aprobadas'] = 0;
+                    $aprobados[$index]['reprobadas'] = 0;
+
+                    if ( $alumno->estatus )
+                        $aprobados[$index]['aprobadas']++;
+                    else
+                        $aprobados[$index]['reprobadas']++;
+
+                    if ( $total_asignaturas - 1 <= $aprobados[$index]['aprobadas'] )
+                        $aprobados[$index]['estatus'] = 'aprobado';
+                    else
+                        $aprobados[$index]['estatus'] = 'reprobado';
+
+                    $cedula = $alumno->cedula;
+                    $index++;
+
+                } elseif ( $alumno->cedula == $cedula ) {
+                    
+                    $aprobados[$index - 1]['asignaturas'][] = [
+                        'nombre' => $alumno->nombre_asignatura,
+                        'promedio' => $alumno->promedio
+                    ];
+
+                    if ( $alumno->estatus )
+                        $aprobados[$index - 1]['aprobadas']++;
+                    else
+                        $aprobados[$index - 1]['reprobadas']++;
+
+                    if ( $total_asignaturas - 1 <= $aprobados[$index - 1]['aprobadas'] )
+                        $aprobados[$index - 1]['estatus'] = 'aprobado';
+                    else
+                        $aprobados[$index - 1]['estatus'] = 'reprobado';
+                }
+            }
+        }
+
+        $pdf = \PDF::loadView('pdf.alumnosaprobados', [
+            'alumnos' => $aprobados,
+            'seccion' => $seccion,
+            'total_asignaturas' => $total_asignaturas
+        ]);
+
+        return $pdf->download('alumnos_aprobados_'.$seccion->ano.'_'.$seccion->nombre_seccion.'.pdf');
+
     }
 }

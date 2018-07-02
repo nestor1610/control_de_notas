@@ -77,6 +77,19 @@ class SeccionController extends Controller
         return $secciones;
     }
 
+    public function asignaturasSeccionPdf(Request $request)
+    {
+        $seccion = Seccion::findOrfail( $request->id );
+        $seccion->asignaturas;
+        $seccion->periodo;
+
+        $pdf = \PDF::loadView('pdf.seccionasignaturapdf', [
+            'seccion' => $seccion
+        ]);
+
+        return $pdf->download($seccion->ano.'_'.$seccion->nombre_seccion.'.pdf');
+    }
+
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

@@ -59,6 +59,9 @@
                                 </button> &nbsp;
                                 <button v-on:click="cargarPdf(seccion.id)" type="button" class="btn btn-info btn-sm">
                                     <i class="icon-book-open"></i>
+                                </button> &nbsp;
+                                <button v-on:click="cargarPdfAsignaturas(seccion.id)" type="button" class="btn btn-warning btn-sm">
+                                    <i class="icon-book-open"></i>
                                 </button>
                             </td>
                             <td v-text="seccion.nombre_seccion"></td>
@@ -298,6 +301,9 @@
             },
             cargarPdf(seccion_id) {
                 window.open('http://127.0.0.1:8000/alumno/pdf/seccion?seccion_id='+seccion_id, '_blank');
+            },
+            cargarPdfAsignaturas(seccion_id) {
+                window.open('http://127.0.0.1:8000/seccion/pdf/asignatura?id='+seccion_id, '_blank');
             },
             direccionAlumno (alumno){
                 var avenida = '';

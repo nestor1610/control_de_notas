@@ -24,4 +24,14 @@ class Alumno extends Model
     {
     	return $this->belongsTo('App\Seccion', 'seccion_id');
     }
+
+    /*
+        indicamos una relacion de muchos a muchos con el modelo alumnos
+        ya que de esta forma se usaran los metodos de laravel para acceder a 
+        los datos relacionadoes
+    */
+    public function notas()
+    {
+        return $this->belongsToMany('App\Nota');
+    }
 }
