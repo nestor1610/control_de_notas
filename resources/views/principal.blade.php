@@ -11,9 +11,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Icons -->
     <link href="css/plantilla.css" rel="stylesheet">
+    <script src="js/custom.js"></script>
 </head>
 
-<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+<body onload="nobackbutton();" class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
     <div id="app">
         <header class="app-header navbar">
             <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">

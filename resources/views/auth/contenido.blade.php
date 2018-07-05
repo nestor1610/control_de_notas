@@ -12,13 +12,14 @@
 
 </head>
 
-<body class="app flex-row align-items-center">
+<body onload="nobackbutton();" class="app flex-row align-items-center">
   <div class="container">
     @yield('login')
   </div>
 
   <!-- Bootstrap and necessary plugins -->
   <script src="js/plantilla.js"></script>
+  <script src="js/custom.js"></script>
 
 </body>
 </html>

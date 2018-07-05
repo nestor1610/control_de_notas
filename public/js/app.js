@@ -34858,7 +34858,12 @@ var render = function() {
                                     }
                                   }
                                 },
-                                [_c("i", { staticClass: "icon-book-open" })]
+                                [
+                                  _c("i", { staticClass: "icon-book-open" }),
+                                  _vm._v(
+                                    " Alumnos de la seccion\n                            "
+                                  )
+                                ]
                               ),
                               _vm._v("  \n                            "),
                               _c(
@@ -34872,7 +34877,12 @@ var render = function() {
                                     }
                                   }
                                 },
-                                [_c("i", { staticClass: "icon-book-open" })]
+                                [
+                                  _c("i", { staticClass: "icon-book-open" }),
+                                  _vm._v(
+                                    " Asignaturas de la seccion\n                            "
+                                  )
+                                ]
                               )
                             ]),
                             _vm._v(" "),
@@ -40693,6 +40703,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -40776,6 +40791,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         aprobadosPdf: function aprobadosPdf() {
             window.open('http://127.0.0.1:8000/nota/pdf/aprobados?seccion_id=' + this.seccion_id, '_blank');
+        },
+        notasSeccionPdf: function notasSeccionPdf() {
+            window.open('http://127.0.0.1:8000/seccion/pdf/notas?seccion_id=' + this.seccion_id, '_blank');
         },
         listarPeriodo: function listarPeriodo() {
             var me = this;
@@ -41353,6 +41371,35 @@ var render = function() {
                           _vm._v(" Alumnos aprobados\n                        ")
                         ]
                       )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2 text-left" }, [
+                      _c(
+                        "button",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.seccion_id > 0,
+                              expression: "seccion_id > 0"
+                            }
+                          ],
+                          staticClass: "btn btn-warning btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.notasSeccionPdf()
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "icon-book-open" }),
+                          _vm._v(
+                            " Notas de la seccion\n                        "
+                          )
+                        ]
+                      )
                     ])
                   ]),
                   _vm._v(" "),
@@ -41402,7 +41449,14 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_c("i", { staticClass: "icon-book-open" })]
+                                    [
+                                      _c("i", {
+                                        staticClass: "icon-book-open"
+                                      }),
+                                      _vm._v(
+                                        " Notas del alumno\n                                "
+                                      )
+                                    ]
                                   )
                                 ]),
                                 _vm._v(" "),

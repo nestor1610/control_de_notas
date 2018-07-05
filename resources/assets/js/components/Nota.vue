@@ -55,6 +55,11 @@
                                 <i class="icon-book-open"></i>&nbsp;Alumnos aprobados
                             </button>
                         </div>
+                        <div class="col-md-2 text-left">
+                            <button v-show="seccion_id > 0" v-on:click="notasSeccionPdf()" type="button" class="btn btn-warning btn-secondary">
+                                <i class="icon-book-open"></i>&nbsp;Notas de la seccion
+                            </button>
+                        </div>
                     </div>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
@@ -83,7 +88,7 @@
                                         <i class="icon-eye"></i>
                                     </button> -->
                                     <button v-on:click="cargarPdf(nota.seccion_id, nota.alumno_id)" type="button" class="btn btn-info btn-sm">
-                                        <i class="icon-book-open"></i>
+                                        <i class="icon-book-open"></i> Notas del alumno
                                     </button>
                                 </td>
                                 <td v-text="nota.cedula"></td>
@@ -355,11 +360,14 @@
                     console.log(error);
                 });
             },
-            cargarPdf(seccion_id, alumno_id) {
+            cargarPdf (seccion_id, alumno_id) {
                 window.open('http://127.0.0.1:8000/nota/pdf/alumno?seccion_id='+seccion_id+'&alumno_id='+alumno_id, '_blank');
             },
-            aprobadosPdf(){
+            aprobadosPdf () {
                 window.open('http://127.0.0.1:8000/nota/pdf/aprobados?seccion_id='+this.seccion_id, '_blank');
+            },
+            notasSeccionPdf () {
+                window.open('http://127.0.0.1:8000/seccion/pdf/notas?seccion_id='+this.seccion_id, '_blank');
             },
             listarPeriodo (){
                 let me = this;

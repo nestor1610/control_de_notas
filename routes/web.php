@@ -47,6 +47,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 		Route::get('/seccion/listar-seccion', 'SeccionController@listarSecciones');
 		Route::get('/seccion/listar-seccion-alumno', 'SeccionController@listarSeccionesAlumno');
 		Route::get('/seccion/pdf/asignatura', 'SeccionController@asignaturasSeccionPdf');
+		Route::get('/seccion/pdf/notas', 'SeccionController@notasSeccionPdf');
 		Route::post('/seccion/registrar', 'SeccionController@store');
 		Route::put('/seccion/actualizar', 'SeccionController@update');
 

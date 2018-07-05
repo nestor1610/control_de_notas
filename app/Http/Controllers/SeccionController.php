@@ -90,6 +90,86 @@ class SeccionController extends Controller
         return $pdf->download($seccion->ano.'_'.$seccion->nombre_seccion.'.pdf');
     }
 
+    public function notasSeccionPdf(Request $request)
+    {
+        $notas = DB::select('SELECT a.cedula, a.apellido, a.nombre,
+				asig.nombre_asignatura,
+				n.lapso, n.nota
+			FROM alumnos a
+			LEFT JOIN alumno_nota alum_nota ON a.id = alum_nota.alumno_id
+			JOIN secciones s ON a.seccion_id = s.id AND s.id = :seccion_id
+			LEFT JOIN notas n ON n.id = alum_nota.nota_id
+			LEFT JOIN asignatura_nota asig_not ON asig_not.nota_id = n.id
+			LEFT JOIN asignaturas asig ON asig.id = asig_not.asignatura_id
+			GROUP BY a.cedula, a.apellido, a.nombre, asig.nombre_asignatura, n.lapso, n.nota
+			ORDER BY a.cedula, a.apellido, a.nombre, asig.nombre_asignatura, n.lapso', [
+			'seccion_id' => $request->seccion_id
+		]);
+
+		$seccion = Seccion::where('id', $request->seccion_id)->first();
+
+		$asignaturas = Seccion::findOrFail($request->seccion_id)
+			->asignaturas()
+			->orderBy('nombre_asignatura')
+			->get();
+
+		$nombre_asignaturas = [];
+
+		foreach ($asignaturas as $key => $asignatura) {
+			$nombre_asignaturas[$asignatura->nombre_asignatura] = [
+				1 => 0,
+				2 => 0,
+				3 => 0,
+				'promedio' => 0
+			];
+		}
+
+		$cedula = 0;
+        $index = 0;
+		$notas_seccion = [];
+
+		if ( $notas != NULL ) {
+			
+			foreach ($notas as $key => $nota) {
+				
+				if ( $nota->cedula != $cedula ) {
+					
+					$notas_seccion[$index]['cedula'] = $nota->cedula;
+					$notas_seccion[$index]['alumno'] = $nota->apellido.' '.$nota->nombre;
+					$notas_seccion[$index]['asignatura_notas'] = $nombre_asignaturas;
+					if ( $nota->nombre_asignatura == NULL ){
+						$cedula = $nota->cedula;
+						$index++;
+						continue;
+					};
+					$notas_seccion[$index]['asignatura_notas'][$nota->nombre_asignatura][$nota->lapso] = $nota->nota;
+					$cedula = $nota->cedula;
+					$index++;
+
+				} elseif ( $nota->cedula == $cedula ) {
+					
+					$notas_seccion[$index - 1]['asignatura_notas'][$nota->nombre_asignatura][$nota->lapso] = $nota->nota;
+				}
+
+				$promedio = (
+					$notas_seccion[$index - 1]['asignatura_notas'][$nota->nombre_asignatura][1] +
+					$notas_seccion[$index - 1]['asignatura_notas'][$nota->nombre_asignatura][2] +
+					$notas_seccion[$index - 1]['asignatura_notas'][$nota->nombre_asignatura][3]
+				) / 3;
+				$notas_seccion[$index - 1]['asignatura_notas'][$nota->nombre_asignatura]['promedio'] =
+					number_format($promedio, 2, ',', '.');
+			}
+		}
+
+		$pdf = \PDF::loadView('pdf.notasseccion', [
+            'alumnos' => $notas_seccion,
+            'seccion' => $seccion,
+            'asignaturas' => $nombre_asignaturas
+        ]);
+
+        return $pdf->download('notas_seccion_'.$seccion->ano.'_'.$seccion->nombre_seccion.'.pdf');
+    }
+
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

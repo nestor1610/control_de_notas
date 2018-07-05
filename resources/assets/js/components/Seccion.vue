@@ -58,10 +58,10 @@
                                   <i class="icon-eye"></i>
                                 </button> &nbsp;
                                 <button v-on:click="cargarPdf(seccion.id)" type="button" class="btn btn-info btn-sm">
-                                    <i class="icon-book-open"></i>
+                                    <i class="icon-book-open"></i> Alumnos de la seccion
                                 </button> &nbsp;
                                 <button v-on:click="cargarPdfAsignaturas(seccion.id)" type="button" class="btn btn-warning btn-sm">
-                                    <i class="icon-book-open"></i>
+                                    <i class="icon-book-open"></i> Asignaturas de la seccion
                                 </button>
                             </td>
                             <td v-text="seccion.nombre_seccion"></td>
