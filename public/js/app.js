@@ -38790,6 +38790,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -38901,6 +38904,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+        actaPdf: function actaPdf(id) {
+            window.open('http://127.0.0.1:8000/alumno/pdf/citacion?alumno_id=' + id, '_blank');
         },
         cambiarPagina: function cambiarPagina(page, buscar, criterio) {
             var me = this;
@@ -39350,7 +39356,8 @@ var render = function() {
                                       }
                                     },
                                     [_c("i", { staticClass: "icon-trash" })]
-                                  )
+                                  ),
+                                  _vm._v("  \n                            ")
                                 ]
                               : [
                                   _c(
@@ -39365,8 +39372,24 @@ var render = function() {
                                       }
                                     },
                                     [_c("i", { staticClass: "icon-check" })]
-                                  )
-                                ]
+                                  ),
+                                  _vm._v("  \n                            ")
+                                ],
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info btn-sm",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.actaPdf(alumno.id)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "icon-book-open" })]
+                            ),
+                            _vm._v("  \n                        ")
                           ],
                           2
                         ),

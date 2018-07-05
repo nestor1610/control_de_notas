@@ -69,13 +69,16 @@
                                 <template v-if="alumno.condicion">
                                     <button type="button" class="btn btn-danger btn-sm" v-on:click="desactivarAlumno(alumno.id)">
                                         <i class="icon-trash"></i>
-                                    </button>
+                                    </button> &nbsp;
                                 </template>
                                 <template v-else="alumno.condicion">
                                     <button type="button" class="btn btn-info btn-sm" v-on:click="activarAlumno(alumno.id)">
                                         <i class="icon-check"></i>
-                                    </button>
+                                    </button> &nbsp;
                                 </template>
+                                <button type="button" class="btn btn-info btn-sm" v-on:click="actaPdf(alumno.id)">
+                                    <i class="icon-book-open"></i>
+                                </button> &nbsp;
                             </td>
                             <td v-text="alumno.periodo_inicio + '-' + alumno.periodo_fin"></td>
                             <td v-text="alumno.ano"></td>
@@ -352,6 +355,9 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            actaPdf (id) {
+                window.open('http://127.0.0.1:8000/alumno/pdf/citacion?alumno_id=' + id, '_blank');
             },
             cambiarPagina (page, buscar, criterio){
                 let me = this;

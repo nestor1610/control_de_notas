@@ -197,25 +197,36 @@ class AlumnoController extends Controller
             ->where('secciones.id', $seccion_id)
             ->first();
 
-        if ( count($alumnos) > 0 ) {
-            
-            $pdf = \PDF::loadView('pdf.seccionpdf', [
-                'alumnos' => $alumnos,
-                'seccion' => $seccion
-            ]);
+        $alumnos = ( count($alumnos) > 0 ) ? $alumnos : [];
 
-            return $pdf->download($seccion->nombre_seccion.'_'.$seccion->ano.'_'.$seccion->periodo_inicio.'-'.$seccion->periodo_fin.'.pdf');
+        $pdf = \PDF::loadView('pdf.seccionpdf', [
+            'alumnos' => $alumnos,
+            'seccion' => $seccion
+        ]);
 
-        } else {
+        return $pdf->download($seccion->nombre_seccion.'_'.$seccion->ano.'_'.$seccion->periodo_inicio.'-'.$seccion->periodo_fin.'.pdf');
 
-            $pdf = \PDF::loadView('pdf.seccionpdf', [
-                'alumnos' => [],
-                'seccion' => $seccion
-            ]);
+    }
 
-            return $pdf->download($seccion->nombre_seccion.'_'.$seccion->ano.'_'.$seccion->periodo_inicio.'-'.$seccion->periodo_fin.'.pdf');
+    public function citacionPdf(Request $request)
+    {
+        $alumno = DB::table('secciones')
+        ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
+        ->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
+        ->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
+            'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
+            'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+            'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
+        ->where([
+                ['alumnos.id', '=', $request->alumno_id],
+                ['alumnos.condicion', '=', 1]
+            ])
+        ->first();
 
-        }
+        $pdf = \PDF::loadView('pdf.citacionpdf', [
+            'alumno' => $alumno
+        ]);
 
+        return $pdf->download($alumno->cedula.'citacion.pdf');
     }
 }

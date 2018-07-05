@@ -69,6 +69,7 @@ Route::group( ['middleware' => ['auth'] ], function () {
 		Route::put('/alumno/activar', 'AlumnoController@activate');
 		Route::put('/alumno/desactivar', 'AlumnoController@desactive');
 		Route::get('/alumno/pdf/seccion', 'AlumnoController@seccionPdf');
+		Route::get('/alumno/pdf/citacion', 'AlumnoController@citacionPdf');
 
 		/* Notas */
 		Route::get('/nota', 'NotaController@index');
