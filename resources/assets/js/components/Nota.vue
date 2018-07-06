@@ -408,9 +408,21 @@
             },
             buscarAlumno (){
                 let me = this;
-                var url = '/alumno/buscar-alumno?cedula=' + me.cedula + '&seccion_id=' + me.seccion_id;
+                var url = '/alumno/buscar-alumno?cedula=' + me.cedula + '&seccion_id=' + me.seccion_id + '&lapso=' +me.lapso + '&asignatura_id=' +me.asignatura_id;
 
                 axios.get(url).then(function (response) {
+
+                    if (response.data == 1) {
+                        swal(
+                          'Error',
+                          'El alumno ya tiene una nota de ese lapso en esa asignatura',
+                          'error'
+                        )
+                        me.alumno= 'Ya tiene nota';
+                        me.alumno_id = 0;
+                        return;
+                    }
+
                     me.array_alumno = response.data;
 
                     if (me.array_alumno.length > 0)
@@ -542,7 +554,11 @@
 
                 if (me.alumno_id <= 0 || me.nota <= 0 || me.nota > 20)
                 {
-
+                    swal({
+                        type: 'error',
+                        title: 'Error...',
+                        text: 'Ingrese el alumno, y una nota entre 1 y 20.',
+                    })
                 }
                 else {
 

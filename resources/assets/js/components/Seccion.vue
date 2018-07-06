@@ -21,7 +21,7 @@
                               <option value="periodo_inicio">Período inicio</option>
                               <option value="periodo_fin">Período fin</option>
                             </select>
-                            <input v-on:keyup.enter="listarSeccion(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
+                            <input onkeypress="return soloLetrasConAcentos(event)" v-on:keyup.enter="listarSeccion(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarSeccion(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
                                 <i class="icon-trash"></i> Limpiar
@@ -178,7 +178,7 @@
                                 Seccion <span style="color:red;" v-show="nombre_seccion.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la sección">
+                                <input onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la sección">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -188,8 +188,8 @@
                             <div class="col-md-9">
                                 <select v-model.trim="ano">
                                     <option v-bind:value="0" selected>Seleccione un año</option>
-                                    <option v-for="ano in array_ano" :key="ano.id" v-bind:value="ano" >
-                                        {{ ano }}
+                                    <option v-for="ano in array_ano" :key="ano.id" v-bind:value="ano.id" >
+                                        {{ ano.ano }}
                                     </option>
                                 </select>
                             </div>
@@ -223,7 +223,32 @@
                 seccion_id : 0,
                 nombre_seccion : '',
                 ano : 0,
-                array_ano : [1, 2, 3, 4, 5, 6],
+                array_ano : [
+                    {
+                        'id' : 1,
+                        'ano' : 'Primer año'
+                    },
+                    {
+                        'id' : 2,
+                        'ano' : 'Segundo año'
+                    },
+                    {
+                        'id' : 3,
+                        'ano' : 'Tercer año'
+                    },
+                    {
+                        'id' : 4,
+                        'ano' : 'Cuarto año'
+                    },
+                    {
+                        'id' : 5,
+                        'ano' : 'Quinto año'
+                    },
+                    {
+                        'id' : 6,
+                        'ano' : 'Sexto año'
+                    }
+                ],
                 array_periodo: [],
                 array_seccion : [],
                 array_alumno : [],

@@ -26,7 +26,7 @@
                               <option value="periodos.periodo_inicio">Período inicio</option>
                               <option value="periodos.periodo_fin">Período fín</option>
                             </select>
-                            <input v-on:keyup.enter="listarAlumno(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
+                            <input onkeypress="return soloLetrasAcentosNumeros(event)" v-on:keyup.enter="listarAlumno(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarAlumno(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
                                 <i class="icon-trash"></i> Limpiar
@@ -169,7 +169,7 @@
                                 Cédula <span style="color:red;" v-show="cedula.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="cedula" class="form-control" placeholder="Cedula">
+                                <input onkeypress="return soloNumeros(event)" type="text" v-model.trim="cedula" class="form-control" placeholder="Cedula">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -177,7 +177,7 @@
                                 Nombre <span style="color:red;" v-show="nombre.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="nombre" class="form-control" placeholder="Nombre">
+                                <input onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="nombre" class="form-control" placeholder="Nombre">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -185,13 +185,13 @@
                             Apellido <span style="color:red;" v-show="apellido.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="apellido" class="form-control" placeholder="Apellido">
+                                <input onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="apellido" class="form-control" placeholder="Apellido">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Teléfono</label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="telefono" class="form-control" placeholder="Telefono">
+                                <input onkeypress="return soloNumeros(event)" type="text" v-model.trim="telefono" class="form-control" placeholder="Telefono">
                             </div>
                         </div>
                         <div class="form-group row">

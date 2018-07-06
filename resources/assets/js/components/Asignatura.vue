@@ -18,7 +18,7 @@
                             <select class="form-control col-md-3" v-model="criterio">
                               <option value="nombre_asignatura">Nombre asignatura</option>
                             </select>
-                            <input v-on:keyup.enter="listarAsignatura(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
+                            <input onkeypress="return soloLetrasConAcentos(event)" v-on:keyup.enter="listarAsignatura(1, buscar, criterio)" type="text" v-model="buscar" class="form-control" placeholder="Texto a buscar">
                             <button v-on:click="listarAsignatura(1, buscar, criterio)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
                                 <i class="icon-trash"></i> Limpiar
@@ -114,7 +114,7 @@
                                 Asignatura <span style="color:red;" v-show="nombre_asignatura.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" v-model.trim="nombre_asignatura" class="form-control" placeholder="Nombre de la asignatura">
+                                <input type="text" onkeypress="return soloLetrasConAcentos(event)" v-model.trim="nombre_asignatura" class="form-control" placeholder="Nombre de la asignatura">
                             </div>
                         </div>
                         <div v-show="error_asignatura" class="form-group row div-error">

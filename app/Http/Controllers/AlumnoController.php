@@ -95,6 +95,23 @@ class AlumnoController extends Controller
 
         $cedula = $request->cedula;
         $seccion_id = $request->seccion_id;
+        $asignatura_id = $request->asignatura_id;
+        $lapso = $request->lapso;
+
+        $nota = DB::select(
+            'SELECT n.nota as existe FROM notas n
+            JOIN alumno_nota a_n ON n.id = a_n.nota_id AND n.lapso = :lapso
+            JOIN asignatura_nota asig_n ON n.id = asig_n.nota_id
+            JOIN asignaturas asig ON asig.id = asig_n.asignatura_id AND asig.id = :asignatura_id
+            JOIN alumnos a ON a.id = a_n.alumno_id AND a.cedula = :cedula AND a.seccion_id = :seccion_id', [
+                'cedula' => $cedula,
+                'asignatura_id' => $asignatura_id,
+                'seccion_id' => $seccion_id,
+                'lapso' => $lapso
+            ]
+        );
+
+        if ( $nota != NULL ) return 1;
 
         $alumno = Alumno::select('id', 'nombre', 'apellido', 'cedula')
             ->where([

@@ -34411,7 +34411,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             seccion_id: 0,
             nombre_seccion: '',
             ano: 0,
-            array_ano: [1, 2, 3, 4, 5, 6],
+            array_ano: [{
+                'id': 1,
+                'ano': 'Primer año'
+            }, {
+                'id': 2,
+                'ano': 'Segundo año'
+            }, {
+                'id': 3,
+                'ano': 'Tercer año'
+            }, {
+                'id': 4,
+                'ano': 'Cuarto año'
+            }, {
+                'id': 5,
+                'ano': 'Quinto año'
+            }, {
+                'id': 6,
+                'ano': 'Sexto año'
+            }],
             array_periodo: [],
             array_seccion: [],
             array_alumno: [],
@@ -34717,7 +34735,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "Texto a buscar" },
+                      attrs: {
+                        onkeypress: "return soloLetrasConAcentos(event)",
+                        type: "text",
+                        placeholder: "Texto a buscar"
+                      },
                       domProps: { value: _vm.buscar },
                       on: {
                         keyup: function($event) {
@@ -35298,6 +35320,7 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           attrs: {
+                            onkeypress: "return soloLetrasConAcentos(event)",
                             type: "text",
                             placeholder: "Nombre de la sección"
                           },
@@ -35386,11 +35409,11 @@ var render = function() {
                             _vm._l(_vm.array_ano, function(ano) {
                               return _c(
                                 "option",
-                                { key: ano.id, domProps: { value: ano } },
+                                { key: ano.id, domProps: { value: ano.id } },
                                 [
                                   _vm._v(
                                     "\n                                    " +
-                                      _vm._s(ano) +
+                                      _vm._s(ano.ano) +
                                       "\n                                "
                                   )
                                 ]
@@ -36166,7 +36189,11 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Texto a buscar" },
+                  attrs: {
+                    onkeypress: "return soloLetrasConAcentos(event)",
+                    type: "text",
+                    placeholder: "Texto a buscar"
+                  },
                   domProps: { value: _vm.buscar },
                   on: {
                     keyup: function($event) {
@@ -36525,6 +36552,7 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "text",
+                            onkeypress: "return soloLetrasConAcentos(event)",
                             placeholder: "Nombre de la asignatura"
                           },
                           domProps: { value: _vm.nombre_asignatura },
@@ -37672,7 +37700,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (!this.password) this.error_msj_usu.push('El password del usuario no puede estar vacio');
 
+            if (this.password.length <= 3) this.error_msj_usu.push('El password del usuario debe tener minimo 4 caracteres');
+
+            if (this.password.length > 8) this.error_msj_usu.push('El password del usuario debe tener maximo 8 caracteres');
+
             if (!this.password_confirmar) this.error_msj_usu.push('Confirme el password');
+
+            if (this.password_confirmar.length < 3) this.error_msj_usu.push('El password de confirmacion debe tener minimo 4 caracteres');
+
+            if (this.password_confirmar.length > 8) this.error_msj_usu.push('El password de confirmacion debe tener maximo 8 caracteres');
 
             if (this.password != this.password_confirmar) this.error_msj_usu.push('El password debe coincidir');
 
@@ -38209,7 +38245,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Ingrese)")]
+                            [_vm._v("(*Ingrese solo letras y numeros)")]
                           )
                         ]
                       ),
@@ -38226,7 +38262,11 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "password", placeholder: "Password" },
+                          attrs: {
+                            type: "password",
+                            onkeypress: "return soloLetrasYNumeros(event)",
+                            placeholder: "Password"
+                          },
                           domProps: { value: _vm.password },
                           on: {
                             input: function($event) {
@@ -38267,7 +38307,7 @@ var render = function() {
                               ],
                               staticStyle: { color: "red" }
                             },
-                            [_vm._v("(*Ingrese)")]
+                            [_vm._v("(*Ingrese solo letras y numeros)")]
                           )
                         ]
                       ),
@@ -38284,7 +38324,11 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "password", placeholder: "Password" },
+                          attrs: {
+                            type: "password",
+                            onkeypress: "return soloLetrasYNumeros(event)",
+                            placeholder: "Password"
+                          },
                           domProps: { value: _vm.password_confirmar },
                           on: {
                             input: function($event) {
@@ -39236,7 +39280,11 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Texto a buscar" },
+                  attrs: {
+                    onkeypress: "return soloLetrasAcentosNumeros(event)",
+                    type: "text",
+                    placeholder: "Texto a buscar"
+                  },
                   domProps: { value: _vm.buscar },
                   on: {
                     keyup: function($event) {
@@ -39823,7 +39871,11 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "Cedula" },
+                          attrs: {
+                            onkeypress: "return soloNumeros(event)",
+                            type: "text",
+                            placeholder: "Cedula"
+                          },
                           domProps: { value: _vm.cedula },
                           on: {
                             input: function($event) {
@@ -39879,7 +39931,11 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "Nombre" },
+                          attrs: {
+                            onkeypress: "return soloLetrasConAcentos(event)",
+                            type: "text",
+                            placeholder: "Nombre"
+                          },
                           domProps: { value: _vm.nombre },
                           on: {
                             input: function($event) {
@@ -39935,7 +39991,11 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "Apellido" },
+                          attrs: {
+                            onkeypress: "return soloLetrasConAcentos(event)",
+                            type: "text",
+                            placeholder: "Apellido"
+                          },
                           domProps: { value: _vm.apellido },
                           on: {
                             input: function($event) {
@@ -39974,7 +40034,11 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "Telefono" },
+                          attrs: {
+                            onkeypress: "return soloNumeros(event)",
+                            type: "text",
+                            placeholder: "Telefono"
+                          },
                           domProps: { value: _vm.telefono },
                           on: {
                             input: function($event) {
@@ -40857,9 +40921,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         buscarAlumno: function buscarAlumno() {
             var me = this;
-            var url = '/alumno/buscar-alumno?cedula=' + me.cedula + '&seccion_id=' + me.seccion_id;
+            var url = '/alumno/buscar-alumno?cedula=' + me.cedula + '&seccion_id=' + me.seccion_id + '&lapso=' + me.lapso + '&asignatura_id=' + me.asignatura_id;
 
             axios.get(url).then(function (response) {
+
+                if (response.data == 1) {
+                    swal('Error', 'El alumno ya tiene una nota de ese lapso en esa asignatura', 'error');
+                    me.alumno = 'Ya tiene nota';
+                    me.alumno_id = 0;
+                    return;
+                }
+
                 me.array_alumno = response.data;
 
                 if (me.array_alumno.length > 0) {
@@ -40973,7 +41045,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         agregarAlumno: function agregarAlumno() {
             var me = this;
 
-            if (me.alumno_id <= 0 || me.nota <= 0 || me.nota > 20) {} else {
+            if (me.alumno_id <= 0 || me.nota <= 0 || me.nota > 20) {
+                swal({
+                    type: 'error',
+                    title: 'Error...',
+                    text: 'Ingrese el alumno, y una nota entre 1 y 20.'
+                });
+            } else {
 
                 if (me.encuentra(me.alumno_id)) {
                     swal({

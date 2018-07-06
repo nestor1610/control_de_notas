@@ -114,18 +114,18 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Password <span style="color:red;" v-show="password.length == 0">(*Ingrese)</span>
+                                Password <span style="color:red;" v-show="password.length == 0">(*Ingrese solo letras y numeros)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="password" v-model.trim="password" class="form-control" placeholder="Password">
+                                <input type="password" onkeypress="return soloLetrasYNumeros(event)" v-model.trim="password" class="form-control" placeholder="Password">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
-                                Confirmar password <span style="color:red;" v-show="password_confirmar.length == 0">(*Ingrese)</span>
+                                Confirmar password <span style="color:red;" v-show="password_confirmar.length == 0">(*Ingrese solo letras y numeros)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="password" v-model.trim="password_confirmar" class="form-control" placeholder="Password">
+                                <input type="password" onkeypress="return soloLetrasYNumeros(event)" v-model.trim="password_confirmar" class="form-control" placeholder="Password">
                             </div>
                         </div>
                         <div v-show="error_usuario" class="form-group row div-error">
@@ -253,7 +253,15 @@
 
                 if (!this.password) this.error_msj_usu.push('El password del usuario no puede estar vacio');
 
+                if ( this.password.length <= 3 ) this.error_msj_usu.push('El password del usuario debe tener minimo 4 caracteres');
+
+                if ( this.password.length > 8 ) this.error_msj_usu.push('El password del usuario debe tener maximo 8 caracteres');
+
                 if (!this.password_confirmar) this.error_msj_usu.push('Confirme el password');
+
+                if ( this.password_confirmar.length < 3 ) this.error_msj_usu.push('El password de confirmacion debe tener minimo 4 caracteres');
+
+                if ( this.password_confirmar.length > 8 ) this.error_msj_usu.push('El password de confirmacion debe tener maximo 8 caracteres');
 
                 if ( this.password != this.password_confirmar) this.error_msj_usu.push('El password debe coincidir');
 
