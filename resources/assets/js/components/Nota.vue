@@ -91,7 +91,7 @@
                                         <i class="icon-book-open"></i> Notas del alumno
                                     </button>
                                 </td>
-                                <td v-text="nota.cedula"></td>
+                                <td v-text="nota.tipo_documento + '-' + nota.cedula"></td>
                                 <td v-text="nota.apellido"></td>
                                 <td v-text="nota.nombre"></td>
                                 <td v-text="nota.nombre_asignatura"></td>

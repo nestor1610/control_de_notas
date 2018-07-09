@@ -83,11 +83,11 @@
                             <td v-text="alumno.periodo_inicio + '-' + alumno.periodo_fin"></td>
                             <td v-text="alumno.ano"></td>
                             <td v-text="alumno.nombre_seccion"></td>
-                            <td v-text="alumno.cedula"></td>
+                            <td v-text="alumno.tipo_documento + '-' + alumno.cedula"></td>
                             <td v-text="alumno.apellido"></td>
                             <td v-text="alumno.nombre"></td>
                             <td v-text="alumno.email"></td>
-                            <td v-text="alumno.telefono"></td>
+                            <td>{{ numeroAlumno(alumno) }}</td>
                             <td>{{ direccionAlumno(alumno) }}</td>
                             <td>
                                 <div v-if="alumno.condicion">
@@ -168,7 +168,14 @@
                             <label class="col-md-3 form-control-label" for="email-input">
                                 Cédula <span style="color:red;" v-show="cedula.length == 0">(*Ingresé)</span>
                             </label>
-                            <div class="col-md-9">
+                            <div class="col-md-2">
+                                <select v-model.trim="tipo_documento">
+                                    <option v-for="documento in array_tipo_doc" :key="documento.id" v-bind:value="documento.id">
+                                        {{ documento.doc }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-7">
                                 <input onkeypress="return soloNumeros(event)" type="text" v-model.trim="cedula" class="form-control" placeholder="Cedula">
                             </div>
                         </div>
@@ -177,7 +184,7 @@
                                 Nombre <span style="color:red;" v-show="nombre.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
-                                <input onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="nombre" class="form-control" placeholder="Nombre">
+                                <input v-on:keyup="primeraLetraM()" onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="nombre" class="form-control" placeholder="Nombre">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -185,12 +192,19 @@
                             Apellido <span style="color:red;" v-show="apellido.length == 0">(*Ingresé)</span>
                             </label>
                             <div class="col-md-9">
-                                <input onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="apellido" class="form-control" placeholder="Apellido">
+                                <input v-on:keyup="primeraLetraM()" onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="apellido" class="form-control" placeholder="Apellido">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Teléfono</label>
-                            <div class="col-md-9">
+                            <div class="col-md-2">
+                                <select v-model.trim="cod_telefono">
+                                    <option v-for="cod in array_cod_telefono" :key="cod.id" v-bind:value="cod" >
+                                        {{ cod }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-7">
                                 <input onkeypress="return soloNumeros(event)" type="text" v-model.trim="telefono" class="form-control" placeholder="Telefono">
                             </div>
                         </div>
@@ -253,7 +267,9 @@
                 alumno_id : 0,
                 nombre : '',
                 apellido : '',
+                tipo_documento : 'V',
                 cedula : 0,
+                cod_telefono : '',
                 telefono : '',
                 email : '',
                 dir_ciudad : '',
@@ -263,6 +279,17 @@
                 array_periodo : [],
                 array_seccion : [],
                 array_alumno : [],
+                array_tipo_doc : [
+                    {
+                        'id' : 'V',
+                        'doc' : 'V-'
+                    },
+                    {
+                        'id' : 'E',
+                        'doc' : 'E-'
+                    },
+                ],
+                array_cod_telefono : ['0212', '0412', '0414', '0424', '0416', '0426'],
                 modal : 0,
                 titulo_modal : '',
                 tipo_accion : 0,
@@ -336,6 +363,15 @@
                 return 'Ciudad: ' + ciudad + ' Avenida: ' + avenida + ' Calle: ' + calle + ' Casa: ' + casa;
 
             },
+            numeroAlumno (alumno) {
+                var cod = '';
+                var telefono = '';
+
+                if (alumno.cod_telefono != null) cod = alumno.cod_telefono+'-';
+                if (alumno.telefono != null) telefono = alumno.telefono;
+
+                return cod+telefono;
+            },
             listarPeriodo (){
                 let me = this;
                 var url = '/periodo/listar-periodos';
@@ -378,7 +414,9 @@
                     'seccion_id': this.seccion_id,
                     'nombre': this.nombre,
                     'apellido': this.apellido,
+                    'tipo_documento': this.tipo_documento,
                     'cedula': this.cedula,
+                    'cod_telefono': this.cod_telefono,
                     'telefono': this.telefono,
                     'email': this.email,
                     'dir_ciudad': this.dir_ciudad,
@@ -410,7 +448,9 @@
                     'seccion_id': this.seccion_id,
                     'nombre': this.nombre,
                     'apellido': this.apellido,
+                    'tipo_documento': this.tipo_documento,
                     'cedula': this.cedula,
+                    'cod_telefono': this.cod_telefono,
                     'telefono': this.telefono,
                     'email': this.email,
                     'dir_ciudad': this.dir_ciudad,
@@ -511,6 +551,10 @@
                   }
                 })
             },
+            primeraLetraM () {
+                this.nombre = this.nombre.charAt(0).toUpperCase() + this.nombre.slice(1);
+                this.apellido = this.apellido.charAt(0).toUpperCase() + this.apellido.slice(1);
+            },
             validarAlumno (){
                 this.error_alumno = 0;
                 this.error_msj_alum =[];
@@ -518,6 +562,8 @@
                 if (!this.seccion_id) this.error_msj_alum.push('Seleccione la seccion');
 
                 this.cedula = parseInt(this.cedula);
+
+                if (!this.tipo_documento) this.error_msj_alum.push('Seleccione si es Venezolano o Extranjero');
 
                 if (!this.cedula) this.error_msj_alum.push('La cedula del alumno no debe estar vacia');
 
@@ -543,7 +589,9 @@
                 this.alumno_id = 0;
                 this.nombre = '';
                 this.apellido = '';
+                this.tipo_documento = 'V';
                 this.cedula = 0;
+                this.cod_telefono = '';
                 this.telefono = '';
                 this.email = '';
                 this.dir_ciudad = '';
@@ -564,7 +612,9 @@
                                 this.alumno_id = 0;
                                 this.nombre = '';
                                 this.apellido = '';
+                                this.tipo_documento = '';
                                 this.cedula = 0;
+                                this.cod_telefono = '';
                                 this.telefono = '';
                                 this.email = '';
                                 this.dir_ciudad = '';
@@ -585,7 +635,9 @@
                                 this.seccion_id = data['seccion_id'];
                                 this.nombre = data['nombre'];
                                 this.apellido = data['apellido'];
+                                this.tipo_documento = data['tipo_documento'];
                                 this.cedula = data['cedula'];
+                                this.cod_telefono = data['cod_telefono'];
                                 this.telefono = data['telefono'];
                                 this.email = data['email'];
                                 this.dir_ciudad = data['dir_ciudad'];

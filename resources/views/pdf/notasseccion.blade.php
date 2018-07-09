@@ -105,7 +105,7 @@
                 @if ( count($alumnos) > 0 )
                     @foreach ($alumnos as $alumno)
                         <tr>
-                            <td>{{ $alumno['cedula'].' '.$alumno['alumno'] }}</td>
+                            <td>{{ $alumno['tipo_documento'].'-'.$alumno['cedula'].' '.$alumno['alumno'] }}</td>
                             @foreach ( $alumno['asignatura_notas'] as $key => $notas )
                             	<td>{{ 'Primer lapso: '.$notas[1].' Segundo lapso: '.$notas[2].' Tercer lapso: '.$notas[3].' Promedio: '.$notas['promedio'] }}</td>
                             @endforeach

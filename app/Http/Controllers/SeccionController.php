@@ -92,7 +92,7 @@ class SeccionController extends Controller
 
     public function notasSeccionPdf(Request $request)
     {
-        $notas = DB::select('SELECT a.cedula, a.apellido, a.nombre,
+        $notas = DB::select('SELECT a.tipo_documento, a.cedula, a.apellido, a.nombre,
 				asig.nombre_asignatura,
 				n.lapso, n.nota
 			FROM alumnos a
@@ -101,7 +101,7 @@ class SeccionController extends Controller
 			LEFT JOIN notas n ON n.id = alum_nota.nota_id
 			LEFT JOIN asignatura_nota asig_not ON asig_not.nota_id = n.id
 			LEFT JOIN asignaturas asig ON asig.id = asig_not.asignatura_id
-			GROUP BY a.cedula, a.apellido, a.nombre, asig.nombre_asignatura, n.lapso, n.nota
+			GROUP BY a.tipo_documento, a.cedula, a.apellido, a.nombre, asig.nombre_asignatura, n.lapso, n.nota
 			ORDER BY a.cedula, a.apellido, a.nombre, asig.nombre_asignatura, n.lapso', [
 			'seccion_id' => $request->seccion_id
 		]);
@@ -134,6 +134,7 @@ class SeccionController extends Controller
 				
 				if ( $nota->cedula != $cedula ) {
 					
+                    $notas_seccion[$index]['tipo_documento'] = $nota->tipo_documento;
 					$notas_seccion[$index]['cedula'] = $nota->cedula;
 					$notas_seccion[$index]['alumno'] = $nota->apellido.' '.$nota->nombre;
 					$notas_seccion[$index]['asignatura_notas'] = $nombre_asignaturas;

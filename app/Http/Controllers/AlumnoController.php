@@ -32,8 +32,8 @@ class AlumnoController extends Controller
             	->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             	->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
             	->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
-                    'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
-                    'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                    'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.tipo_documento', 'alumnos.cedula', 'alumnos.nombre',
+                    'alumnos.apellido', 'alumnos.cod_telefono', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
                     'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
                 ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
                 ->paginate(10);
@@ -44,8 +44,8 @@ class AlumnoController extends Controller
             	->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             	->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
             	->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
-                    'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
-                    'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                    'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.tipo_documento', 'alumnos.cedula','alumnos.nombre',
+                    'alumnos.apellido', 'alumnos.cod_telefono', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
                     'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
             	->where($criterio, 'like', '%'.$buscar.'%')
                 ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
@@ -76,8 +76,8 @@ class AlumnoController extends Controller
             ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             ->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
             ->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
-                'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
-                'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                'secciones.ano', 'alumnos.id', 'alumnos.seccion_id',  'alumnos.tipo_documento', 'alumnos.cedula','alumnos.nombre',
+                'alumnos.apellido', 'alumnos.cod_telefono', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
                 'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
             ->where('alumnos.seccion_id', $seccion_id)
             ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
@@ -135,10 +135,12 @@ class AlumnoController extends Controller
 
         $alumno = new Alumno();
         $alumno->seccion_id = $request->seccion_id;
+        $alumno->tipo_documento = $request->tipo_documento;
         $alumno->cedula = $request->cedula;
         $alumno->nombre = $request->nombre;
         $alumno->apellido = $request->apellido;
         $alumno->email = $request->email;
+        $alumno->cod_telefono = $request->cod_telefono;
         $alumno->telefono = $request->telefono;
         $alumno->dir_avenida = $request->dir_avenida;
         $alumno->dir_ciudad = $request->dir_ciudad;
@@ -158,10 +160,12 @@ class AlumnoController extends Controller
 
         $alumno = Alumno::findOrFail( $request->id );
         $alumno->seccion_id = $request->seccion_id;
+        $alumno->tipo_documento = $request->tipo_documento;
         $alumno->cedula = $request->cedula;
         $alumno->nombre = $request->nombre;
         $alumno->apellido = $request->apellido;
         $alumno->email = $request->email;
+        $alumno->cod_telefono = $request->cod_telefono;
         $alumno->telefono = $request->telefono;
         $alumno->dir_avenida = $request->dir_avenida;
         $alumno->dir_ciudad = $request->dir_ciudad;
@@ -201,8 +205,8 @@ class AlumnoController extends Controller
             ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
             ->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
             ->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
-                'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
-                'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+                'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.tipo_documento', 'alumnos.cedula','alumnos.nombre',
+                'alumnos.apellido', 'alumnos.cod_telefono', 'alumnos.cod_telefono', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
                 'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
             ->where('alumnos.seccion_id', $seccion_id)
             ->orderBy('periodos.periodo_inicio', 'secciones.ano', 'secciones.nombre_seccion', 'alumnos.apellido')
@@ -231,8 +235,8 @@ class AlumnoController extends Controller
         ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
         ->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
         ->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
-            'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
-            'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+            'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.tipo_documento', 'alumnos.cedula','alumnos.nombre',
+            'alumnos.apellido', 'alumnos.cod_telefono', 'alumnos.cod_telefono', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
             'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
         ->where([
                 ['alumnos.id', '=', $request->alumno_id],

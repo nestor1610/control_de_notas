@@ -123,11 +123,11 @@
                                 <td v-text="alumno.periodo_inicio + '-' + alumno.periodo_fin"></td>
                                 <td v-text="alumno.ano"></td>
                                 <td v-text="alumno.nombre_seccion"></td>
-                                <td v-text="alumno.cedula"></td>
+                                <td v-text="alumno.tipo_documento + '-' + alumno.cedula"></td>
                                 <td v-text="alumno.apellido"></td>
                                 <td v-text="alumno.nombre"></td>
                                 <td v-text="alumno.email"></td>
-                                <td v-text="alumno.telefono"></td>
+                                <td>{{ numeroAlumno(alumno) }}</td>
                                 <td>{{ direccionAlumno(alumno) }}</td>
                             </tr>
                         </tbody>
@@ -178,7 +178,7 @@
                                 Seccion <span style="color:red;" v-show="nombre_seccion.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
-                                <input onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la sección">
+                                <input v-on:keyup="primeraLetraM()" onkeypress="return soloLetrasConAcentos(event)" type="text" v-model.trim="nombre_seccion" class="form-control" placeholder="Nombre de la sección">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -330,6 +330,15 @@
             cargarPdfAsignaturas(seccion_id) {
                 window.open('http://127.0.0.1:8000/seccion/pdf/asignatura?id='+seccion_id, '_blank');
             },
+            numeroAlumno (alumno) {
+                var cod = '';
+                var telefono = '';
+
+                if (alumno.cod_telefono != null) cod = alumno.cod_telefono+'-';
+                if (alumno.telefono != null) telefono = alumno.telefono;
+
+                return cod+telefono;
+            },
             direccionAlumno (alumno){
                 var avenida = '';
                 var ciudad = '';
@@ -410,6 +419,9 @@
                 .catch(function (error){
                     console.log(error);
                 });
+            },
+            primeraLetraM () {
+                this.nombre_seccion = this.nombre_seccion.charAt(0).toUpperCase() + this.nombre_seccion.slice(1);
             },
             validarSeccion (){
                 this.error_seccion = 0;

@@ -25,7 +25,7 @@ class NotaController extends Controller
     		->join('asignatura_nota', 'notas.id', '=', 'asignatura_nota.nota_id')
     		->join('asignaturas', 'asignatura_nota.asignatura_id', '=', 'asignaturas.id')
     		->select( 'notas.id', 'notas.nota', 'notas.lapso', 'asignaturas.nombre_asignatura',
-                'alumnos.id as alumno_id', 'alumnos.seccion_id', 'alumnos.cedula', 'alumnos.apellido', 'alumnos.nombre')
+                'alumnos.id as alumno_id', 'alumnos.seccion_id', 'alumnos.tipo_documento', 'alumnos.cedula', 'alumnos.apellido', 'alumnos.nombre')
     		->where([
     			['alumnos.seccion_id', '=', $seccion_id],
     			['asignaturas.id', '=', $asignatura_id],
@@ -92,8 +92,8 @@ class NotaController extends Controller
         ->join('periodos', 'secciones.periodo_id', '=', 'periodos.id')
         ->join('alumnos', 'secciones.id', '=', 'alumnos.seccion_id')
         ->select('secciones.periodo_id', 'periodos.periodo_inicio', 'periodos.periodo_fin', 'secciones.nombre_seccion',
-            'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.cedula','alumnos.nombre',
-            'alumnos.apellido', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
+            'secciones.ano', 'alumnos.id', 'alumnos.seccion_id', 'alumnos.tipo_documento', 'alumnos.cedula','alumnos.nombre',
+            'alumnos.apellido', 'alumnos.cod_telefono', 'alumnos.telefono', 'alumnos.email', 'alumnos.dir_ciudad', 'alumnos.dir_avenida',
             'alumnos.dir_calle', 'alumnos.dir_casa', 'alumnos.condicion')
         ->where([
                 ['alumnos.seccion_id', '=', $request->seccion_id],
@@ -195,7 +195,7 @@ class NotaController extends Controller
     public function alumnosAprobadosPdf(Request $request)
     {
         $alumnos = DB::select(
-            'SELECT a.cedula, a.apellido, a.nombre, asig.nombre_asignatura,
+            'SELECT a.tipo_documento, a.cedula, a.apellido, a.nombre, asig.nombre_asignatura,
                 ROUND( ( SUM( n.nota ) / 3 ), 2 ) promedio, IF( ( SUM( n.nota ) / 3 ) > 10, 1, 0 ) estatus
             FROM alumnos a
             JOIN secciones s ON a.seccion_id = s.id
@@ -204,7 +204,7 @@ class NotaController extends Controller
             JOIN asignatura_nota asig_not ON asig_not.nota_id = n.id
             JOIN asignaturas asig ON asig.id = asig_not.asignatura_id
             WHERE s.id = :seccion_id
-            GROUP BY a.cedula, a.apellido, a.nombre, asig.nombre_asignatura
+            GROUP BY a.tipo_documento, a.cedula, a.apellido, a.nombre, asig.nombre_asignatura
             HAVING count(n.nota) = 3 
             ORDER BY a.cedula, asig.nombre_asignatura', [
             'seccion_id' => $request->seccion_id
@@ -229,6 +229,7 @@ class NotaController extends Controller
                 
                 if ( $alumno->cedula != $cedula ) {
 
+                    $aprobados[$index]['tipo_documento'] = $alumno->tipo_documento;
                     $aprobados[$index]['cedula'] = $alumno->cedula;
                     $aprobados[$index]['apellido'] = $alumno->apellido;
                     $aprobados[$index]['nombre'] = $alumno->nombre;

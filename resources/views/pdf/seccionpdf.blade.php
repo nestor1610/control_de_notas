@@ -103,10 +103,10 @@
                 @if ( count($alumnos) > 0 )
                     @foreach ($alumnos as $alumno)
                     <tr>
-                        <td>{{ $alumno->cedula }}</td>
+                        <td>{{ $alumno->tipo_documento.'-'.$alumno->cedula }}</td>
                         <td>{{ $alumno->nombre }}</td>
                         <td>{{ $alumno->apellido }}</td>
-                        <td>{{ $alumno->telefono }}</td>
+                        <td>{{ $alumno->cod_telefono.'-'.$alumno->telefono }}</td>
                         <td>{{ $alumno->email }}</td>
                         <td>
                             {{ 'Ciudad: '.$alumno->dir_ciudad.' Avenida: '.$alumno->dir_avenida.' Calle: '.$alumno->dir_calle.' Casa: '.$alumno->dir_casa }}

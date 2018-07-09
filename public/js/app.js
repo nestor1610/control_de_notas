@@ -33381,6 +33381,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -33389,6 +33396,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             periodo_inicio: 0,
             periodo_fin: 0,
             array_periodo: [],
+            array_anos: [],
             modal: 0,
             titulo_modal: '',
             tipo_accion: 0,
@@ -33415,6 +33423,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+        agregarAnos: function agregarAnos() {
+            for (var i = 1; i < 102; i++) {
+
+                this.array_anos.push(i + 1999);
+            }
+        },
+        setPeriodoFin: function setPeriodoFin() {
+            this.periodo_fin = this.periodo_inicio + 1;
         },
         registrarPeriodo: function registrarPeriodo() {
 
@@ -33546,6 +33563,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
+        this.agregarAnos();
         this.listarPeriodo(this.periodo_inicio, this.periodo_fin);
     }
 });
@@ -33567,63 +33585,56 @@ var render = function() {
           _c("div", { staticClass: "form-group row" }, [
             _vm._m(1),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "label",
                   { staticClass: "form-control", attrs: { for: "text-input" } },
-                  [_vm._v("Inicio del período")]
+                  [_vm._v("Período")]
                 ),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.periodo_inicio,
-                      expression: "periodo_inicio"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "number", placeholder: "Inicio" },
-                  domProps: { value: _vm.periodo_inicio },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.periodo_inicio = $event.target.value
-                    }
-                  }
-                }),
                 _vm._v(" "),
                 _c(
-                  "label",
-                  { staticClass: "form-control", attrs: { for: "text-input" } },
-                  [_vm._v("Fin del período")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.periodo_fin,
-                      expression: "periodo_fin"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "number", placeholder: "Fin" },
-                  domProps: { value: _vm.periodo_fin },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.periodo_inicio,
+                        expression: "periodo_inicio"
                       }
-                      _vm.periodo_fin = $event.target.value
+                    ],
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.periodo_inicio = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.setPeriodoFin()
+                        }
+                      ]
                     }
-                  }
-                }),
+                  },
+                  _vm._l(_vm.array_anos, function(ano) {
+                    return _c("option", { domProps: { value: ano } }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(ano + "-" + (ano + 1)) +
+                          "\n                            "
+                      )
+                    ])
+                  })
+                ),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -33850,35 +33861,50 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model.trim",
-                              value: _vm.periodo_inicio,
-                              expression: "periodo_inicio",
-                              modifiers: { trim: true }
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Inicio del período"
-                          },
-                          domProps: { value: _vm.periodo_inicio },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.periodo_inicio,
+                                expression: "periodo_inicio"
                               }
-                              _vm.periodo_inicio = $event.target.value.trim()
-                            },
-                            blur: function($event) {
-                              _vm.$forceUpdate()
+                            ],
+                            on: {
+                              change: [
+                                function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.periodo_inicio = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                },
+                                function($event) {
+                                  _vm.setPeriodoFin()
+                                }
+                              ]
                             }
-                          }
-                        })
+                          },
+                          _vm._l(_vm.array_anos, function(ano) {
+                            return _c("option", { domProps: { value: ano } }, [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(ano) +
+                                  "\n                                "
+                              )
+                            ])
+                          })
+                        )
                       ])
                     ]),
                     _vm._v(" "),
@@ -33911,7 +33937,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
+                      _c("div", { staticClass: "col-md-3" }, [
                         _c("input", {
                           directives: [
                             {
@@ -33924,6 +33950,8 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           attrs: {
+                            readonly: "",
+                            onkeypress: "return soloNumeros(event)",
                             type: "text",
                             placeholder: "Fin del período"
                           },
@@ -34512,6 +34540,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         cargarPdfAsignaturas: function cargarPdfAsignaturas(seccion_id) {
             window.open('http://127.0.0.1:8000/seccion/pdf/asignatura?id=' + seccion_id, '_blank');
         },
+        numeroAlumno: function numeroAlumno(alumno) {
+            var cod = '';
+            var telefono = '';
+
+            if (alumno.cod_telefono != null) cod = alumno.cod_telefono + '-';
+            if (alumno.telefono != null) telefono = alumno.telefono;
+
+            return cod + telefono;
+        },
         direccionAlumno: function direccionAlumno(alumno) {
             var avenida = '';
             var ciudad = '';
@@ -34581,6 +34618,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+        primeraLetraM: function primeraLetraM() {
+            this.nombre_seccion = this.nombre_seccion.charAt(0).toUpperCase() + this.nombre_seccion.slice(1);
         },
         validarSeccion: function validarSeccion() {
             this.error_seccion = 0;
@@ -35074,7 +35114,11 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _c("td", {
-                                domProps: { textContent: _vm._s(alumno.cedula) }
+                                domProps: {
+                                  textContent: _vm._s(
+                                    alumno.tipo_documento + "-" + alumno.cedula
+                                  )
+                                }
                               }),
                               _vm._v(" "),
                               _c("td", {
@@ -35091,11 +35135,9 @@ var render = function() {
                                 domProps: { textContent: _vm._s(alumno.email) }
                               }),
                               _vm._v(" "),
-                              _c("td", {
-                                domProps: {
-                                  textContent: _vm._s(alumno.telefono)
-                                }
-                              }),
+                              _c("td", [
+                                _vm._v(_vm._s(_vm.numeroAlumno(alumno)))
+                              ]),
                               _vm._v(" "),
                               _c("td", [
                                 _vm._v(_vm._s(_vm.direccionAlumno(alumno)))
@@ -35326,6 +35368,9 @@ var render = function() {
                           },
                           domProps: { value: _vm.nombre_seccion },
                           on: {
+                            keyup: function($event) {
+                              _vm.primeraLetraM()
+                            },
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
@@ -36055,6 +36100,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
+        primeraLetraM: function primeraLetraM() {
+            this.nombre_asignatura = this.nombre_asignatura.charAt(0).toUpperCase() + this.nombre_asignatura.slice(1);
+        },
         validarAsignatura: function validarAsignatura() {
             this.error_asignatura = 0;
             this.error_msj_asig = [];
@@ -36557,6 +36605,9 @@ var render = function() {
                           },
                           domProps: { value: _vm.nombre_asignatura },
                           on: {
+                            keyup: function($event) {
+                              _vm.primeraLetraM()
+                            },
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
@@ -38837,6 +38888,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -38846,7 +38911,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             alumno_id: 0,
             nombre: '',
             apellido: '',
+            tipo_documento: 'V',
             cedula: 0,
+            cod_telefono: '',
             telefono: '',
             email: '',
             dir_ciudad: '',
@@ -38856,6 +38923,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             array_periodo: [],
             array_seccion: [],
             array_alumno: [],
+            array_tipo_doc: [{
+                'id': 'V',
+                'doc': 'V-'
+            }, {
+                'id': 'E',
+                'doc': 'E-'
+            }],
+            array_cod_telefono: ['0212', '0412', '0414', '0424', '0416', '0426'],
             modal: 0,
             titulo_modal: '',
             tipo_accion: 0,
@@ -38929,6 +39004,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return 'Ciudad: ' + ciudad + ' Avenida: ' + avenida + ' Calle: ' + calle + ' Casa: ' + casa;
         },
+        numeroAlumno: function numeroAlumno(alumno) {
+            var cod = '';
+            var telefono = '';
+
+            if (alumno.cod_telefono != null) cod = alumno.cod_telefono + '-';
+            if (alumno.telefono != null) telefono = alumno.telefono;
+
+            return cod + telefono;
+        },
         listarPeriodo: function listarPeriodo() {
             var me = this;
             var url = '/periodo/listar-periodos';
@@ -38971,7 +39055,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'seccion_id': this.seccion_id,
                 'nombre': this.nombre,
                 'apellido': this.apellido,
+                'tipo_documento': this.tipo_documento,
                 'cedula': this.cedula,
+                'cod_telefono': this.cod_telefono,
                 'telefono': this.telefono,
                 'email': this.email,
                 'dir_ciudad': this.dir_ciudad,
@@ -38998,7 +39084,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'seccion_id': this.seccion_id,
                 'nombre': this.nombre,
                 'apellido': this.apellido,
+                'tipo_documento': this.tipo_documento,
                 'cedula': this.cedula,
+                'cod_telefono': this.cod_telefono,
                 'telefono': this.telefono,
                 'email': this.email,
                 'dir_ciudad': this.dir_ciudad,
@@ -39080,6 +39168,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 result.dismiss === swal.DismissReason.cancel) {}
             });
         },
+        primeraLetraM: function primeraLetraM() {
+            this.nombre = this.nombre.charAt(0).toUpperCase() + this.nombre.slice(1);
+            this.apellido = this.apellido.charAt(0).toUpperCase() + this.apellido.slice(1);
+        },
         validarAlumno: function validarAlumno() {
             this.error_alumno = 0;
             this.error_msj_alum = [];
@@ -39087,6 +39179,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.seccion_id) this.error_msj_alum.push('Seleccione la seccion');
 
             this.cedula = parseInt(this.cedula);
+
+            if (!this.tipo_documento) this.error_msj_alum.push('Seleccione si es Venezolano o Extranjero');
 
             if (!this.cedula) this.error_msj_alum.push('La cedula del alumno no debe estar vacia');
 
@@ -39112,7 +39206,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.alumno_id = 0;
             this.nombre = '';
             this.apellido = '';
+            this.tipo_documento = 'V';
             this.cedula = 0;
+            this.cod_telefono = '';
             this.telefono = '';
             this.email = '';
             this.dir_ciudad = '';
@@ -39134,7 +39230,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.titulo_modal = 'Registrar alumno', this.alumno_id = 0;
                                     this.nombre = '';
                                     this.apellido = '';
+                                    this.tipo_documento = '';
                                     this.cedula = 0;
+                                    this.cod_telefono = '';
                                     this.telefono = '';
                                     this.email = '';
                                     this.dir_ciudad = '';
@@ -39155,7 +39253,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.seccion_id = data['seccion_id'];
                                     this.nombre = data['nombre'];
                                     this.apellido = data['apellido'];
+                                    this.tipo_documento = data['tipo_documento'];
                                     this.cedula = data['cedula'];
+                                    this.cod_telefono = data['cod_telefono'];
                                     this.telefono = data['telefono'];
                                     this.email = data['email'];
                                     this.dir_ciudad = data['dir_ciudad'];
@@ -39461,7 +39561,11 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("td", {
-                          domProps: { textContent: _vm._s(alumno.cedula) }
+                          domProps: {
+                            textContent: _vm._s(
+                              alumno.tipo_documento + "-" + alumno.cedula
+                            )
+                          }
                         }),
                         _vm._v(" "),
                         _c("td", {
@@ -39476,9 +39580,7 @@ var render = function() {
                           domProps: { textContent: _vm._s(alumno.email) }
                         }),
                         _vm._v(" "),
-                        _c("td", {
-                          domProps: { textContent: _vm._s(alumno.telefono) }
-                        }),
+                        _c("td", [_vm._v(_vm._s(_vm.numeroAlumno(alumno)))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(_vm.direccionAlumno(alumno)))]),
                         _vm._v(" "),
@@ -39859,7 +39961,55 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
+                      _c("div", { staticClass: "col-md-2" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.trim",
+                                value: _vm.tipo_documento,
+                                expression: "tipo_documento",
+                                modifiers: { trim: true }
+                              }
+                            ],
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.tipo_documento = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          _vm._l(_vm.array_tipo_doc, function(documento) {
+                            return _c(
+                              "option",
+                              {
+                                key: documento.id,
+                                domProps: { value: documento.id }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(documento.doc) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          })
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-7" }, [
                         _c("input", {
                           directives: [
                             {
@@ -39938,6 +40088,9 @@ var render = function() {
                           },
                           domProps: { value: _vm.nombre },
                           on: {
+                            keyup: function($event) {
+                              _vm.primeraLetraM()
+                            },
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
@@ -39998,6 +40151,9 @@ var render = function() {
                           },
                           domProps: { value: _vm.apellido },
                           on: {
+                            keyup: function($event) {
+                              _vm.primeraLetraM()
+                            },
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
@@ -40022,7 +40178,52 @@ var render = function() {
                         [_vm._v("Teléfono")]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
+                      _c("div", { staticClass: "col-md-2" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.trim",
+                                value: _vm.cod_telefono,
+                                expression: "cod_telefono",
+                                modifiers: { trim: true }
+                              }
+                            ],
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.cod_telefono = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          _vm._l(_vm.array_cod_telefono, function(cod) {
+                            return _c(
+                              "option",
+                              { key: cod.id, domProps: { value: cod } },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(cod) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          })
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-7" }, [
                         _c("input", {
                           directives: [
                             {
@@ -41562,7 +41763,11 @@ var render = function() {
                                 ]),
                                 _vm._v(" "),
                                 _c("td", {
-                                  domProps: { textContent: _vm._s(nota.cedula) }
+                                  domProps: {
+                                    textContent: _vm._s(
+                                      nota.tipo_documento + "-" + nota.cedula
+                                    )
+                                  }
                                 }),
                                 _vm._v(" "),
                                 _c("td", {

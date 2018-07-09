@@ -114,7 +114,7 @@
                                 Asignatura <span style="color:red;" v-show="nombre_asignatura.length == 0">(*Ingrese)</span>
                             </label>
                             <div class="col-md-9">
-                                <input type="text" onkeypress="return soloLetrasConAcentos(event)" v-model.trim="nombre_asignatura" class="form-control" placeholder="Nombre de la asignatura">
+                                <input v-on:keyup="primeraLetraM()" type="text" onkeypress="return soloLetrasConAcentos(event)" v-model.trim="nombre_asignatura" class="form-control" placeholder="Nombre de la asignatura">
                             </div>
                         </div>
                         <div v-show="error_asignatura" class="form-group row div-error">
@@ -372,6 +372,9 @@
                 .catch(function (error){
                     console.log(error);
                 });
+            },
+            primeraLetraM () {
+                this.nombre_asignatura = this.nombre_asignatura.charAt(0).toUpperCase() + this.nombre_asignatura.slice(1);
             },
             validarAsignatura (){
                 this.error_asignatura = 0;

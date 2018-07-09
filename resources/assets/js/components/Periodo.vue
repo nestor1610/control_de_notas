@@ -13,12 +13,14 @@
                     <div class="col-md-2">
                         <p class="h3 text-right">Buscador</p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="input-group">
-                            <label class="form-control" for="text-input">Inicio del período</label>
-                            <input type="number" v-model="periodo_inicio" class="form-control" placeholder="Inicio">
-                            <label class="form-control" for="text-input">Fin del período</label>
-                            <input type="number" v-model="periodo_fin" class="form-control" placeholder="Fin">
+                            <label class="form-control" for="text-input">Período</label>
+                            <select v-model="periodo_inicio" v-on:change="setPeriodoFin()">
+                                <option v-for="ano in array_anos" v-bind:value="ano">
+                                    {{ ano + '-' +  ( ano + 1 ) }}
+                                </option>
+                            </select>
                             <button v-on:click="listarPeriodo(periodo_inicio, periodo_fin, 1)" type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             <button v-on:click="limpiarBuscar()" type="submit" class="btn btn-primary">
                                 <i class="icon-trash"></i> Limpiar
@@ -90,16 +92,21 @@
                             <label class="col-md-3 form-control-label" for="text-input">
                                 Inicio del período <span style="color:red;" v-show="periodo_inicio.length == 0">(*Ingrese)</span>
                             </label>
-                            <div class="col-md-9">
-                                <input type="text" v-model.trim="periodo_inicio" class="form-control" placeholder="Inicio del período">
+                            <div class="col-md-3">
+                                <select v-model="periodo_inicio" v-on:change="setPeriodoFin()">
+                                    <option v-for="ano in array_anos" v-bind:value="ano">
+                                        {{ ano }}
+                                    </option>
+                                </select>
+                                <!-- <input onkeypress="return soloNumeros(event)" type="text" v-model.trim="periodo_inicio" class="form-control" placeholder="Inicio del período"> -->
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">
                                 Fin del período <span style="color:red;" v-show="periodo_fin.length == 0">(*Ingrese)</span>
                             </label>
-                            <div class="col-md-9">
-                                <input type="text" v-model.trim="periodo_fin" class="form-control" placeholder="Fin del período">
+                            <div class="col-md-3">
+                                <input readonly onkeypress="return soloNumeros(event)" type="text" v-model.trim="periodo_fin" class="form-control" placeholder="Fin del período">
                             </div>
                         </div>
                         <div v-show="error_periodo" class="form-group row div-error">
@@ -131,6 +138,7 @@
                 periodo_inicio : 0,
                 periodo_fin : 0,
                 array_periodo : [],
+                array_anos : [],
                 modal : 0,
                 titulo_modal : '',
                 tipo_accion : 0,
@@ -156,6 +164,16 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            agregarAnos () {
+                for (var i = 1; i < 102; i++) {
+                    
+                    this.array_anos.push( i + 1999 );
+
+                }
+            },
+            setPeriodoFin () {
+                this.periodo_fin = this.periodo_inicio + 1;
             },
             registrarPeriodo (){
                 
@@ -296,6 +314,7 @@
             }
         },
         mounted() {
+            this.agregarAnos();
             this.listarPeriodo(this.periodo_inicio, this.periodo_fin);
         }
  }

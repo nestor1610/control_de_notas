@@ -97,12 +97,12 @@
                     <td colspan="3">{{ 'Seccion: '.$alumno->nombre_seccion.' año: '.$alumno->ano }}</td>
                 </tr>
                 <tr>
-                    <td>{{ 'Cedula: V-'.$alumno->cedula }}</td>
+                    <td>{{ 'Cedula: '.$alumno->tipo_documento.'-'.$alumno->cedula }}</td>
                     <td colspan="2">{{ 'Apellido: '.$alumno->apellido }}</td>
                     <td>{{ 'Nombre: '.$alumno->nombre }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ 'Telefono: '.$alumno->telefono }}</td>
+                    <td colspan="2">{{ 'Telefono: '.$alumno->cod_telefono.'-'.$alumno->telefono }}</td>
                     <td colspan="2">{{ 'email: '.$alumno->email }}</td>
                 </tr>
                 <tr>

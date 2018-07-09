@@ -101,7 +101,7 @@
                 @if ( count($alumnos) > 0 )
                     @foreach ($alumnos as $alumno)
                         <tr>
-                            <td>{{ $alumno['cedula'] }}</td>
+                            <td>{{ $alumno['tipo_documento'].'-'.$alumno['cedula'] }}</td>
                             <td>{{ $alumno['apellido'] }}</td>
                             <td>{{ $alumno['nombre'] }}</td>
                             <td colspan="3">
